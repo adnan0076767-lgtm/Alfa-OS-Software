@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#030712">
 
-<title>ALFA OS SOFTWARE V1.6 | REAL TASK ENGINE</title>
+<title>ALFA OS SOFTWARE V1.6.1 | REAL TASK ENGINE</title>
 
 <style>
 :root{
@@ -21,7 +21,6 @@
   --purple:#a970ff;
   --text:#e8f6ff;
   --muted:#7591a8;
-  --shadow:0 0 25px rgba(0,229,255,.08);
 }
 
 *{
@@ -44,9 +43,7 @@ body{
   overflow-x:hidden;
 }
 
-button,
-input,
-select{
+button,input,select{
   font:inherit;
 }
 
@@ -54,12 +51,12 @@ button{
   cursor:pointer;
 }
 
+/* SIDEBAR */
+
 .app{
   min-height:100vh;
   display:flex;
 }
-
-/* SIDEBAR */
 
 .sidebar{
   width:245px;
@@ -69,10 +66,9 @@ button{
   top:0;
   bottom:0;
   z-index:50;
-  background:rgba(3,10,20,.96);
+  background:rgba(3,10,20,.97);
   border-right:1px solid var(--line);
   padding:22px 14px;
-  box-shadow:20px 0 60px rgba(0,0,0,.25);
 }
 
 .logo{
@@ -121,7 +117,11 @@ button{
 .nav button.active{
   color:#fff;
   border-color:#124064;
-  background:linear-gradient(90deg,rgba(0,229,255,.10),rgba(37,140,255,.05));
+  background:linear-gradient(
+    90deg,
+    rgba(0,229,255,.10),
+    rgba(37,140,255,.05)
+  );
   box-shadow:inset 3px 0 0 var(--cyan);
 }
 
@@ -197,9 +197,12 @@ button{
   padding:25px;
   margin-bottom:20px;
   background:
-    linear-gradient(120deg,rgba(0,229,255,.07),rgba(37,140,255,.02)),
+    linear-gradient(
+      120deg,
+      rgba(0,229,255,.07),
+      rgba(37,140,255,.02)
+    ),
     rgba(7,17,31,.84);
-  box-shadow:var(--shadow);
   position:relative;
   overflow:hidden;
 }
@@ -221,7 +224,6 @@ button{
 .hero h1{
   font-size:clamp(24px,4vw,40px);
   line-height:1.1;
-  max-width:800px;
 }
 
 .hero h1 span{
@@ -249,7 +251,6 @@ button{
   background:rgba(7,17,31,.78);
   border-radius:14px;
   padding:16px;
-  box-shadow:var(--shadow);
 }
 
 .stat-label{
@@ -264,11 +265,11 @@ button{
   margin-top:8px;
 }
 
-.stat-value.cyan{color:var(--cyan)}
-.stat-value.green{color:var(--green)}
-.stat-value.yellow{color:var(--yellow)}
-.stat-value.red{color:var(--red)}
-.stat-value.purple{color:var(--purple)}
+.cyan{color:var(--cyan)}
+.green{color:var(--green)}
+.yellow{color:var(--yellow)}
+.red{color:var(--red)}
+.purple{color:var(--purple)}
 
 /* PANELS */
 
@@ -283,7 +284,6 @@ button{
   background:rgba(7,17,31,.82);
   border:1px solid var(--line);
   border-radius:16px;
-  box-shadow:var(--shadow);
   overflow:hidden;
 }
 
@@ -299,14 +299,13 @@ button{
 .panel-title{
   font-weight:800;
   font-size:13px;
-  letter-spacing:.5px;
 }
 
 .panel-body{
   padding:16px;
 }
 
-/* TASK CREATOR */
+/* FORM */
 
 .form-grid{
   display:grid;
@@ -352,35 +351,19 @@ button{
   border-color:#1386bd;
 }
 
-.btn.green{
-  border-color:#176b55;
-  color:#b7ffe6;
-}
-
-.btn.red{
-  border-color:#713047;
-  color:#ffb4c4;
-}
-
-.btn.yellow{
-  border-color:#695821;
-  color:#ffe6a0;
-}
-
 .btn.small{
   padding:7px 9px;
   font-size:10px;
 }
 
-/* TASK QUEUE */
+/* TASK LIST */
 
 .task-list{
   display:flex;
   flex-direction:column;
   gap:10px;
-  max-height:530px;
+  max-height:560px;
   overflow:auto;
-  padding-right:3px;
 }
 
 .task{
@@ -388,7 +371,6 @@ button{
   border-radius:12px;
   padding:13px;
   background:rgba(4,12,23,.8);
-  transition:.2s;
 }
 
 .task:hover{
@@ -457,6 +439,24 @@ button{
   color:#ff8fa8;
 }
 
+.badge.priority-critical{
+  color:#ff7d96;
+  border-color:#803044;
+}
+
+.badge.priority-high{
+  color:#ffd166;
+  border-color:#705b20;
+}
+
+.badge.priority-normal{
+  color:#9bb6c8;
+}
+
+.badge.priority-low{
+  color:#7591a8;
+}
+
 .progress{
   height:5px;
   background:#071522;
@@ -468,8 +468,11 @@ button{
 .progress-bar{
   height:100%;
   width:0%;
-  background:linear-gradient(90deg,var(--cyan),var(--blue));
-  box-shadow:0 0 10px rgba(0,229,255,.4);
+  background:linear-gradient(
+    90deg,
+    var(--cyan),
+    var(--blue)
+  );
   transition:width .25s linear;
 }
 
@@ -489,10 +492,17 @@ button{
   margin-top:11px;
 }
 
+.empty{
+  text-align:center;
+  padding:35px 15px;
+  color:#4e697c;
+  font-size:11px;
+}
+
 /* TERMINAL */
 
 .terminal{
-  height:350px;
+  height:390px;
   overflow:auto;
   background:#02070d;
   border-radius:11px;
@@ -550,15 +560,6 @@ button{
   accent-color:var(--cyan);
 }
 
-/* EMPTY */
-
-.empty{
-  text-align:center;
-  padding:35px 15px;
-  color:#4e697c;
-  font-size:11px;
-}
-
 /* FOOTER */
 
 .footer{
@@ -599,6 +600,7 @@ button{
 }
 
 @media(max-width:1100px){
+
   .stats{
     grid-template-columns:repeat(3,1fr);
   }
@@ -606,9 +608,11 @@ button{
   .grid{
     grid-template-columns:1fr;
   }
+
 }
 
 @media(max-width:800px){
+
   .sidebar{
     transform:translateX(-100%);
     transition:.25s;
@@ -631,10 +635,7 @@ button{
     color:#c9f6ff;
     border-radius:8px;
     padding:8px 11px;
-  }
-
-  .topbar{
-    align-items:flex-start;
+    margin-bottom:10px;
   }
 
   .stats{
@@ -644,15 +645,13 @@ button{
   .form-grid{
     grid-template-columns:1fr;
   }
+
 }
 
 @media(max-width:500px){
+
   .stats{
     grid-template-columns:1fr 1fr;
-  }
-
-  .stat-value{
-    font-size:21px;
   }
 
   .hero{
@@ -662,6 +661,7 @@ button{
   .hero h1{
     font-size:25px;
   }
+
 }
 </style>
 </head>
@@ -673,55 +673,73 @@ button{
 <aside class="sidebar" id="sidebar">
 
   <div class="logo">
-    <div class="logo-main">ALFA <span>OS</span> SOFTWARE</div>
-    <div class="logo-sub">REAL TASK ENGINE • V1.6</div>
+    <div class="logo-main">
+      ALFA <span>OS</span> SOFTWARE
+    </div>
+
+    <div class="logo-sub">
+      REAL TASK ENGINE • V1.6.1
+    </div>
   </div>
 
   <div class="nav">
 
-    <button class="active" onclick="selectModule(this,'Dashboard')">
+    <button class="active"
+      onclick="selectModule(this,'Dashboard')">
       ◈ Dashboard
     </button>
 
-    <button onclick="selectModule(this,'OSINT Engine')">
+    <button
+      onclick="selectModule(this,'OSINT Engine')">
       ◉ OSINT Engine
     </button>
 
-    <button onclick="selectModule(this,'Security Engine')">
+    <button
+      onclick="selectModule(this,'Security Engine')">
       ◈ Security Engine
     </button>
 
-    <button onclick="selectModule(this,'Bug Hunter')">
+    <button
+      onclick="selectModule(this,'Bug Hunter')">
       ◌ Bug Hunter
     </button>
 
-    <button onclick="selectModule(this,'Task Manager')">
+    <button
+      onclick="selectModule(this,'Task Manager')">
       ▣ Task Manager
     </button>
 
-    <button onclick="selectModule(this,'Reports')">
+    <button
+      onclick="selectModule(this,'Reports')">
       ▤ Reports
     </button>
 
-    <button onclick="selectModule(this,'AI Security')">
+    <button
+      onclick="selectModule(this,'AI Security')">
       ✦ AI Security
     </button>
 
-    <button onclick="selectModule(this,'Settings')">
+    <button
+      onclick="selectModule(this,'Settings')">
       ⚙ Settings
     </button>
 
   </div>
 
   <div class="sidebar-status">
+
     <div class="status-row">
       <span>SYSTEM</span>
-      <span><i class="dot"></i> ONLINE</span>
+      <span>
+        <i class="dot"></i> ONLINE
+      </span>
     </div>
+
     <div class="status-row" style="margin-top:9px">
       <span>ENGINE</span>
       <span id="engineStatus">READY</span>
     </div>
+
   </div>
 
 </aside>
@@ -731,11 +749,21 @@ button{
   <div class="topbar">
 
     <div>
-      <button class="mobile-menu" onclick="toggleSidebar()">☰ MENU</button>
-      <div class="page-title">ALFA OS SOFTWARE</div>
+
+      <button
+        class="mobile-menu"
+        onclick="toggleSidebar()">
+        ☰ MENU
+      </button>
+
+      <div class="page-title">
+        ALFA OS SOFTWARE
+      </div>
+
       <div class="page-sub">
         REAL TASK ENGINE / MULTITASK SECURITY PLATFORM
       </div>
+
     </div>
 
     <div class="system-pill">
@@ -745,42 +773,54 @@ button{
   </div>
 
   <section class="hero">
+
     <h1>
       REAL <span>TASK ENGINE</span>
     </h1>
 
     <p>
-      Task queue, priority control, execution state, logs,
-      results, history, retry engine, local persistence,
-      dan background worker.
+      Task queue, priority control, execution state,
+      logs, results, history, retry engine,
+      local persistence, dan background worker.
     </p>
+
   </section>
 
   <section class="stats">
 
     <div class="stat">
       <div class="stat-label">TOTAL TASKS</div>
-      <div class="stat-value cyan" id="totalTasks">0</div>
+      <div
+        class="stat-value cyan"
+        id="totalTasks">0</div>
     </div>
 
     <div class="stat">
       <div class="stat-label">RUNNING</div>
-      <div class="stat-value green" id="runningTasks">0</div>
+      <div
+        class="stat-value green"
+        id="runningTasks">0</div>
     </div>
 
     <div class="stat">
       <div class="stat-label">QUEUED</div>
-      <div class="stat-value yellow" id="queuedTasks">0</div>
+      <div
+        class="stat-value yellow"
+        id="queuedTasks">0</div>
     </div>
 
     <div class="stat">
       <div class="stat-label">COMPLETED</div>
-      <div class="stat-value purple" id="completedTasks">0</div>
+      <div
+        class="stat-value purple"
+        id="completedTasks">0</div>
     </div>
 
     <div class="stat">
       <div class="stat-label">FAILED</div>
-      <div class="stat-value red" id="failedTasks">0</div>
+      <div
+        class="stat-value red"
+        id="failedTasks">0</div>
     </div>
 
   </section>
@@ -790,12 +830,27 @@ button{
     <div class="panel">
 
       <div class="panel-head">
-        <div class="panel-title">TASK CONTROL CENTER</div>
+
+        <div class="panel-title">
+          TASK CONTROL CENTER
+        </div>
 
         <div style="display:flex;gap:7px">
-          <button class="btn small" onclick="runDemo()">DEMO ×5</button>
-          <button class="btn small red" onclick="clearAllTasks()">CLEAR</button>
+
+          <button
+            class="btn small"
+            onclick="runDemo()">
+            DEMO ×5
+          </button>
+
+          <button
+            class="btn small"
+            onclick="clearAllTasks()">
+            CLEAR
+          </button>
+
         </div>
+
       </div>
 
       <div class="panel-body">
@@ -805,41 +860,87 @@ button{
           <input
             id="taskName"
             class="input"
-            placeholder="Masukkan nama task..."
-          >
+            placeholder="Masukkan nama task...">
 
-          <select id="taskType" class="select">
-            <option value="OSINT">OSINT</option>
-            <option value="SECURITY">SECURITY</option>
-            <option value="BUG">BUG HUNTER</option>
-            <option value="REPORT">REPORT</option>
-            <option value="AI">AI SECURITY</option>
+          <select
+            id="taskType"
+            class="select">
+
+            <option value="OSINT">
+              OSINT
+            </option>
+
+            <option value="SECURITY">
+              SECURITY
+            </option>
+
+            <option value="BUG">
+              BUG HUNTER
+            </option>
+
+            <option value="REPORT">
+              REPORT
+            </option>
+
+            <option value="AI">
+              AI SECURITY
+            </option>
+
           </select>
 
-          <select id="taskPriority" class="select">
-            <option value="LOW">LOW</option>
-            <option value="NORMAL" selected>NORMAL</option>
-            <option value="HIGH">HIGH</option>
-            <option value="CRITICAL">CRITICAL</option>
+          <select
+            id="taskPriority"
+            class="select">
+
+            <option value="LOW">
+              LOW
+            </option>
+
+            <option value="NORMAL" selected>
+              NORMAL
+            </option>
+
+            <option value="HIGH">
+              HIGH
+            </option>
+
+            <option value="CRITICAL">
+              CRITICAL
+            </option>
+
           </select>
 
         </div>
 
-        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <div
+          style="
+          display:flex;
+          gap:8px;
+          margin-top:10px;
+          flex-wrap:wrap;
+          ">
 
-          <button class="btn primary" onclick="createTask()">
+          <button
+            class="btn primary"
+            onclick="createTask()">
             + CREATE TASK
           </button>
 
-          <button class="btn green" onclick="startNextTask()">
+          <button
+            class="btn"
+            onclick="startNextTask()">
             ▶ START NEXT
           </button>
 
-          <button class="btn yellow" onclick="pauseAll()">
+          <button
+            class="btn"
+            onclick="pauseAll()">
             ❚❚ PAUSE ALL
           </button>
 
-          <button class="btn" onclick="resumeAll()">
+          <button
+            class="btn"
+            onclick="resumeAll()">
             ▶ RESUME ALL
           </button>
 
@@ -847,22 +948,32 @@ button{
 
         <div style="margin-top:16px">
 
-          <div style="
+          <div
+            style="
             display:flex;
             justify-content:space-between;
             color:#527087;
             font-size:9px;
             margin-bottom:8px;
-          ">
-            <span>EXECUTION ENGINE</span>
-            <span id="engineMode">IDLE</span>
+            ">
+
+            <span>
+              EXECUTION ENGINE
+            </span>
+
+            <span id="engineMode">
+              IDLE
+            </span>
+
           </div>
 
           <div class="progress">
+
             <div
               class="progress-bar"
-              id="globalProgress"
-            ></div>
+              id="globalProgress">
+            </div>
+
           </div>
 
         </div>
@@ -874,10 +985,20 @@ button{
     <div class="panel">
 
       <div class="panel-head">
-        <div class="panel-title">SECURITY CHECKLIST</div>
-        <div id="checkCount" style="color:var(--cyan);font-size:10px">
+
+        <div class="panel-title">
+          SECURITY CHECKLIST
+        </div>
+
+        <div
+          id="checkCount"
+          style="
+          color:var(--cyan);
+          font-size:10px;
+          ">
           0/8
         </div>
+
       </div>
 
       <div class="panel-body">
@@ -885,42 +1006,58 @@ button{
         <div class="checklist">
 
           <label class="check">
-            <input type="checkbox" onchange="updateChecks()">
+            <input
+              type="checkbox"
+              onchange="updateChecks()">
             Target ownership confirmed
           </label>
 
           <label class="check">
-            <input type="checkbox" onchange="updateChecks()">
+            <input
+              type="checkbox"
+              onchange="updateChecks()">
             Authorization scope verified
           </label>
 
           <label class="check">
-            <input type="checkbox" onchange="updateChecks()">
+            <input
+              type="checkbox"
+              onchange="updateChecks()">
             Passive analysis preferred
           </label>
 
           <label class="check">
-            <input type="checkbox" onchange="updateChecks()">
+            <input
+              type="checkbox"
+              onchange="updateChecks()">
             No credential collection
           </label>
 
           <label class="check">
-            <input type="checkbox" onchange="updateChecks()">
+            <input
+              type="checkbox"
+              onchange="updateChecks()">
             No destructive testing
           </label>
 
           <label class="check">
-            <input type="checkbox" onchange="updateChecks()">
+            <input
+              type="checkbox"
+              onchange="updateChecks()">
             Logs enabled
           </label>
 
           <label class="check">
-            <input type="checkbox" onchange="updateChecks()">
+            <input
+              type="checkbox"
+              onchange="updateChecks()">
             Results documented
           </label>
 
           <label class="check">
-            <input type="checkbox" onchange="updateChecks()">
+            <input
+              type="checkbox"
+              onchange="updateChecks()">
             Report prepared
           </label>
 
@@ -937,18 +1074,26 @@ button{
     <div class="panel">
 
       <div class="panel-head">
+
         <div class="panel-title">
           TASK QUEUE / LIVE HISTORY
         </div>
 
-        <div id="queueInfo" style="color:#557389;font-size:10px">
+        <div
+          id="queueInfo"
+          style="
+          color:#557389;
+          font-size:10px;">
           0 TASKS
         </div>
+
       </div>
 
       <div class="panel-body">
 
-        <div id="taskList" class="task-list">
+        <div
+          id="taskList"
+          class="task-list">
 
           <div class="empty">
             BELUM ADA TASK.<br>
@@ -964,18 +1109,25 @@ button{
     <div class="panel">
 
       <div class="panel-head">
+
         <div class="panel-title">
           LIVE TASK CONSOLE
         </div>
 
-        <button class="btn small" onclick="clearLogs()">
+        <button
+          class="btn small"
+          onclick="clearLogs()">
           CLEAR LOG
         </button>
+
       </div>
 
       <div class="panel-body">
 
-        <div class="terminal" id="terminal"></div>
+        <div
+          class="terminal"
+          id="terminal">
+        </div>
 
       </div>
 
@@ -984,32 +1136,42 @@ button{
   </section>
 
   <div class="footer">
-    ALFA OS SOFTWARE • V1.6 REAL TASK ENGINE • LOCAL / AUTHORIZED SECURITY WORKSPACE
+    ALFA OS SOFTWARE • V1.6.1 REAL TASK ENGINE •
+    LOCAL / AUTHORIZED SECURITY WORKSPACE
   </div>
 
 </main>
 
 </div>
 
-<div class="toast" id="toast"></div>
+<div
+  class="toast"
+  id="toast">
+</div>
 
 <script>
 
 /* =========================================================
-   ALFA OS SOFTWARE V1.6
+   ALFA OS SOFTWARE V1.6.1
    REAL TASK ENGINE
+   SCHEMA MIGRATION FIX
    ========================================================= */
 
-const DB_NAME = "ALFA_OS_SOFTWARE_DB";
-const DB_VERSION = 2;
+const DB_NAME =
+  "ALFA_OS_SOFTWARE_DB";
+
+const DB_VERSION = 3;
+
 const STORE = "tasks";
 
 let db = null;
+
 let tasks = [];
+
 let workers = {};
-let workerBlob = null;
-let workerUrl = null;
+
 let taskCounter = 0;
+
 
 /* =========================================================
    DATABASE
@@ -1019,44 +1181,79 @@ function openDB(){
 
   return new Promise((resolve,reject)=>{
 
-    const request = indexedDB.open(DB_NAME,DB_VERSION);
+    const request =
+      indexedDB.open(
+        DB_NAME,
+        DB_VERSION
+      );
 
-    request.onupgradeneeded = e => {
+    request.onupgradeneeded = event => {
 
-      const database = e.target.result;
+      const database =
+        event.target.result;
 
       let store;
 
-      if(!database.objectStoreNames.contains(STORE)){
+      if(
+        !database.objectStoreNames.contains(STORE)
+      ){
 
-        store = database.createObjectStore(
-          STORE,
-          {keyPath:"id"}
-        );
+        store =
+          database.createObjectStore(
+            STORE,
+            {keyPath:"id"}
+          );
 
       }else{
 
-        store = e.target.transaction.objectStore(STORE);
+        store =
+          event.target.transaction
+            .objectStore(STORE);
 
       }
 
-      if(!store.indexNames.contains("status")){
-        store.createIndex("status","status");
+      if(
+        !store.indexNames.contains("status")
+      ){
+
+        store.createIndex(
+          "status",
+          "status",
+          {unique:false}
+        );
+
       }
 
-      if(!store.indexNames.contains("priority")){
-        store.createIndex("priority","priority");
+      if(
+        !store.indexNames.contains("priority")
+      ){
+
+        store.createIndex(
+          "priority",
+          "priority",
+          {unique:false}
+        );
+
       }
 
-      if(!store.indexNames.contains("createdAt")){
-        store.createIndex("createdAt","createdAt");
+      if(
+        !store.indexNames.contains("createdAt")
+      ){
+
+        store.createIndex(
+          "createdAt",
+          "createdAt",
+          {unique:false}
+        );
+
       }
 
     };
 
-    request.onsuccess = e => {
+    request.onsuccess = event => {
 
-      db = e.target.result;
+      db =
+        event.target.result;
 
       db.onversionchange = ()=>{
         db.close();
@@ -1074,246 +1271,488 @@ function openDB(){
 
 }
 
+
 function dbPut(task){
 
   if(!db) return;
 
-  const tx = db.transaction(STORE,"readwrite");
+  try{
 
-  tx.objectStore(STORE).put(task);
+    const tx =
+      db.transaction(
+        STORE,
+        "readwrite"
+      );
+
+    tx.objectStore(STORE)
+      .put(task);
+
+  }catch(error){
+
+    console.error(
+      "DB PUT ERROR:",
+      error
+    );
+
+  }
 
 }
 
-function dbDelete(id){
-
-  if(!db) return;
-
-  const tx = db.transaction(STORE,"readwrite");
-
-  tx.objectStore(STORE).delete(id);
-
-}
 
 function dbClear(){
 
   if(!db) return;
 
-  const tx = db.transaction(STORE,"readwrite");
+  try{
 
-  tx.objectStore(STORE).clear();
+    const tx =
+      db.transaction(
+        STORE,
+        "readwrite"
+      );
+
+    tx.objectStore(STORE)
+      .clear();
+
+  }catch(error){
+
+    console.error(
+      "DB CLEAR ERROR:",
+      error
+    );
+
+  }
 
 }
+
 
 function loadTasks(){
 
-  return new Promise((resolve)=>{
+  return new Promise(resolve=>{
 
     if(!db){
+
       resolve([]);
+
       return;
+
     }
 
-    const tx = db.transaction(STORE,"readonly");
+    try{
 
-    const request =
-      tx.objectStore(STORE).getAll();
+      const tx =
+        db.transaction(
+          STORE,
+          "readonly"
+        );
 
-    request.onsuccess = ()=>{
-      resolve(request.result || []);
-    };
+      const request =
+        tx.objectStore(STORE)
+          .getAll();
 
-    request.onerror = ()=>{
+      request.onsuccess = ()=>{
+        resolve(
+          request.result || []
+        );
+      };
+
+      request.onerror = ()=>{
+        resolve([]);
+      };
+
+    }catch(error){
+
+      console.error(error);
+
       resolve([]);
-    };
+
+    }
 
   });
 
 }
 
+
 /* =========================================================
-   WORKER ENGINE
+   NORMALIZE OLD TASK DATA
    ========================================================= */
 
-function createWorkerSource(){
+function normalizeTask(oldTask){
 
-return `
+  const task =
+    oldTask || {};
 
-let active = {};
+  const normalized = {
 
-self.onmessage = function(event){
+    id:
+      task.id ||
+      makeId(),
 
-  const data = event.data || {};
+    name:
+      task.name ||
+      "Unnamed Task",
 
-  if(data.command === "start"){
+    type:
+      task.type ||
+      "OSINT",
 
-    runTask(data.task);
+    priority:
+      task.priority ||
+      "NORMAL",
 
-  }
+    status:
+      task.status ||
+      "queued",
 
-  if(data.command === "pause"){
+    progress:
+      Number.isFinite(
+        Number(task.progress)
+      )
+        ? Number(task.progress)
+        : 0,
 
-    if(active[data.taskId]){
-      active[data.taskId].paused = true;
-    }
+    result:
+      task.result ||
+      "Task siap dijalankan.",
 
-  }
+    error:
+      task.error ||
+      "",
 
-  if(data.command === "resume"){
+    createdAt:
+      Number.isFinite(
+        Number(task.createdAt)
+      )
+        ? Number(task.createdAt)
+        : Date.now(),
 
-    if(active[data.taskId]){
-      active[data.taskId].paused = false;
-    }
+    startedAt:
+      Number.isFinite(
+        Number(task.startedAt)
+      )
+        ? Number(task.startedAt)
+        : null,
 
-  }
+    completedAt:
+      Number.isFinite(
+        Number(task.completedAt)
+      )
+        ? Number(task.completedAt)
+        : null,
 
-  if(data.command === "stop"){
+    duration:
+      Number.isFinite(
+        Number(task.duration)
+      )
+        ? Number(task.duration)
+        : 5000,
 
-    if(active[data.taskId]){
-      active[data.taskId].stopped = true;
-    }
+    attempts:
+      Number.isFinite(
+        Number(task.attempts)
+      )
+        ? Number(task.attempts)
+        : 0,
 
-  }
+    logs:
+      Array.isArray(task.logs)
+        ? task.logs
+        : []
 
-};
-
-async function runTask(task){
-
-  const id = task.id;
-
-  active[id] = {
-    paused:false,
-    stopped:false
   };
 
-  self.postMessage({
-    type:"started",
-    taskId:id
-  });
+  return normalized;
 
-  const duration =
-    task.duration || 5000;
+}
 
-  const step = 250;
 
-  let elapsed = 0;
+/* =========================================================
+   WORKER
+   ========================================================= */
 
-  while(elapsed < duration){
+function createWorker(){
 
-    if(active[id].stopped){
+  const source = `
 
-      self.postMessage({
-        type:"stopped",
-        taskId:id
-      });
+  let active = {};
 
-      delete active[id];
+  self.onmessage = function(event){
 
-      return;
-    }
+    const data =
+      event.data || {};
 
-    while(active[id] && active[id].paused){
+    if(data.command === "start"){
 
-      self.postMessage({
-        type:"paused",
-        taskId:id
-      });
-
-      await sleep(400);
+      runTask(data.task);
 
     }
 
-    await sleep(step);
+    if(data.command === "pause"){
 
-    elapsed += step;
+      if(active[data.taskId]){
+        active[data.taskId].paused = true;
+      }
 
-    const progress =
-      Math.min(
-        100,
-        Math.round(
-          (elapsed / duration) * 100
-        )
-      );
+    }
+
+    if(data.command === "resume"){
+
+      if(active[data.taskId]){
+        active[data.taskId].paused = false;
+      }
+
+    }
+
+    if(data.command === "stop"){
+
+      if(active[data.taskId]){
+        active[data.taskId].stopped = true;
+      }
+
+    }
+
+  };
+
+
+  async function runTask(task){
+
+    const id = task.id;
+
+    active[id] = {
+      paused:false,
+      stopped:false
+    };
 
     self.postMessage({
-      type:"progress",
-      taskId:id,
-      progress:progress
+      type:"started",
+      taskId:id
     });
+
+    const duration =
+      Number(task.duration) || 5000;
+
+    const step = 250;
+
+    let elapsed = 0;
+
+    while(elapsed < duration){
+
+      if(
+        !active[id] ||
+        active[id].stopped
+      ){
+
+        self.postMessage({
+          type:"stopped",
+          taskId:id
+        });
+
+        delete active[id];
+
+        return;
+
+      }
+
+      while(
+        active[id] &&
+        active[id].paused
+      ){
+
+        await sleep(300);
+
+      }
+
+      await sleep(step);
+
+      elapsed += step;
+
+      const progress =
+        Math.min(
+          100,
+          Math.round(
+            elapsed /
+            duration *
+            100
+          )
+        );
+
+      self.postMessage({
+        type:"progress",
+        taskId:id,
+        progress:progress
+      });
+
+    }
+
+    self.postMessage({
+
+      type:"completed",
+
+      taskId:id,
+
+      result:
+        "Task " +
+        task.name +
+        " selesai diproses oleh REAL TASK ENGINE."
+
+    });
+
+    delete active[id];
+
+  };
+
+
+  function sleep(ms){
+
+    return new Promise(
+      resolve =>
+        setTimeout(resolve,ms)
+    );
 
   }
 
-  self.postMessage({
-    type:"completed",
-    taskId:id,
-    result:
-      "Task " +
-      task.name +
-      " selesai diproses oleh REAL TASK ENGINE."
-  });
+  `;
 
-  delete active[id];
+  const blob =
+    new Blob(
+      [source],
+      {
+        type:
+          "application/javascript"
+      }
+    );
+
+  const url =
+    URL.createObjectURL(blob);
+
+  const worker =
+    new Worker(url);
+
+  worker.__alfaUrl = url;
+
+  return worker;
+
+}
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+const priorityWeight = {
+
+  LOW:1,
+
+  NORMAL:2,
+
+  HIGH:3,
+
+  CRITICAL:4
 
 };
 
-function sleep(ms){
 
-  return new Promise(
-    resolve => setTimeout(resolve,ms)
+function makeId(){
+
+  taskCounter++;
+
+  return (
+    "ALFA-" +
+    Date.now()
+      .toString(36)
+      .toUpperCase() +
+    "-" +
+    String(taskCounter)
+      .padStart(3,"0")
   );
 
 }
 
-`;
 
-}
+function formatDuration(ms){
 
-function createWorker(){
+  if(!ms) return "0s";
 
-  if(workerUrl){
+  const seconds =
+    Math.max(
+      0,
+      Math.round(ms/1000)
+    );
 
-    URL.revokeObjectURL(workerUrl);
+  if(seconds < 60){
+
+    return seconds + "s";
 
   }
 
-  workerBlob =
-    new Blob(
-      [createWorkerSource()],
-      {type:"application/javascript"}
-    );
+  const minutes =
+    Math.floor(seconds/60);
 
-  workerUrl =
-    URL.createObjectURL(workerBlob);
+  const remain =
+    seconds%60;
 
-  return new Worker(workerUrl);
+  return (
+    minutes +
+    "m " +
+    remain +
+    "s"
+  );
 
 }
 
+
+function escapeHtml(value){
+
+  return String(
+    value ?? ""
+  )
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;")
+  .replaceAll("'","&#039;");
+
+}
+
+
 /* =========================================================
-   LOGGING
+   LOG
    ========================================================= */
 
 function now(){
 
   return new Date()
-    .toLocaleTimeString("id-ID");
+    .toLocaleTimeString(
+      "id-ID"
+    );
 
 }
 
-function log(message,type="info"){
+
+function log(
+  message,
+  type="info"
+){
 
   const terminal =
-    document.getElementById("terminal");
+    document.getElementById(
+      "terminal"
+    );
 
   const line =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
-  line.className = "log";
+  line.className="log";
 
   line.innerHTML =
     '<span class="time">['+
-    now()+
+    escapeHtml(now())+
     ']</span> '+
-    '<span class="'+type+'">'+
+    '<span class="'+
+    escapeHtml(type)+
+    '">'+
     escapeHtml(message)+
     '</span>';
 
@@ -1324,10 +1763,12 @@ function log(message,type="info"){
 
 }
 
+
 function clearLogs(){
 
-  document.getElementById("terminal")
-    .innerHTML = "";
+  document.getElementById(
+    "terminal"
+  ).innerHTML="";
 
   log(
     "Console cleared. Engine ready.",
@@ -1336,81 +1777,6 @@ function clearLogs(){
 
 }
 
-function escapeHtml(value){
-
-  return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-/* =========================================================
-   TASK HELPERS
-   ========================================================= */
-
-const priorityWeight = {
-  LOW:1,
-  NORMAL:2,
-  HIGH:3,
-  CRITICAL:4
-};
-
-function makeId(){
-
-  taskCounter++;
-
-  return (
-    "ALFA-" +
-    Date.now().toString(36).toUpperCase() +
-    "-" +
-    taskCounter
-  );
-
-}
-
-function priorityClass(priority){
-
-  if(priority === "CRITICAL"){
-    return "failed";
-  }
-
-  if(priority === "HIGH"){
-    return "running";
-  }
-
-  if(priority === "NORMAL"){
-    return "completed";
-  }
-
-  return "queued";
-
-}
-
-function formatDuration(ms){
-
-  if(!ms) return "0s";
-
-  const seconds =
-    Math.round(ms / 1000);
-
-  if(seconds < 60){
-
-    return seconds + "s";
-
-  }
-
-  const minutes =
-    Math.floor(seconds / 60);
-
-  const remain =
-    seconds % 60;
-
-  return minutes+"m "+remain+"s";
-
-}
 
 /* =========================================================
    CREATE TASK
@@ -1419,13 +1785,19 @@ function formatDuration(ms){
 function createTask(custom={}){
 
   const input =
-    document.getElementById("taskName");
+    document.getElementById(
+      "taskName"
+    );
 
   const type =
-    document.getElementById("taskType");
+    document.getElementById(
+      "taskType"
+    );
 
   const priority =
-    document.getElementById("taskPriority");
+    document.getElementById(
+      "taskPriority"
+    );
 
   const name =
     custom.name ||
@@ -1433,7 +1805,9 @@ function createTask(custom={}){
 
   if(!name){
 
-    showToast("Masukkan nama task terlebih dahulu.");
+    showToast(
+      "Masukkan nama task terlebih dahulu."
+    );
 
     input.focus();
 
@@ -1449,21 +1823,25 @@ function createTask(custom={}){
 
     type:
       custom.type ||
-      type.value,
+      type.value ||
+      "OSINT",
 
     priority:
       custom.priority ||
-      priority.value,
+      priority.value ||
+      "NORMAL",
 
     status:"queued",
 
     progress:0,
 
-    result:"Menunggu eksekusi...",
+    result:
+      "Menunggu eksekusi...",
 
     error:"",
 
-    createdAt:Date.now(),
+    createdAt:
+      Date.now(),
 
     startedAt:null,
 
@@ -1471,7 +1849,12 @@ function createTask(custom={}){
 
     duration:
       custom.duration ||
-      (3500 + Math.floor(Math.random()*5000)),
+      (
+        3500 +
+        Math.floor(
+          Math.random()*4000
+        )
+      ),
 
     attempts:0,
 
@@ -1488,6 +1871,8 @@ function createTask(custom={}){
     task.id+
     " | "+
     task.name+
+    " | "+
+    task.type+
     " | PRIORITY "+
     task.priority,
     "info"
@@ -1501,25 +1886,30 @@ function createTask(custom={}){
 
   render();
 
-  showToast("Task berhasil dibuat.");
+  showToast(
+    "Task berhasil dibuat."
+  );
 
   return task;
 
 }
 
+
 /* =========================================================
-   START ENGINE
+   START
    ========================================================= */
 
 function startTask(id){
 
   const task =
-    tasks.find(t=>t.id===id);
+    tasks.find(
+      t=>t.id===id
+    );
 
   if(!task) return;
 
   if(
-    task.status === "running"
+    task.status==="running"
   ){
 
     return;
@@ -1527,8 +1917,8 @@ function startTask(id){
   }
 
   if(
-    task.status === "completed" ||
-    task.status === "cancelled"
+    task.status==="completed" ||
+    task.status==="cancelled"
   ){
 
     return;
@@ -1541,7 +1931,12 @@ function startTask(id){
     task.startedAt ||
     Date.now();
 
-  task.attempts++;
+  task.attempts =
+    Number.isFinite(
+      Number(task.attempts)
+    )
+      ? Number(task.attempts)+1
+      : 1;
 
   task.result =
     "Task sedang diproses...";
@@ -1561,73 +1956,95 @@ function startTask(id){
   const worker =
     createWorker();
 
-  workers[id] = worker;
+  workers[id]=worker;
 
-  worker.onmessage = event => {
+  worker.onmessage =
+    event => {
 
-    handleWorkerMessage(
-      event.data
-    );
+      handleWorkerMessage(
+        event.data
+      );
 
-  };
+    };
 
-  worker.onerror = event => {
+  worker.onerror =
+    () => {
 
-    task.status="failed";
+      task.status="failed";
 
-    task.error =
-      "Worker error";
+      task.error =
+        "Worker execution error.";
 
-    task.result =
-      "Task gagal diproses.";
+      task.result =
+        "Task gagal diproses.";
 
-    dbPut(task);
+      dbPut(task);
 
-    log(
-      "FAILED → "+
-      task.id+
-      " | Worker error",
-      "error"
-    );
+      log(
+        "FAILED → "+
+        task.id+
+        " | Worker error",
+        "error"
+      );
 
-    cleanupWorker(id);
+      cleanupWorker(id);
 
-    render();
+      render();
 
-  };
+    };
 
   worker.postMessage({
+
     command:"start",
+
     task:task
+
   });
 
   render();
 
 }
 
+
 function startNextTask(){
 
   const candidates =
     tasks
-      .filter(t=>
-        t.status === "queued" ||
-        t.status === "paused"
+      .filter(
+        t =>
+          t.status==="queued" ||
+          t.status==="paused"
       )
-      .sort((a,b)=>{
+      .sort(
+        (a,b)=>{
 
-        const p =
-          priorityWeight[b.priority] -
-          priorityWeight[a.priority];
+          const p =
+            (
+              priorityWeight[
+                b.priority
+              ] || 0
+            ) -
+            (
+              priorityWeight[
+                a.priority
+              ] || 0
+            );
 
-        if(p !== 0) return p;
+          if(p!==0) return p;
 
-        return a.createdAt-b.createdAt;
+          return (
+            a.createdAt -
+            b.createdAt
+          );
 
-      });
+        }
+      );
 
   if(!candidates.length){
 
-    showToast("Tidak ada task yang siap dijalankan.");
+    showToast(
+      "Tidak ada task yang siap dijalankan."
+    );
 
     log(
       "START NEXT → queue kosong.",
@@ -1638,12 +2055,15 @@ function startNextTask(){
 
   }
 
-  startTask(candidates[0].id);
+  startTask(
+    candidates[0].id
+  );
 
 }
 
+
 /* =========================================================
-   WORKER MESSAGE
+   WORKER EVENTS
    ========================================================= */
 
 function handleWorkerMessage(data){
@@ -1655,7 +2075,7 @@ function handleWorkerMessage(data){
 
   if(!task) return;
 
-  if(data.type === "started"){
+  if(data.type==="started"){
 
     task.status="running";
 
@@ -1670,29 +2090,14 @@ function handleWorkerMessage(data){
 
   }
 
-  if(data.type === "progress"){
+  if(data.type==="progress"){
 
     task.progress =
-      data.progress;
+      Number(data.progress) || 0;
 
   }
 
-  if(data.type === "paused"){
-
-    task.status="paused";
-
-    task.result =
-      "Task dijeda.";
-
-    log(
-      "PAUSED → "+
-      task.id,
-      "warn"
-    );
-
-  }
-
-  if(data.type === "stopped"){
+  if(data.type==="stopped"){
 
     task.status="cancelled";
 
@@ -1702,39 +2107,49 @@ function handleWorkerMessage(data){
     task.completedAt =
       Date.now();
 
+    dbPut(task);
+
     log(
       "STOPPED → "+
       task.id,
       "warn"
     );
 
-    cleanupWorker(task.id);
+    cleanupWorker(
+      task.id
+    );
 
   }
 
-  if(data.type === "completed"){
+  if(data.type==="completed"){
 
     task.status="completed";
 
     task.progress=100;
 
     task.result =
-      data.result;
+      data.result ||
+      "Task selesai.";
 
     task.completedAt =
       Date.now();
+
+    dbPut(task);
 
     log(
       "COMPLETED → "+
       task.id+
       " | "+
       formatDuration(
-        task.completedAt-task.createdAt
+        task.completedAt -
+        task.createdAt
       ),
       "ok"
     );
 
-    cleanupWorker(task.id);
+    cleanupWorker(
+      task.id
+    );
 
   }
 
@@ -1744,30 +2159,48 @@ function handleWorkerMessage(data){
 
 }
 
+
 function cleanupWorker(id){
 
-  if(workers[id]){
+  const worker =
+    workers[id];
 
-    workers[id].terminate();
+  if(!worker) return;
 
-    delete workers[id];
+  try{
+
+    worker.terminate();
+
+  }catch(e){}
+
+  if(worker.__alfaUrl){
+
+    URL.revokeObjectURL(
+      worker.__alfaUrl
+    );
 
   }
 
+  delete workers[id];
+
 }
 
+
 /* =========================================================
-   CONTROLS
+   PAUSE / RESUME / STOP / RETRY
    ========================================================= */
 
 function pauseTask(id){
 
   const task =
-    tasks.find(t=>t.id===id);
+    tasks.find(
+      t=>t.id===id
+    );
 
-  if(!task) return;
-
-  if(task.status !== "running"){
+  if(
+    !task ||
+    task.status!=="running"
+  ){
 
     return;
 
@@ -1775,19 +2208,25 @@ function pauseTask(id){
 
   task.status="paused";
 
+  task.result =
+    "Task dijeda.";
+
   dbPut(task);
 
   if(workers[id]){
 
     workers[id].postMessage({
+
       command:"pause",
+
       taskId:id
+
     });
 
   }
 
   log(
-    "PAUSE REQUEST → "+
+    "PAUSE → "+
     task.id,
     "warn"
   );
@@ -1796,14 +2235,30 @@ function pauseTask(id){
 
 }
 
+
 function resumeTask(id){
 
   const task =
-    tasks.find(t=>t.id===id);
+    tasks.find(
+      t=>t.id===id
+    );
 
-  if(!task) return;
+  if(
+    !task ||
+    task.status!=="paused"
+  ){
 
-  if(task.status !== "paused"){
+    return;
+
+  }
+
+  if(!workers[id]){
+
+    task.status="queued";
+
+    dbPut(task);
+
+    startTask(id);
 
     return;
 
@@ -1811,20 +2266,18 @@ function resumeTask(id){
 
   task.status="running";
 
+  task.result =
+    "Task dilanjutkan...";
+
   dbPut(task);
 
-  if(workers[id]){
+  workers[id].postMessage({
 
-    workers[id].postMessage({
-      command:"resume",
-      taskId:id
-    });
+    command:"resume",
 
-  }else{
+    taskId:id
 
-    startTask(id);
-
-  }
+  });
 
   log(
     "RESUME → "+
@@ -1836,18 +2289,24 @@ function resumeTask(id){
 
 }
 
+
 function stopTask(id){
 
   const task =
-    tasks.find(t=>t.id===id);
+    tasks.find(
+      t=>t.id===id
+    );
 
   if(!task) return;
 
   if(workers[id]){
 
     workers[id].postMessage({
+
       command:"stop",
+
       taskId:id
+
     });
 
   }else{
@@ -1856,6 +2315,9 @@ function stopTask(id){
 
     task.result =
       "Task dibatalkan.";
+
+    task.completedAt =
+      Date.now();
 
     dbPut(task);
 
@@ -1871,17 +2333,20 @@ function stopTask(id){
 
 }
 
+
 function retryTask(id){
 
   const task =
-    tasks.find(t=>t.id===id);
+    tasks.find(
+      t=>t.id===id
+    );
 
   if(!task) return;
 
   if(
-    task.status !== "failed" &&
-    task.status !== "cancelled" &&
-    task.status !== "completed"
+    task.status!=="failed" &&
+    task.status!=="cancelled" &&
+    task.status!=="completed"
   ){
 
     return;
@@ -1913,8 +2378,9 @@ function retryTask(id){
 
 }
 
+
 /* =========================================================
-   PAUSE / RESUME ALL
+   ALL CONTROLS
    ========================================================= */
 
 function pauseAll(){
@@ -1926,24 +2392,21 @@ function pauseAll(){
 
   if(!running.length){
 
-    showToast("Tidak ada task running.");
+    showToast(
+      "Tidak ada task running."
+    );
 
     return;
 
   }
 
   running.forEach(
-    t=>pauseTask(t.id)
-  );
-
-  log(
-    "PAUSE ALL → "+
-    running.length+
-    " task",
-    "warn"
+    task =>
+      pauseTask(task.id)
   );
 
 }
+
 
 function resumeAll(){
 
@@ -1954,24 +2417,21 @@ function resumeAll(){
 
   if(!paused.length){
 
-    showToast("Tidak ada task paused.");
+    showToast(
+      "Tidak ada task paused."
+    );
 
     return;
 
   }
 
   paused.forEach(
-    t=>resumeTask(t.id)
-  );
-
-  log(
-    "RESUME ALL → "+
-    paused.length+
-    " task",
-    "info"
+    task =>
+      resumeTask(task.id)
   );
 
 }
+
 
 /* =========================================================
    DEMO
@@ -1982,31 +2442,31 @@ function runDemo(){
   const demoTasks = [
 
     {
-      name:"Passive OSINT Workspace",
+      name:"OSINT Asset Discovery",
       type:"OSINT",
       priority:"HIGH"
     },
 
     {
-      name:"Security Configuration Audit",
+      name:"Security Header Review",
       type:"SECURITY",
       priority:"CRITICAL"
     },
 
     {
-      name:"Authorized Bug Review",
+      name:"Authorized Bug Hunter Check",
       type:"BUG",
       priority:"NORMAL"
     },
 
     {
-      name:"Generate Security Report",
+      name:"Security Assessment Report",
       type:"REPORT",
       priority:"LOW"
     },
 
     {
-      name:"AI Security Analysis",
+      name:"AI Security Assistant",
       type:"AI",
       priority:"HIGH"
     }
@@ -2014,7 +2474,8 @@ function runDemo(){
   ];
 
   demoTasks.forEach(
-    t=>createTask(t)
+    item =>
+      createTask(item)
   );
 
   log(
@@ -2024,7 +2485,11 @@ function runDemo(){
 
   setTimeout(()=>{
 
-    for(let i=0;i<3;i++){
+    for(
+      let i=0;
+      i<3;
+      i++
+    ){
 
       startNextTask();
 
@@ -2033,6 +2498,7 @@ function runDemo(){
   },500);
 
 }
+
 
 /* =========================================================
    CLEAR
@@ -2052,7 +2518,8 @@ function clearAllTasks(){
 
   Object.keys(workers)
     .forEach(
-      id=>cleanupWorker(id)
+      id =>
+        cleanupWorker(id)
     );
 
   tasks=[];
@@ -2068,6 +2535,27 @@ function clearAllTasks(){
 
 }
 
+
+/* =========================================================
+   PRIORITY / BADGE
+   ========================================================= */
+
+function priorityClass(
+  priority
+){
+
+  const p =
+    priority ||
+    "NORMAL";
+
+  return (
+    "priority-" +
+    p.toLowerCase()
+  );
+
+}
+
+
 /* =========================================================
    RENDER
    ========================================================= */
@@ -2082,161 +2570,259 @@ function render(){
 
 }
 
+
 function updateStats(){
 
-  document.getElementById("totalTasks")
-    .textContent=tasks.length;
+  const safeTasks =
+    Array.isArray(tasks)
+      ? tasks
+      : [];
 
-  document.getElementById("runningTasks")
-    .textContent=
-      tasks.filter(
-        t=>t.status==="running"
-      ).length;
+  document.getElementById(
+    "totalTasks"
+  ).textContent =
+    safeTasks.length;
 
-  document.getElementById("queuedTasks")
-    .textContent=
-      tasks.filter(
-        t=>t.status==="queued"
-      ).length;
+  document.getElementById(
+    "runningTasks"
+  ).textContent =
+    safeTasks.filter(
+      t=>t.status==="running"
+    ).length;
 
-  document.getElementById("completedTasks")
-    .textContent=
-      tasks.filter(
-        t=>t.status==="completed"
-      ).length;
+  document.getElementById(
+    "queuedTasks"
+  ).textContent =
+    safeTasks.filter(
+      t=>t.status==="queued"
+    ).length;
 
-  document.getElementById("failedTasks")
-    .textContent=
-      tasks.filter(
-        t=>t.status==="failed"
-      ).length;
+  document.getElementById(
+    "completedTasks"
+  ).textContent =
+    safeTasks.filter(
+      t=>t.status==="completed"
+    ).length;
 
-  document.getElementById("queueInfo")
-    .textContent=
-      tasks.length+
-      " TASKS";
+  document.getElementById(
+    "failedTasks"
+  ).textContent =
+    safeTasks.filter(
+      t=>t.status==="failed"
+    ).length;
+
+  document.getElementById(
+    "queueInfo"
+  ).textContent =
+    safeTasks.length+
+    " TASKS";
 
 }
+
 
 function renderTasks(){
 
   const container =
-    document.getElementById("taskList");
+    document.getElementById(
+      "taskList"
+    );
 
   if(!tasks.length){
 
     container.innerHTML =
-      '<div class="empty">'+
-      'BELUM ADA TASK.<br>'+
-      'CREATE TASK UNTUK MEMULAI ENGINE.'+
-      '</div>';
+      `
+      <div class="empty">
+        BELUM ADA TASK.<br>
+        CREATE TASK UNTUK MEMULAI ENGINE.
+      </div>
+      `;
 
     return;
 
   }
 
   const sorted =
-    [...tasks].sort((a,b)=>{
+    [...tasks].sort(
+      (a,b)=>{
 
-      const stateOrder = {
-        running:1,
-        paused:2,
-        queued:3,
-        failed:4,
-        completed:5,
-        cancelled:6
-      };
+        const stateOrder = {
 
-      if(
-        stateOrder[a.status] !==
-        stateOrder[b.status]
-      ){
+          running:1,
+          paused:2,
+          queued:3,
+          failed:4,
+          completed:5,
+          cancelled:6
+
+        };
+
+        const sa =
+          stateOrder[a.status] || 99;
+
+        const sb =
+          stateOrder[b.status] || 99;
+
+        if(sa!==sb){
+
+          return sa-sb;
+
+        }
+
+        const pa =
+          priorityWeight[
+            a.priority
+          ] || 0;
+
+        const pb =
+          priorityWeight[
+            b.priority
+          ] || 0;
+
+        if(pa!==pb){
+
+          return pb-pa;
+
+        }
 
         return (
-          stateOrder[a.status] -
-          stateOrder[b.status]
+          b.createdAt -
+          a.createdAt
         );
 
       }
-
-      const p =
-        priorityWeight[b.priority] -
-        priorityWeight[a.priority];
-
-      if(p !== 0) return p;
-
-      return b.createdAt-a.createdAt;
-
-    });
+    );
 
   container.innerHTML =
-    sorted.map(taskCard).join("");
+    sorted
+      .map(
+        taskCard
+      )
+      .join("");
 
 }
 
+
 function taskCard(task){
 
-  const statusClass =
-    task.status;
+  const status =
+    task.status ||
+    "queued";
+
+  const type =
+    task.type ||
+    "OSINT";
+
+  const priority =
+    task.priority ||
+    "NORMAL";
+
+  const attempts =
+    Number.isFinite(
+      Number(task.attempts)
+    )
+      ? Number(task.attempts)
+      : 0;
+
+  const progress =
+    Number.isFinite(
+      Number(task.progress)
+    )
+      ? Number(task.progress)
+      : 0;
+
+  const result =
+    task.result ||
+    "Task siap.";
 
   let actions="";
 
-  if(task.status==="queued"){
+  if(status==="queued"){
 
     actions =
-      '<button class="btn small green" onclick="startTask(\''+
-      task.id+
-      '\')">▶ START</button>';
+      `
+      <button
+        class="btn small"
+        onclick="startTask('${escapeHtml(task.id)}')">
+        ▶ START
+      </button>
+      `;
 
   }
 
-  if(task.status==="running"){
+  if(status==="running"){
 
     actions =
-      '<button class="btn small yellow" onclick="pauseTask(\''+
-      task.id+
-      '\')">❚❚ PAUSE</button>'+
-      '<button class="btn small red" onclick="stopTask(\''+
-      task.id+
-      '\')">■ STOP</button>';
+      `
+      <button
+        class="btn small"
+        onclick="pauseTask('${escapeHtml(task.id)}')">
+        ❚❚ PAUSE
+      </button>
+
+      <button
+        class="btn small"
+        onclick="stopTask('${escapeHtml(task.id)}')">
+        ■ STOP
+      </button>
+      `;
 
   }
 
-  if(task.status==="paused"){
+  if(status==="paused"){
 
     actions =
-      '<button class="btn small green" onclick="resumeTask(\''+
-      task.id+
-      '\')">▶ RESUME</button>'+
-      '<button class="btn small red" onclick="stopTask(\''+
-      task.id+
-      '\')">■ STOP</button>';
+      `
+      <button
+        class="btn small"
+        onclick="resumeTask('${escapeHtml(task.id)}')">
+        ▶ RESUME
+      </button>
+
+      <button
+        class="btn small"
+        onclick="stopTask('${escapeHtml(task.id)}')">
+        ■ STOP
+      </button>
+      `;
 
   }
 
   if(
-    task.status==="completed" ||
-    task.status==="cancelled" ||
-    task.status==="failed"
+    status==="completed" ||
+    status==="cancelled" ||
+    status==="failed"
   ){
 
     actions =
-      '<button class="btn small" onclick="retryTask(\''+
-      task.id+
-      '\')">↻ RETRY</button>';
+      `
+      <button
+        class="btn small"
+        onclick="retryTask('${escapeHtml(task.id)}')">
+        ↻ RETRY
+      </button>
+      `;
 
   }
 
-  const duration =
-    task.completedAt
-      ? formatDuration(
-          task.completedAt-task.createdAt
-        )
-      : task.startedAt
-        ? formatDuration(
-            Date.now()-task.startedAt
-          )
-        : "0s";
+  let duration="0s";
+
+  if(task.completedAt){
+
+    duration =
+      formatDuration(
+        task.completedAt -
+        task.createdAt
+      );
+
+  }else if(task.startedAt){
+
+    duration =
+      formatDuration(
+        Date.now() -
+        task.startedAt
+      );
+
+  }
 
   return `
 
@@ -2256,8 +2842,10 @@ function taskCard(task){
 
       </div>
 
-      <span class="badge ${statusClass}">
-        ${task.status.toUpperCase()}
+      <span class="badge ${escapeHtml(status)}">
+        ${escapeHtml(
+          status.toUpperCase()
+        )}
       </span>
 
     </div>
@@ -2265,19 +2853,19 @@ function taskCard(task){
     <div class="task-meta">
 
       <span class="badge">
-        ${escapeHtml(task.type)}
+        ${escapeHtml(type)}
       </span>
 
-      <span class="badge ${priorityClass(task.priority)}">
-        ${escapeHtml(task.priority)}
-      </span>
-
-      <span class="badge">
-        ATTEMPT ${task.attempts}
+      <span class="badge ${priorityClass(priority)}">
+        ${escapeHtml(priority)}
       </span>
 
       <span class="badge">
-        ${duration}
+        ATTEMPT ${attempts}
+      </span>
+
+      <span class="badge">
+        ${escapeHtml(duration)}
       </span>
 
     </div>
@@ -2286,14 +2874,14 @@ function taskCard(task){
 
       <div
         class="progress-bar"
-        style="width:${task.progress}%"
-      ></div>
+        style="width:${progress}%">
+      </div>
 
     </div>
 
     <div class="task-result">
 
-      ${escapeHtml(task.result || "")}
+      ${escapeHtml(result)}
 
     </div>
 
@@ -2308,6 +2896,11 @@ function taskCard(task){
   `;
 
 }
+
+
+/* =========================================================
+   ENGINE STATUS
+   ========================================================= */
 
 function updateEngine(){
 
@@ -2329,18 +2922,26 @@ function updateEngine(){
   let mode="IDLE";
 
   if(running.length){
+
     mode="EXECUTING";
+
   }else if(paused.length){
+
     mode="PAUSED";
+
   }else if(queued.length){
+
     mode="QUEUE READY";
+
   }
 
-  document.getElementById("engineMode")
-    .textContent=mode;
+  document.getElementById(
+    "engineMode"
+  ).textContent=mode;
 
-  document.getElementById("engineStatus")
-    .textContent=mode;
+  document.getElementById(
+    "engineStatus"
+  ).textContent=mode;
 
   const total =
     tasks.length;
@@ -2349,17 +2950,23 @@ function updateEngine(){
     total
       ? Math.round(
           tasks.reduce(
-            (sum,t)=>sum+(t.progress||0),
+            (sum,t)=>
+              sum+
+              (
+                Number(t.progress) || 0
+              ),
             0
-          )/total
+          ) / total
         )
       : 0;
 
-  document.getElementById("globalProgress")
-    .style.width=
-      progress+"%";
+  document.getElementById(
+    "globalProgress"
+  ).style.width =
+    progress+"%";
 
 }
+
 
 /* =========================================================
    CHECKLIST
@@ -2369,38 +2976,56 @@ function updateChecks(){
 
   const checks =
     document.querySelectorAll(
-      '.check input'
+      ".check input"
     );
 
   let done=0;
 
   checks.forEach(
     checkbox=>{
-      if(checkbox.checked) done++;
+
+      if(
+        checkbox.checked
+      ){
+
+        done++;
+
+      }
+
     }
   );
 
-  document.getElementById("checkCount")
-    .textContent=
-      done+
-      "/"+
-      checks.length;
+  document.getElementById(
+    "checkCount"
+  ).textContent =
+    done+
+    "/"+
+    checks.length;
 
 }
+
 
 /* =========================================================
    MODULES
    ========================================================= */
 
-function selectModule(button,name){
+function selectModule(
+  button,
+  name
+){
 
   document.querySelectorAll(
     ".nav button"
   ).forEach(
-    b=>b.classList.remove("active")
+    b =>
+      b.classList.remove(
+        "active"
+      )
   );
 
-  button.classList.add("active");
+  button.classList.add(
+    "active"
+  );
 
   log(
     "MODULE SELECTED → "+
@@ -2415,12 +3040,17 @@ function selectModule(button,name){
 
 }
 
+
 function toggleSidebar(){
 
-  document.getElementById("sidebar")
-    .classList.toggle("open");
+  document.getElementById(
+    "sidebar"
+  ).classList.toggle(
+    "open"
+  );
 
 }
+
 
 /* =========================================================
    TOAST
@@ -2428,29 +3058,41 @@ function toggleSidebar(){
 
 let toastTimer=null;
 
-function showToast(message){
+function showToast(
+  message
+){
 
   const toast =
-    document.getElementById("toast");
+    document.getElementById(
+      "toast"
+    );
 
-  toast.textContent=message;
+  toast.textContent =
+    message;
 
-  toast.classList.add("show");
+  toast.classList.add(
+    "show"
+  );
 
-  clearTimeout(toastTimer);
+  clearTimeout(
+    toastTimer
+  );
 
   toastTimer =
     setTimeout(
       ()=>{
-        toast.classList.remove("show");
+        toast.classList.remove(
+          "show"
+        );
       },
       2200
     );
 
 }
 
+
 /* =========================================================
-   BOOT
+   BOOT + MIGRATION
    ========================================================= */
 
 async function boot(){
@@ -2459,8 +3101,29 @@ async function boot(){
 
     await openDB();
 
-    tasks =
+    const oldTasks =
       await loadTasks();
+
+    /*
+      V1.6.1 MIGRATION
+      Normalisasi seluruh record lama.
+    */
+
+    tasks =
+      oldTasks.map(
+        normalizeTask
+      );
+
+    /*
+      Simpan kembali hasil normalisasi.
+      Dengan ini data lama tidak lagi
+      menghasilkan undefined setelah refresh.
+    */
+
+    tasks.forEach(
+      task =>
+        dbPut(task)
+    );
 
     log(
       "DATABASE CONNECTED → "+
@@ -2475,14 +3138,22 @@ async function boot(){
       "info"
     );
 
+    log(
+      "SCHEMA MIGRATION → V1.6.1 ACTIVE.",
+      "ok"
+    );
+
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "BOOT ERROR:",
+      error
+    );
 
     tasks=[];
 
     log(
-      "DATABASE ERROR → running memory-only mode.",
+      "DATABASE ERROR → memory mode.",
       "error"
     );
 
@@ -2491,12 +3162,17 @@ async function boot(){
   render();
 
   log(
-    "ALFA OS SOFTWARE V1.6 REAL TASK ENGINE ONLINE.",
+    "ALFA OS SOFTWARE V1.6.1 ONLINE.",
     "ok"
   );
 
   log(
-    "MODE → PASSIVE / AUTHORIZED SECURITY WORKSPACE.",
+    "REAL TASK ENGINE READY.",
+    "ok"
+  );
+
+  log(
+    "MODE → PASSIVE / AUTHORIZED.",
     "info"
   );
 
@@ -2507,15 +3183,29 @@ async function boot(){
 
 }
 
+
+/* =========================================================
+   PAGE EXIT
+   ========================================================= */
+
 window.addEventListener(
   "beforeunload",
   ()=>{
-    Object.keys(workers)
-      .forEach(
-        id=>cleanupWorker(id)
-      );
+
+    Object.keys(
+      workers
+    ).forEach(
+      id =>
+        cleanupWorker(id)
+    );
+
   }
 );
+
+
+/* =========================================================
+   START
+   ========================================================= */
 
 boot();
 
