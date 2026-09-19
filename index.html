@@ -3,155 +3,235 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#050816">
+<meta name="theme-color" content="#030712">
 
-<title>ALFA OS SOFTWARE V1.6.3 | REAL TASK ENGINE</title>
+<title>ALFA OS SOFTWARE V1.6.4 | TASK DISPLAY FIX</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
 :root{
-  --bg:#050816;
-  --panel:#0a1020;
-  --panel2:#0d1629;
-  --line:#17243d;
-  --cyan:#00e5ff;
-  --blue:#4d7cff;
-  --green:#00ff9d;
-  --yellow:#ffd166;
-  --red:#ff5577;
-  --text:#e8f1ff;
-  --muted:#7f91ae;
+  --bg:#030712;
+  --panel:#07111f;
+  --panel2:#0b1626;
+  --line:#17304b;
+  --cyan:#22d3ee;
+  --blue:#38bdf8;
+  --green:#22c55e;
+  --yellow:#facc15;
+  --red:#ef4444;
+  --purple:#a78bfa;
+  --text:#e5f6ff;
+  --muted:#7893aa;
 }
 
 body{
   min-height:100vh;
   background:
-    radial-gradient(circle at 15% 10%,rgba(0,229,255,.08),transparent 28%),
-    radial-gradient(circle at 85% 20%,rgba(77,124,255,.08),transparent 30%),
-    linear-gradient(135deg,#03050c,#07101d 50%,#03050c);
+    radial-gradient(circle at 20% 10%,rgba(34,211,238,.08),transparent 28%),
+    radial-gradient(circle at 90% 80%,rgba(56,189,248,.07),transparent 30%),
+    #030712;
   color:var(--text);
   font-family:Inter,Segoe UI,Arial,sans-serif;
+  overflow-x:hidden;
 }
 
-button,input,select{font:inherit}
-button{cursor:pointer}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(rgba(34,211,238,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(34,211,238,.025) 1px,transparent 1px);
+  background-size:40px 40px;
+  mask-image:linear-gradient(to bottom,black,transparent);
+}
+
+button,input,select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
 
 .app{
+  display:flex;
   min-height:100vh;
-  display:grid;
-  grid-template-columns:250px 1fr;
 }
 
+/* SIDEBAR */
+
 .sidebar{
-  position:fixed;
-  left:0;
-  top:0;
-  bottom:0;
-  width:250px;
-  padding:22px 16px;
-  background:rgba(4,8,18,.96);
+  width:255px;
+  flex-shrink:0;
+  background:rgba(3,7,18,.94);
   border-right:1px solid var(--line);
-  backdrop-filter:blur(18px);
-  z-index:10;
+  padding:22px 15px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  z-index:20;
 }
 
 .logo{
-  padding:8px 10px 22px;
+  padding:10px 12px 24px;
   border-bottom:1px solid var(--line);
   margin-bottom:18px;
 }
 
-.logo h1{
-  font-size:19px;
-  letter-spacing:2px;
-  color:#fff;
-}
-
-.logo span{
-  display:block;
-  margin-top:6px;
+.logo-main{
   color:var(--cyan);
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:1.5px;
+}
+
+.logo-sub{
+  color:var(--muted);
   font-size:10px;
+  margin-top:5px;
   letter-spacing:2px;
 }
 
-.system{
+.system-status{
   display:flex;
   align-items:center;
   gap:8px;
-  padding:11px;
-  margin-bottom:18px;
-  border-radius:9px;
-  border:1px solid rgba(0,255,157,.2);
-  background:rgba(0,255,157,.04);
-  color:var(--green);
-  font-size:10px;
+  margin:15px 8px;
+  padding:9px 10px;
+  border:1px solid rgba(34,197,94,.2);
+  background:rgba(34,197,94,.05);
+  border-radius:10px;
+  color:#86efac;
+  font-size:11px;
 }
 
-.dot{
+.status-dot{
   width:8px;
   height:8px;
   border-radius:50%;
   background:var(--green);
-  box-shadow:0 0 12px var(--green);
+  box-shadow:0 0 14px var(--green);
+  animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  50%{opacity:.35;transform:scale(.7)}
 }
 
 .nav{
-  display:grid;
+  display:flex;
+  flex-direction:column;
   gap:7px;
 }
 
 .nav button{
+  width:100%;
+  text-align:left;
   border:1px solid transparent;
   background:transparent;
-  color:var(--muted);
-  padding:12px;
-  border-radius:8px;
-  text-align:left;
+  color:#8ca7bd;
+  padding:12px 13px;
+  border-radius:10px;
+  transition:.2s;
 }
 
 .nav button:hover,
 .nav button.active{
-  color:#fff;
-  border-color:rgba(0,229,255,.2);
-  background:rgba(0,229,255,.06);
-  box-shadow:inset 3px 0 var(--cyan);
+  color:#e8fbff;
+  background:rgba(34,211,238,.07);
+  border-color:rgba(34,211,238,.2);
+  transform:translateX(3px);
 }
 
+/* MAIN */
+
 .main{
-  grid-column:2;
-  padding:25px;
+  flex:1;
   min-width:0;
+  padding:22px;
 }
 
 .topbar{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:20px;
-  margin-bottom:20px;
+  gap:15px;
+  margin-bottom:22px;
 }
 
-.topbar h2{
-  font-size:26px;
-  letter-spacing:1px;
+.page-title{
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:.5px;
 }
 
-.topbar p{
+.page-subtitle{
   color:var(--muted);
-  font-size:11px;
+  font-size:12px;
   margin-top:5px;
 }
 
-.mode{
-  color:var(--cyan);
-  border:1px solid rgba(0,229,255,.25);
-  background:rgba(0,229,255,.04);
+.live-badge{
   padding:9px 13px;
-  border-radius:8px;
-  font-size:10px;
+  border:1px solid rgba(34,211,238,.25);
+  color:var(--cyan);
+  background:rgba(34,211,238,.05);
+  border-radius:10px;
+  font-size:11px;
+  font-weight:800;
 }
+
+/* HERO */
+
+.hero{
+  border:1px solid var(--line);
+  background:
+    linear-gradient(135deg,rgba(34,211,238,.07),rgba(7,17,31,.92) 45%,rgba(56,189,248,.04));
+  border-radius:18px;
+  padding:26px;
+  position:relative;
+  overflow:hidden;
+  margin-bottom:18px;
+}
+
+.hero:after{
+  content:"";
+  position:absolute;
+  width:250px;
+  height:250px;
+  right:-80px;
+  top:-100px;
+  border-radius:50%;
+  border:1px solid rgba(34,211,238,.12);
+  box-shadow:0 0 60px rgba(34,211,238,.06);
+}
+
+.hero h1{
+  font-size:clamp(25px,4vw,42px);
+  font-weight:950;
+  letter-spacing:1px;
+}
+
+.hero h1 span{
+  color:var(--cyan);
+}
+
+.hero p{
+  margin-top:9px;
+  color:#89a7bc;
+  max-width:800px;
+  line-height:1.6;
+  font-size:13px;
+}
+
+/* STATS */
 
 .stats{
   display:grid;
@@ -161,314 +241,479 @@ button{cursor:pointer}
 }
 
 .stat{
-  background:linear-gradient(145deg,rgba(13,22,41,.96),rgba(7,12,25,.96));
+  background:rgba(7,17,31,.8);
   border:1px solid var(--line);
-  border-radius:12px;
-  padding:15px;
+  border-radius:14px;
+  padding:17px;
 }
 
-.stat small{
+.stat-label{
   color:var(--muted);
-  font-size:9px;
-  letter-spacing:1px;
+  font-size:10px;
+  letter-spacing:1.5px;
+  font-weight:800;
 }
 
-.stat strong{
-  display:block;
-  margin-top:7px;
-  font-size:26px;
+.stat-value{
+  margin-top:8px;
+  font-size:27px;
+  font-weight:900;
+  color:var(--cyan);
 }
 
-.grid{
+/* CONTROL */
+
+.control{
+  background:rgba(7,17,31,.85);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:18px;
+}
+
+.section-title{
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:1.3px;
+  color:#c9efff;
+  margin-bottom:14px;
+}
+
+.form-grid{
   display:grid;
-  grid-template-columns:1.15fr .85fr;
+  grid-template-columns:2fr 1fr 1fr auto;
+  gap:10px;
+}
+
+input,
+select{
+  width:100%;
+  background:#040b15;
+  color:#dff8ff;
+  border:1px solid #18324c;
+  border-radius:9px;
+  padding:12px;
+  outline:none;
+}
+
+input:focus,
+select:focus{
+  border-color:var(--cyan);
+  box-shadow:0 0 0 2px rgba(34,211,238,.08);
+}
+
+.btn{
+  border:1px solid #1a405b;
+  background:#071524;
+  color:#bfeeff;
+  border-radius:9px;
+  padding:11px 14px;
+  font-weight:800;
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+  border-color:var(--cyan);
+  color:#fff;
+}
+
+.btn.primary{
+  background:rgba(34,211,238,.1);
+  border-color:rgba(34,211,238,.4);
+  color:var(--cyan);
+}
+
+.btn.danger{
+  color:#fca5a5;
+  border-color:rgba(239,68,68,.3);
+}
+
+.quick-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
+}
+
+/* GRID */
+
+.content-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.5fr) minmax(300px,.8fr);
   gap:18px;
 }
 
 .panel{
-  background:linear-gradient(145deg,rgba(10,16,32,.97),rgba(5,10,21,.97));
+  background:rgba(7,17,31,.85);
   border:1px solid var(--line);
-  border-radius:14px;
+  border-radius:16px;
   overflow:hidden;
-  box-shadow:0 0 30px rgba(0,229,255,.06);
+  min-width:0;
 }
 
 .panel-head{
+  padding:15px 17px;
+  border-bottom:1px solid var(--line);
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:15px 17px;
-  border-bottom:1px solid var(--line);
+  gap:10px;
 }
 
-.panel-head h3{
-  font-size:12px;
+.panel-head h2{
+  font-size:13px;
   letter-spacing:1px;
 }
 
 .panel-head span{
-  color:var(--cyan);
-  font-size:9px;
-}
-
-.panel-body{padding:17px}
-
-.form{
-  display:grid;
-  grid-template-columns:1.5fr 1fr 1fr;
-  gap:10px;
-}
-
-.field{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
-
-.field label{
   color:var(--muted);
-  font-size:9px;
-  letter-spacing:1px;
+  font-size:10px;
 }
 
-.field input,
-.field select{
-  background:#050a15;
-  color:#fff;
-  border:1px solid var(--line);
-  border-radius:8px;
-  padding:11px;
-  outline:none;
+.panel-body{
+  padding:14px;
 }
 
-.field input:focus,
-.field select:focus{
-  border-color:rgba(0,229,255,.45);
-}
-
-.controls{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:13px;
-}
-
-.btn{
-  border:1px solid var(--line);
-  background:#0b1323;
-  color:#dce8ff;
-  border-radius:8px;
-  padding:10px 12px;
-  font-size:9px;
-  letter-spacing:.7px;
-}
-
-.btn:hover{
-  border-color:rgba(0,229,255,.4);
-}
-
-.btn.primary{
-  color:var(--cyan);
-  border-color:rgba(0,229,255,.3);
-  background:rgba(0,229,255,.06);
-}
-
-.btn.green{
-  color:var(--green);
-  border-color:rgba(0,255,157,.3);
-  background:rgba(0,255,157,.05);
-}
-
-.btn.red{
-  color:var(--red);
-  border-color:rgba(255,85,119,.3);
-  background:rgba(255,85,119,.05);
-}
+/* TASK CARD */
 
 .task-list{
-  display:grid;
+  display:flex;
+  flex-direction:column;
   gap:10px;
-  max-height:590px;
-  overflow:auto;
 }
 
 .task{
-  border:1px solid var(--line);
-  background:rgba(6,12,25,.85);
-  border-radius:11px;
-  padding:13px;
+  border:1px solid #15314a;
+  background:rgba(4,11,21,.75);
+  border-radius:13px;
+  padding:14px;
+  transition:.2s;
+}
+
+.task:hover{
+  border-color:rgba(34,211,238,.3);
 }
 
 .task-top{
   display:flex;
   justify-content:space-between;
-  gap:10px;
+  align-items:flex-start;
+  gap:12px;
 }
 
 .task-name{
-  font-size:12px;
-  font-weight:700;
+  font-weight:900;
+  font-size:14px;
+  color:#e7fbff;
 }
 
 .task-id{
-  margin-top:4px;
-  color:var(--muted);
+  color:#537087;
   font-size:9px;
-  word-break:break-all;
+  margin-top:4px;
+  font-family:Consolas,monospace;
 }
 
-.badges{
-  display:flex;
-  flex-wrap:wrap;
-  gap:5px;
-  margin-top:9px;
+.status{
+  font-size:9px;
+  font-weight:900;
+  padding:5px 8px;
+  border-radius:7px;
+  border:1px solid;
+  white-space:nowrap;
 }
 
-.badge{
-  padding:4px 7px;
-  border:1px solid var(--line);
-  border-radius:5px;
-  color:#aebed5;
+.status.queued{
+  color:#93c5fd;
+  border-color:rgba(59,130,246,.3);
+  background:rgba(59,130,246,.06);
+}
+
+.status.running{
+  color:#67e8f9;
+  border-color:rgba(34,211,238,.35);
+  background:rgba(34,211,238,.08);
+}
+
+.status.completed{
+  color:#86efac;
+  border-color:rgba(34,197,94,.3);
+  background:rgba(34,197,94,.06);
+}
+
+.status.paused{
+  color:#fde68a;
+  border-color:rgba(250,204,21,.3);
+  background:rgba(250,204,21,.06);
+}
+
+.status.failed,
+.status.cancelled{
+  color:#fca5a5;
+  border-color:rgba(239,68,68,.3);
+  background:rgba(239,68,68,.06);
+}
+
+.meta{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+  margin-top:12px;
+}
+
+.meta-box{
+  background:#050d18;
+  border:1px solid #112940;
+  border-radius:8px;
+  padding:8px;
+  min-width:0;
+}
+
+.meta-label{
+  color:#527088;
   font-size:8px;
+  font-weight:800;
+  letter-spacing:1px;
 }
 
-.status-completed{color:var(--green)}
-.status-running{color:var(--cyan)}
-.status-queued,
-.status-paused{color:var(--yellow)}
-.status-failed,
-.status-cancelled{color:var(--red)}
+.meta-value{
+  margin-top:4px;
+  color:#c9efff;
+  font-size:11px;
+  font-weight:900;
+  word-break:break-word;
+}
+
+.progress-wrap{
+  margin-top:12px;
+}
+
+.progress-info{
+  display:flex;
+  justify-content:space-between;
+  color:#648198;
+  font-size:9px;
+  margin-bottom:5px;
+}
 
 .progress{
-  height:5px;
-  margin-top:10px;
-  background:#101a2d;
-  border-radius:20px;
+  height:6px;
+  background:#081522;
+  border-radius:99px;
   overflow:hidden;
 }
 
 .progress-bar{
   height:100%;
   width:0;
-  background:linear-gradient(90deg,var(--blue),var(--cyan));
+  background:linear-gradient(90deg,#0891b2,#22d3ee,#38bdf8);
+  box-shadow:0 0 12px rgba(34,211,238,.35);
   transition:width .2s linear;
 }
 
-.task-info{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:7px;
-  margin-top:10px;
-}
-
-.task-info div{
-  background:#07101e;
-  border-radius:7px;
-  padding:8px;
-}
-
-.task-info small{
-  display:block;
-  color:var(--muted);
-  font-size:7px;
-}
-
-.task-info strong{
-  display:block;
-  margin-top:3px;
-  font-size:9px;
-}
-
-.task-result{
+.task-message{
+  color:#6f8ba0;
+  font-size:10px;
   margin-top:9px;
-  color:#91a4c1;
-  font-size:9px;
   line-height:1.5;
 }
 
 .task-actions{
   display:flex;
+  flex-wrap:wrap;
   gap:6px;
-  margin-top:10px;
+  margin-top:11px;
 }
+
+.task-actions button{
+  padding:7px 9px;
+  font-size:9px;
+}
+
+/* CONSOLE */
 
 .console{
-  height:330px;
+  background:#02060c;
+  min-height:340px;
+  padding:14px;
+  font-family:Consolas,Monaco,monospace;
+  font-size:10px;
+  line-height:1.7;
   overflow:auto;
-  padding:13px;
-  background:#02050a;
-  border:1px solid #101b2e;
-  border-radius:9px;
-  font:10px/1.7 Consolas,monospace;
+  max-height:470px;
 }
 
-.log{color:#7f91ae}
-.log.ok{color:var(--green)}
-.log.info{color:var(--cyan)}
-.log.warn{color:var(--yellow)}
-.log.error{color:var(--red)}
+.log{
+  color:#7893a7;
+}
 
-.time{color:#415675}
+.log .time{
+  color:#36566e;
+}
+
+.log.ok{
+  color:#7dd3a5;
+}
+
+.log.warn{
+  color:#f6d365;
+}
+
+.log.error{
+  color:#fca5a5;
+}
+
+.log.info{
+  color:#67e8f9;
+}
+
+/* CHECKLIST */
 
 .checklist{
-  display:grid;
+  display:flex;
+  flex-direction:column;
   gap:8px;
 }
 
 .check{
   display:flex;
   align-items:center;
+  gap:9px;
+  color:#8ca7bd;
+  font-size:11px;
+  padding:9px;
+  background:#050d18;
+  border:1px solid #112940;
+  border-radius:9px;
+}
+
+.check input{
+  width:auto;
+  accent-color:var(--cyan);
+}
+
+/* MODULES */
+
+.modules{
+  display:grid;
+  grid-template-columns:1fr 1fr;
   gap:8px;
-  padding:10px;
-  border:1px solid var(--line);
-  background:#07101d;
-  border-radius:8px;
-  font-size:9px;
 }
 
-.check input{accent-color:var(--cyan)}
-
-.footer{
-  margin-top:18px;
-  text-align:center;
-  color:#52627b;
-  font-size:9px;
-  letter-spacing:1px;
-}
-
-.empty{
-  padding:30px;
-  text-align:center;
-  color:#52627b;
+.module{
+  padding:11px;
+  background:#050d18;
+  border:1px solid #112940;
+  border-radius:9px;
+  color:#88a4b9;
   font-size:10px;
 }
 
+.module strong{
+  display:block;
+  color:#c9efff;
+  margin-bottom:4px;
+}
+
+/* EMPTY */
+
+.empty{
+  text-align:center;
+  padding:35px 10px;
+  color:#567087;
+  font-size:11px;
+}
+
+/* RESPONSIVE */
+
 @media(max-width:1100px){
-  .stats{grid-template-columns:repeat(3,1fr)}
-  .grid{grid-template-columns:1fr}
+  .stats{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .form-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .content-grid{
+    grid-template-columns:1fr;
+  }
 }
 
 @media(max-width:760px){
-  .app{display:block}
   .sidebar{
-    position:relative;
-    width:100%;
-    bottom:auto;
-    border-right:0;
-    border-bottom:1px solid var(--line);
+    width:76px;
+    padding:15px 9px;
   }
-  .main{padding:15px}
-  .nav{grid-template-columns:repeat(2,1fr)}
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .form{grid-template-columns:1fr}
-  .topbar{flex-direction:column;align-items:flex-start}
+
+  .logo{
+    padding:8px 5px 18px;
+  }
+
+  .logo-main{
+    font-size:0;
+  }
+
+  .logo-main:after{
+    content:"ALFA";
+    font-size:15px;
+  }
+
+  .logo-sub,
+  .system-status span,
+  .nav button span{
+    display:none;
+  }
+
+  .system-status{
+    justify-content:center;
+    margin:12px 0;
+  }
+
+  .nav button{
+    text-align:center;
+    font-size:0;
+  }
+
+  .nav button:before{
+    content:"◆";
+    font-size:13px;
+  }
+
+  .main{
+    padding:13px;
+  }
+
+  .topbar{
+    align-items:flex-start;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .meta{
+    grid-template-columns:1fr 1fr;
+  }
 }
 
-@media(max-width:450px){
-  .nav{grid-template-columns:1fr}
-  .controls,
-  .task-actions{flex-direction:column}
-  .btn{width:100%}
+@media(max-width:430px){
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .hero{
+    padding:19px;
+  }
+
+  .hero h1{
+    font-size:25px;
+  }
 }
 </style>
 </head>
@@ -480,703 +725,671 @@ button{cursor:pointer}
 <aside class="sidebar">
 
   <div class="logo">
-    <h1>ALFA OS SOFTWARE</h1>
-    <span>REAL TASK ENGINE</span>
+    <div class="logo-main">ALFA OS SOFTWARE</div>
+    <div class="logo-sub">SECURITY • OSINT • AI PLATFORM</div>
   </div>
 
-  <div class="system">
-    <span class="dot"></span>
-    SYSTEM ONLINE
+  <div class="system-status">
+    <div class="status-dot"></div>
+    <span>SYSTEM ONLINE</span>
   </div>
 
-  <div class="nav">
-    <button class="active" onclick="moduleClick(this,'Dashboard')">▣ Dashboard</button>
-    <button onclick="moduleClick(this,'OSINT Engine')">◈ OSINT Engine</button>
-    <button onclick="moduleClick(this,'Security Engine')">⬢ Security Engine</button>
-    <button onclick="moduleClick(this,'Bug Hunter')">⌁ Bug Hunter</button>
-    <button onclick="moduleClick(this,'Task Manager')">▤ Task Manager</button>
-    <button onclick="moduleClick(this,'Reports')">▥ Reports</button>
-    <button onclick="moduleClick(this,'AI Security')">✦ AI Security</button>
-    <button onclick="moduleClick(this,'Settings')">⚙ Settings</button>
-  </div>
+  <nav class="nav">
+    <button class="active" onclick="selectModule(this,'Dashboard')">◈ <span>Dashboard</span></button>
+    <button onclick="selectModule(this,'OSINT Engine')">◎ <span>OSINT Engine</span></button>
+    <button onclick="selectModule(this,'Security Engine')">◉ <span>Security Engine</span></button>
+    <button onclick="selectModule(this,'Bug Hunter')">◇ <span>Bug Hunter</span></button>
+    <button onclick="selectModule(this,'Task Manager')">▣ <span>Task Manager</span></button>
+    <button onclick="selectModule(this,'Reports')">▤ <span>Reports</span></button>
+    <button onclick="selectModule(this,'AI Security')">✦ <span>AI Security</span></button>
+    <button onclick="selectModule(this,'Settings')">⚙ <span>Settings</span></button>
+  </nav>
 
 </aside>
 
 <main class="main">
 
-  <div class="topbar">
+<header class="topbar">
+  <div>
+    <div class="page-title">ALFA SECURITY COMMAND CENTER</div>
+    <div class="page-subtitle">REAL TASK ENGINE • LOCAL DATABASE • MULTITASK CONTROL</div>
+  </div>
 
-    <div>
-      <h2>REAL TASK ENGINE</h2>
-      <p>ALFA OS SOFTWARE • V1.6.3 • EXECUTION TIMER + HISTORY</p>
+  <div class="live-badge">● V1.6.4 ONLINE</div>
+</header>
+
+<section class="hero">
+  <h1><span>ALFA OS SOFTWARE</span></h1>
+  <p>
+    Security multitask command platform dengan task queue,
+    local history, execution timer, retry engine dan monitoring.
+    V1.6.4 fokus pada perbaikan tampilan ATTEMPT tanpa mengubah
+    mesin timer V1.6.3.
+  </p>
+</section>
+
+<section class="stats">
+
+  <div class="stat">
+    <div class="stat-label">TOTAL TASKS</div>
+    <div class="stat-value" id="statTotal">0</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-label">RUNNING</div>
+    <div class="stat-value" id="statRunning">0</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-label">QUEUED</div>
+    <div class="stat-value" id="statQueued">0</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-label">COMPLETED</div>
+    <div class="stat-value" id="statCompleted">0</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-label">FAILED</div>
+    <div class="stat-value" id="statFailed">0</div>
+  </div>
+
+</section>
+
+<section class="control">
+
+  <div class="section-title">TASK CONTROL CENTER</div>
+
+  <div class="form-grid">
+
+    <input
+      id="taskName"
+      placeholder="Nama task..."
+      value=""
+    >
+
+    <select id="taskType">
+      <option value="OSINT">OSINT</option>
+      <option value="SECURITY">SECURITY</option>
+      <option value="BUG">BUG</option>
+      <option value="REPORT">REPORT</option>
+      <option value="AI">AI</option>
+    </select>
+
+    <select id="taskPriority">
+      <option value="LOW">LOW</option>
+      <option value="NORMAL" selected>NORMAL</option>
+      <option value="HIGH">HIGH</option>
+      <option value="CRITICAL">CRITICAL</option>
+    </select>
+
+    <button class="btn primary" onclick="createTask()">
+      + CREATE TASK
+    </button>
+
+  </div>
+
+  <div class="quick-actions">
+    <button class="btn" onclick="startNext()">▶ START NEXT</button>
+    <button class="btn" onclick="pauseAll()">Ⅱ PAUSE ALL</button>
+    <button class="btn" onclick="resumeAll()">▶ RESUME ALL</button>
+    <button class="btn" onclick="createDemo()">⚡ DEMO ×5</button>
+    <button class="btn danger" onclick="clearTasks()">✕ CLEAR ALL</button>
+  </div>
+
+</section>
+
+<div class="content-grid">
+
+<section class="panel">
+
+  <div class="panel-head">
+    <h2>TASK QUEUE / LIVE HISTORY</h2>
+    <span id="taskCount">0 TASKS</span>
+  </div>
+
+  <div class="panel-body">
+    <div id="taskList" class="task-list"></div>
+  </div>
+
+</section>
+
+<section>
+
+  <div class="panel">
+
+    <div class="panel-head">
+      <h2>LIVE TASK CONSOLE</h2>
+      <span>MONOTONIC TIMER</span>
     </div>
 
-    <div class="mode">
-      PASSIVE / AUTHORIZED MODE
+    <div id="console" class="console"></div>
+
+  </div>
+
+  <div class="panel" style="margin-top:18px;">
+
+    <div class="panel-head">
+      <h2>SECURITY CHECKLIST</h2>
+      <span id="checkCount">0/8</span>
+    </div>
+
+    <div class="panel-body">
+
+      <div class="checklist">
+
+        <label class="check">
+          <input type="checkbox" onchange="updateChecklist()">
+          Target authorization confirmed
+        </label>
+
+        <label class="check">
+          <input type="checkbox" onchange="updateChecklist()">
+          Passive analysis preferred
+        </label>
+
+        <label class="check">
+          <input type="checkbox" onchange="updateChecklist()">
+          No credential harvesting
+        </label>
+
+        <label class="check">
+          <input type="checkbox" onchange="updateChecklist()">
+          No destructive action
+        </label>
+
+        <label class="check">
+          <input type="checkbox" onchange="updateChecklist()">
+          Scope documented
+        </label>
+
+        <label class="check">
+          <input type="checkbox" onchange="updateChecklist()">
+          Findings recorded
+        </label>
+
+        <label class="check">
+          <input type="checkbox" onchange="updateChecklist()">
+          Evidence handled safely
+        </label>
+
+        <label class="check">
+          <input type="checkbox" onchange="updateChecklist()">
+          Report prepared
+        </label>
+
+      </div>
+
     </div>
 
   </div>
 
-  <section class="stats">
+  <div class="panel" style="margin-top:18px;">
 
-    <div class="stat">
-      <small>TOTAL TASKS</small>
-      <strong id="total">0</strong>
+    <div class="panel-head">
+      <h2>CORE MODULES</h2>
+      <span>V1.6.4</span>
     </div>
 
-    <div class="stat">
-      <small>RUNNING</small>
-      <strong id="running">0</strong>
-    </div>
+    <div class="panel-body">
 
-    <div class="stat">
-      <small>QUEUED</small>
-      <strong id="queued">0</strong>
-    </div>
+      <div class="modules">
 
-    <div class="stat">
-      <small>COMPLETED</small>
-      <strong id="completed">0</strong>
-    </div>
-
-    <div class="stat">
-      <small>FAILED</small>
-      <strong id="failed">0</strong>
-    </div>
-
-  </section>
-
-  <section class="grid">
-
-    <div>
-
-      <div class="panel">
-
-        <div class="panel-head">
-          <h3>TASK CONTROL CENTER</h3>
-          <span>ENGINE V1.6.3</span>
+        <div class="module">
+          <strong>OSINT ENGINE</strong>
+          Passive intelligence workspace.
         </div>
 
-        <div class="panel-body">
-
-          <div class="form">
-
-            <div class="field">
-              <label>TASK NAME</label>
-              <input id="name" placeholder="Contoh: Security Header Review">
-            </div>
-
-            <div class="field">
-              <label>TYPE</label>
-              <select id="type">
-                <option>OSINT</option>
-                <option>SECURITY</option>
-                <option>BUG</option>
-                <option>REPORT</option>
-                <option>AI</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label>PRIORITY</label>
-              <select id="priority">
-                <option>LOW</option>
-                <option selected>NORMAL</option>
-                <option>HIGH</option>
-                <option>CRITICAL</option>
-              </select>
-            </div>
-
-          </div>
-
-          <div class="controls">
-
-            <button class="btn primary" onclick="createTask()">
-              ＋ CREATE TASK
-            </button>
-
-            <button class="btn green" onclick="startNext()">
-              ▶ START NEXT
-            </button>
-
-            <button class="btn" onclick="pauseAll()">
-              ⏸ PAUSE ALL
-            </button>
-
-            <button class="btn" onclick="resumeAll()">
-              ▶ RESUME ALL
-            </button>
-
-            <button class="btn" onclick="demo()">
-              ⚡ DEMO ×5
-            </button>
-
-            <button class="btn red" onclick="clearTasks()">
-              ✕ CLEAR
-            </button>
-
-          </div>
-
+        <div class="module">
+          <strong>SECURITY ENGINE</strong>
+          Defensive security analysis.
         </div>
 
-      </div>
-
-      <div class="panel" style="margin-top:18px">
-
-        <div class="panel-head">
-          <h3>TASK QUEUE / LIVE HISTORY</h3>
-          <span id="count">0 TASKS</span>
+        <div class="module">
+          <strong>BUG HUNTER</strong>
+          Authorized testing workspace.
         </div>
 
-        <div class="panel-body">
+        <div class="module">
+          <strong>REPORT ENGINE</strong>
+          Findings and assessment reports.
+        </div>
 
-          <div id="list" class="task-list"></div>
+        <div class="module">
+          <strong>AI SECURITY</strong>
+          Future AI security assistant.
+        </div>
 
+        <div class="module">
+          <strong>TASK ENGINE</strong>
+          Queue, timer and history.
         </div>
 
       </div>
 
     </div>
 
-    <div>
-
-      <div class="panel">
-
-        <div class="panel-head">
-          <h3>LIVE TASK CONSOLE</h3>
-          <span>MONOTONIC TIMER</span>
-        </div>
-
-        <div class="panel-body">
-
-          <div id="console" class="console"></div>
-
-        </div>
-
-      </div>
-
-      <div class="panel" style="margin-top:18px">
-
-        <div class="panel-head">
-          <h3>SECURITY CHECKLIST</h3>
-          <span id="checks">0 / 8</span>
-        </div>
-
-        <div class="panel-body">
-
-          <div class="checklist">
-
-            <label class="check">
-              <input type="checkbox" onchange="checklist()">
-              Target authorization confirmed
-            </label>
-
-            <label class="check">
-              <input type="checkbox" onchange="checklist()">
-              Passive analysis mode
-            </label>
-
-            <label class="check">
-              <input type="checkbox" onchange="checklist()">
-              No credential collection
-            </label>
-
-            <label class="check">
-              <input type="checkbox" onchange="checklist()">
-              No destructive actions
-            </label>
-
-            <label class="check">
-              <input type="checkbox" onchange="checklist()">
-              Scope verified
-            </label>
-
-            <label class="check">
-              <input type="checkbox" onchange="checklist()">
-              Logs enabled
-            </label>
-
-            <label class="check">
-              <input type="checkbox" onchange="checklist()">
-              Results reviewed
-            </label>
-
-            <label class="check">
-              <input type="checkbox" onchange="checklist()">
-              Report prepared
-            </label>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-  <div class="footer">
-    ALFA OS SOFTWARE • V1.6.3 • REAL EXECUTION TIMER • AUTHORIZED WORKSPACE
   </div>
+
+</section>
+
+</div>
 
 </main>
-
 </div>
 
 <script>
 
 /* =========================================================
-   ALFA OS SOFTWARE V1.6.3
+   ALFA OS SOFTWARE V1.6.4
+   TASK DISPLAY + ATTEMPT FIX
    ========================================================= */
 
 const DB_NAME = "ALFA_OS_SOFTWARE_DB";
-const DB_VERSION = 5;
+const DB_VERSION = 6;
 const STORE = "tasks";
-
-const PRIORITY = {
-  CRITICAL:4,
-  HIGH:3,
-  NORMAL:2,
-  LOW:1
-};
-
-const DURATIONS = {
-  LOW:3500,
-  NORMAL:5000,
-  HIGH:6500,
-  CRITICAL:8000
-};
 
 let db = null;
 let tasks = [];
+let runtimeClock = new Map();
 let timers = new Map();
 
+const PRIORITY_DURATION = {
+  CRITICAL: 8000,
+  HIGH: 6500,
+  NORMAL: 5000,
+  LOW: 3500
+};
+
+/* ---------------------------------------------------------
+   UTILS
+--------------------------------------------------------- */
+
+function uid(){
+  return "ALFA-" +
+    Date.now().toString(36).toUpperCase() +
+    "-" +
+    Math.random().toString(36).substring(2,6).toUpperCase();
+}
+
+function now(){
+  return Date.now();
+}
+
 /*
-  runtimeClock stores performance.now()
-  values ONLY while a task is running.
-
-  It is never persisted to IndexedDB because
-  performance.now() has a page-specific time origin.
+  IMPORTANT:
+  ATTEMPT HARUS SELALU BERASAL DARI task.attempts.
+  TIDAK BOLEH mengambil nilai duration/elapsedMs.
 */
+function formatAttempt(value){
 
-let runtimeClock = new Map();
+  let n = Number(value);
 
-/* =========================================================
-   DATABASE
-   ========================================================= */
+  if(!Number.isFinite(n) || n < 0){
+    n = 0;
+  }
+
+  n = Math.floor(n);
+
+  return String(n).padStart(3,"0");
+}
+
+function formatDuration(ms){
+
+  let value = Number(ms);
+
+  if(!Number.isFinite(value) || value < 0){
+    value = 0;
+  }
+
+  value = Math.floor(value);
+
+  const seconds = Math.floor(value / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const sec = seconds % 60;
+
+  if(minutes > 0){
+    return `${minutes}m ${String(sec).padStart(2,"0")}s`;
+  }
+
+  return `${String(sec).padStart(2,"0")}s`;
+}
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+/* ---------------------------------------------------------
+   LOG
+--------------------------------------------------------- */
+
+function log(message,type="info"){
+
+  const consoleBox = document.getElementById("console");
+
+  const time = new Date().toLocaleTimeString();
+
+  const row = document.createElement("div");
+
+  row.className = "log " + type;
+
+  row.innerHTML =
+    `<span class="time">[${time}]</span> ${escapeHTML(message)}`;
+
+  consoleBox.appendChild(row);
+
+  while(consoleBox.children.length > 150){
+    consoleBox.removeChild(consoleBox.firstChild);
+  }
+
+  consoleBox.scrollTop = consoleBox.scrollHeight;
+}
+
+/* ---------------------------------------------------------
+   INDEXED DB
+--------------------------------------------------------- */
 
 function openDB(){
 
   return new Promise((resolve,reject)=>{
 
-    const req =
-      indexedDB.open(
-        DB_NAME,
-        DB_VERSION
-      );
+    const request =
+      indexedDB.open(DB_NAME,DB_VERSION);
 
-    req.onupgradeneeded = e => {
+    request.onupgradeneeded = event => {
 
-      const database =
-        e.target.result;
+      const database = event.target.result;
 
       let store;
 
       if(!database.objectStoreNames.contains(STORE)){
 
-        store =
-          database.createObjectStore(
-            STORE,
-            {keyPath:"id"}
-          );
+        store = database.createObjectStore(
+          STORE,
+          {keyPath:"id"}
+        );
 
       }else{
 
-        store =
-          e.target.transaction.objectStore(STORE);
+        store = event.target.transaction.objectStore(STORE);
 
       }
 
-      const indexes = [
-        ["status","status"],
-        ["priority","priority"],
-        ["createdAt","createdAt"],
-        ["startedAt","startedAt"]
-      ];
+      if(!store.indexNames.contains("status")){
+        store.createIndex("status","status",{unique:false});
+      }
 
-      indexes.forEach(([name,key])=>{
+      if(!store.indexNames.contains("priority")){
+        store.createIndex("priority","priority",{unique:false});
+      }
 
-        if(!store.indexNames.contains(name)){
+      if(!store.indexNames.contains("createdAt")){
+        store.createIndex("createdAt","createdAt",{unique:false});
+      }
 
-          store.createIndex(
-            name,
-            key,
-            {unique:false}
-          );
-
-        }
-
-      });
-
+      if(!store.indexNames.contains("attempts")){
+        store.createIndex("attempts","attempts",{unique:false});
+      }
     };
 
-    req.onsuccess = () => {
+    request.onsuccess = event => {
 
-      db = req.result;
+      db = event.target.result;
 
       db.onversionchange = () => {
-
         db.close();
-
       };
 
       resolve(db);
-
     };
 
-    req.onerror = () => {
-
-      reject(req.error);
-
+    request.onerror = () => {
+      reject(request.error);
     };
 
   });
-
 }
 
-/* =========================================================
-   DB HELPERS
-   ========================================================= */
-
-function getAll(){
+function dbGetAll(){
 
   return new Promise((resolve,reject)=>{
 
-    const req =
-      db
-        .transaction(STORE,"readonly")
-        .objectStore(STORE)
-        .getAll();
+    const tx = db.transaction(STORE,"readonly");
+    const store = tx.objectStore(STORE);
+    const request = store.getAll();
 
-    req.onsuccess = () =>
-      resolve(req.result || []);
+    request.onsuccess = () => {
+      resolve(request.result || []);
+    };
 
-    req.onerror = () =>
-      reject(req.error);
+    request.onerror = () => {
+      reject(request.error);
+    };
 
   });
-
 }
 
-function put(task){
+function dbPut(task){
 
   return new Promise((resolve,reject)=>{
 
-    const tx =
-      db.transaction(
-        STORE,
-        "readwrite"
-      );
+    const tx = db.transaction(STORE,"readwrite");
 
     tx.objectStore(STORE).put(task);
 
-    tx.oncomplete = resolve;
+    tx.oncomplete = () => resolve();
 
-    tx.onerror = () =>
-      reject(tx.error);
+    tx.onerror = () => reject(tx.error);
 
   });
-
 }
 
-function clearDB(){
+function dbPutMany(items){
 
   return new Promise((resolve,reject)=>{
 
-    const tx =
-      db.transaction(
-        STORE,
-        "readwrite"
-      );
+    const tx = db.transaction(STORE,"readwrite");
+    const store = tx.objectStore(STORE);
+
+    items.forEach(item=>{
+      store.put(item);
+    });
+
+    tx.oncomplete = () => resolve();
+
+    tx.onerror = () => reject(tx.error);
+
+  });
+}
+
+function dbClear(){
+
+  return new Promise((resolve,reject)=>{
+
+    const tx = db.transaction(STORE,"readwrite");
 
     tx.objectStore(STORE).clear();
 
-    tx.oncomplete = resolve;
+    tx.oncomplete = () => resolve();
 
-    tx.onerror = () =>
-      reject(tx.error);
+    tx.onerror = () => reject(tx.error);
 
   });
-
 }
 
-/* =========================================================
-   NORMALIZE
-   ========================================================= */
+/* ---------------------------------------------------------
+   NORMALIZATION
+--------------------------------------------------------- */
 
-function normalize(old){
+function normalizeTask(old){
+
+  const task = old || {};
+
+  let attempts = Number(task.attempts);
+
+  if(!Number.isFinite(attempts) || attempts < 0){
+    attempts = 0;
+  }
+
+  /*
+    FIX V1.6.4:
+    attempts hanya integer murni.
+    Jika history lama pernah menyimpan nilai kacau,
+    kita jangan biarkan nilai duration masuk ke attempts.
+  */
+  attempts = Math.floor(attempts);
+
+  if(attempts > 999999){
+    attempts = 0;
+  }
+
+  let elapsedMs = Number(task.elapsedMs);
+
+  if(!Number.isFinite(elapsedMs) || elapsedMs < 0){
+    elapsedMs = 0;
+  }
+
+  let progress = Number(task.progress);
+
+  if(!Number.isFinite(progress)){
+    progress = 0;
+  }
+
+  progress = Math.max(0,Math.min(100,Math.floor(progress)));
+
+  const priority =
+    ["LOW","NORMAL","HIGH","CRITICAL"].includes(task.priority)
+      ? task.priority
+      : "NORMAL";
+
+  const status =
+    ["queued","running","paused","completed","failed","cancelled"]
+      .includes(task.status)
+      ? task.status
+      : "queued";
 
   return {
 
-    id:old.id || makeId(),
+    id: task.id || uid(),
 
     name:
-      old.name ||
-      "Untitled Task",
+      typeof task.name === "string" && task.name.trim()
+        ? task.name
+        : "Unnamed Task",
 
     type:
-      old.type ||
-      "OSINT",
+      typeof task.type === "string"
+        ? task.type
+        : "SECURITY",
 
-    priority:
-      old.priority ||
-      "NORMAL",
+    priority,
 
-    status:
-      old.status ||
-      "queued",
+    status,
 
-    progress:
-      Number.isFinite(old.progress)
-        ? old.progress
-        : 0,
+    progress,
 
-    attempts:
-      Number.isFinite(old.attempts)
-        ? old.attempts
-        : 0,
+    attempts,
 
     createdAt:
-      Number.isFinite(old.createdAt)
-        ? old.createdAt
-        : Date.now(),
+      Number(task.createdAt) || now(),
 
     startedAt:
-      Number.isFinite(old.startedAt)
-        ? old.startedAt
-        : null,
+      Number(task.startedAt) || null,
 
     completedAt:
-      Number.isFinite(old.completedAt)
-        ? old.completedAt
-        : null,
+      Number(task.completedAt) || null,
 
-    elapsedMs:
-      Number.isFinite(old.elapsedMs)
-        ? old.elapsedMs
-        : null,
+    elapsedMs,
 
     duration:
-      Number.isFinite(old.duration)
-        ? old.duration
-        : DURATIONS[
-            old.priority ||
-            "NORMAL"
-          ],
+      Number(task.duration) > 0
+        ? Number(task.duration)
+        : PRIORITY_DURATION[priority],
 
     result:
-      typeof old.result === "string"
-        ? old.result
-        : "Task siap dijalankan.",
+      typeof task.result === "string"
+        ? task.result
+        : "",
 
     error:
-      typeof old.error === "string"
-        ? old.error
+      typeof task.error === "string"
+        ? task.error
         : "",
 
     logs:
-      Array.isArray(old.logs)
-        ? old.logs
+      Array.isArray(task.logs)
+        ? task.logs
         : []
 
   };
-
 }
 
-/* =========================================================
+/* ---------------------------------------------------------
    HISTORY MIGRATION
-   ========================================================= */
+--------------------------------------------------------- */
 
 async function migrateHistory(){
 
-  let changed = false;
+  const normalized = tasks.map(normalizeTask);
 
-  for(const task of tasks){
+  /*
+    Legacy records that have a suspicious attempts value
+    are normalized without touching valid timer values.
+  */
 
-    /*
-      Old V1.5/V1.6 records may have contained
-      unreliable duration data.
-
-      We DO NOT attempt to guess their runtime.
-
-      Completed old records with no valid elapsedMs
-      become explicitly "legacy history".
-    */
+  normalized.forEach(task=>{
 
     if(
-      task.status === "completed" &&
-      (
-        !Number.isFinite(task.elapsedMs) ||
-        task.elapsedMs <= 0
-      )
+      task.status === "queued" &&
+      task.progress !== 0
     ){
-
-      task.elapsedMs = 0;
-
-      task.result =
-        task.result ||
-        "Legacy task history preserved.";
-
-      changed = true;
-
+      task.progress = 0;
     }
-
-    /*
-      Any task that is queued must have no active
-      execution timer.
-    */
 
     if(task.status === "queued"){
 
       task.startedAt = null;
       task.completedAt = null;
-      task.elapsedMs = null;
-      task.progress = 0;
-
-      if(
-        task.result === "Task selesai." ||
-        !task.result
-      ){
-
-        task.result =
-          "Task siap dijalankan.";
-
-      }
-
-      changed = true;
+      task.elapsedMs = 0;
 
     }
 
-    if(changed){
+  });
 
-      await put(task);
+  tasks = normalized;
 
-    }
+  await dbPutMany(tasks);
 
-  }
-
-  if(changed){
-
-    log(
-      "HISTORY MIGRATION V1.6.3 COMPLETE.",
-      "ok"
-    );
-
-  }
-
+  log(
+    "HISTORY MIGRATION V1.6.4 DISPLAY FIX COMPLETE.",
+    "ok"
+  );
 }
 
-/* =========================================================
-   ID
-   ========================================================= */
+/* ---------------------------------------------------------
+   CREATE TASK
+--------------------------------------------------------- */
 
-function makeId(){
+async function createTask(){
 
-  return "ALFA-" +
-    Date.now()
-      .toString(36)
-      .toUpperCase() +
-    "-" +
-    Math.random()
-      .toString(36)
-      .slice(2,6)
-      .toUpperCase();
-
-}
-
-/* =========================================================
-   LOG
-   ========================================================= */
-
-function log(message,type=""){
-
-  const box =
-    document.getElementById("console");
-
-  const row =
-    document.createElement("div");
-
-  row.className =
-    "log " + type;
-
-  row.innerHTML =
-    `<span class="time">[${
-      new Date().toLocaleTimeString()
-    }]</span> ${
-      escape(message)
-    }`;
-
-  box.appendChild(row);
-
-  box.scrollTop =
-    box.scrollHeight;
-
-}
-
-function escape(value){
-
-  return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-/* =========================================================
-   CREATE
-   ========================================================= */
-
-async function createTask(
-  customName=null,
-  customType=null,
-  customPriority=null
-){
+  const input = document.getElementById("taskName");
+  const type = document.getElementById("taskType").value;
+  const priority = document.getElementById("taskPriority").value;
 
   const name =
-    customName ??
-    document
-      .getElementById("name")
-      .value
-      .trim();
+    input.value.trim() ||
+    "ALFA TASK " + new Date().toLocaleTimeString();
 
-  const type =
-    customType ??
-    document
-      .getElementById("type")
-      .value;
+  const task = {
 
-  const priority =
-    customPriority ??
-    document
-      .getElementById("priority")
-      .value;
-
-  if(!name){
-
-    alert(
-      "Masukkan nama task terlebih dahulu."
-    );
-
-    return;
-
-  }
-
-  const task = normalize({
-
-    id:makeId(),
+    id: uid(),
 
     name,
 
@@ -1190,86 +1403,70 @@ async function createTask(
 
     attempts:0,
 
-    createdAt:Date.now(),
+    createdAt:now(),
 
     startedAt:null,
 
     completedAt:null,
 
-    elapsedMs:null,
+    elapsedMs:0,
 
-    duration:
-      DURATIONS[priority],
+    duration:PRIORITY_DURATION[priority],
 
-    result:
-      "Task masuk ke queue.",
+    result:"Task masuk ke queue.",
 
     error:"",
 
-    logs:[]
+    logs:[
 
-  });
+      {
+        time:now(),
+        message:"Task masuk ke queue."
+      }
 
-  tasks.push(task);
+    ]
 
-  await put(task);
+  };
 
-  document
-    .getElementById("name")
-    .value = "";
+  tasks.unshift(task);
 
-  log(
-    `TASK CREATED → ${task.name} | ${task.type} | ${task.priority}`,
-    "info"
-  );
+  await dbPut(task);
+
+  input.value = "";
 
   render();
 
+  log(
+    `Task created: ${task.name} | ATTEMPT ${formatAttempt(task.attempts)}`,
+    "info"
+  );
 }
 
-/* =========================================================
+/* ---------------------------------------------------------
    START NEXT
-   ========================================================= */
+--------------------------------------------------------- */
 
 async function startNext(){
 
-  const queue =
-    tasks
-      .filter(
-        t => t.status === "queued"
-      )
-      .sort((a,b)=>{
+  const task =
+    tasks.find(t => t.status === "queued");
 
-        const priority =
-          PRIORITY[b.priority] -
-          PRIORITY[a.priority];
-
-        if(priority !== 0)
-          return priority;
-
-        return a.createdAt -
-               b.createdAt;
-
-      });
-
-  if(!queue.length){
+  if(!task){
 
     log(
-      "QUEUE EMPTY.",
+      "Tidak ada task QUEUED yang tersedia.",
       "warn"
     );
 
     return;
-
   }
 
-  await startTask(queue[0]);
-
+  await startTask(task);
 }
 
-/* =========================================================
-   START
-   ========================================================= */
+/* ---------------------------------------------------------
+   START TASK
+--------------------------------------------------------- */
 
 async function startTask(task){
 
@@ -1277,519 +1474,696 @@ async function startTask(task){
     task.status !== "queued" &&
     task.status !== "paused"
   ){
-
     return;
-
   }
-
-  stopTimer(task.id);
-
-  /*
-    =======================================================
-    REAL EXECUTION TIMER
-
-    performance.now() = elapsed execution clock.
-
-    It is NOT persisted.
-
-    startedAt = wall-clock timestamp for history.
-    runtimeStart = performance.now() for timer.
-    elapsedMs = accumulated execution duration.
-    =======================================================
-  */
-
-  const wallStart =
-    Date.now();
 
   const previousElapsed =
     task.status === "paused"
-      ? Number(task.elapsedMs || 0)
+      ? Number(task.elapsedMs) || 0
       : 0;
 
+  const wallStart = now();
+
   task.status = "running";
-
   task.progress = 0;
-
-  task.startedAt =
-    wallStart -
-    previousElapsed;
-
-  task.completedAt = null;
-
-  task.elapsedMs =
-    previousElapsed;
-
   task.error = "";
+  task.startedAt =
+    wallStart - previousElapsed;
 
+  task.elapsedMs = previousElapsed;
+
+  /*
+    FIX:
+    ATTEMPTS hanya dinaikkan di sini.
+    Tidak ada hubungannya dengan elapsedMs.
+  */
   task.attempts =
-    Number(task.attempts || 0) + 1;
-
-  task.result =
-    "Task sedang diproses oleh REAL TASK ENGINE.";
-
-  task.logs =
-    Array.isArray(task.logs)
-      ? task.logs
-      : [];
-
-  task.logs.push({
-
-    time:wallStart,
-
-    event:"START",
-
-    message:
-      "Execution timer started."
-
-  });
-
-  await put(task);
+    Math.max(
+      0,
+      Math.floor(Number(task.attempts) || 0)
+    ) + 1;
 
   runtimeClock.set(
     task.id,
     performance.now()
   );
 
-  log(
-    `TASK START → ${task.name} | ATTEMPT ${task.attempts}`,
-    "info"
-  );
+  await dbPut(task);
 
   render();
 
-  execute(task);
+  log(
+    `START ${task.name} | ATTEMPT ${formatAttempt(task.attempts)} | DURATION ${formatDuration(task.elapsedMs)}`,
+    "info"
+  );
 
+  execute(task);
 }
 
-/* =========================================================
+/* ---------------------------------------------------------
    EXECUTE
-   ========================================================= */
+--------------------------------------------------------- */
 
 function execute(task){
 
-  stopTimer(task.id);
-
-  const startClock =
-    runtimeClock.get(task.id);
-
-  const totalDuration =
-    Math.max(
-      1000,
-      Number(task.duration) ||
-      DURATIONS[
-        task.priority
-      ] ||
-      5000
-    );
-
-  const timer =
-    setInterval(async()=>{
-
-      if(task.status !== "running"){
-
-        stopTimer(task.id);
-
-        return;
-
-      }
-
-      const elapsedSinceStart =
-        performance.now() -
-        startClock;
-
-      const totalElapsed =
-        Number(task.elapsedMs || 0) +
-        elapsedSinceStart;
-
-      task.elapsedMs =
-        totalElapsed;
-
-      task.progress =
-        Math.min(
-          100,
-          Math.floor(
-            totalElapsed /
-            totalDuration *
-            100
-          )
-        );
-
-      if(
-        totalElapsed >=
-        totalDuration
-      ){
-
-        clearInterval(timer);
-
-        timers.delete(task.id);
-
-        runtimeClock.delete(task.id);
-
-        task.progress = 100;
-
-        task.status =
-          "completed";
-
-        task.completedAt =
-          Date.now();
-
-        task.elapsedMs =
-          Math.max(
-            0,
-            totalElapsed
-          );
-
-        task.result =
-          `Task ${task.name} selesai diproses oleh REAL TASK ENGINE.`;
-
-        task.logs.push({
-
-          time:task.completedAt,
-
-          event:"COMPLETED",
-
-          message:
-            "Execution completed."
-
-        });
-
-        await put(task);
-
-        log(
-          `TASK COMPLETED → ${task.name} | ${format(task.elapsedMs)}`,
-          "ok"
-        );
-
-        render();
-
-        return;
-
-      }
-
-      await put(task);
-
-      render();
-
-    },200);
-
-  timers.set(
-    task.id,
-    timer
-  );
-
-}
-
-/* =========================================================
-   PAUSE
-   ========================================================= */
-
-async function pauseTask(task){
-
-  if(task.status !== "running")
-    return;
+  if(timers.has(task.id)){
+    clearInterval(timers.get(task.id));
+  }
 
   const clock =
     runtimeClock.get(task.id);
 
-  if(clock){
+  if(clock == null){
+    return;
+  }
+
+  const tick = async ()=>{
+
+    if(task.status !== "running"){
+
+      clearInterval(timers.get(task.id));
+      timers.delete(task.id);
+
+      return;
+    }
+
+    const elapsedSinceStart =
+      performance.now() - clock;
+
+    const totalElapsed =
+      (Number(task.elapsedMs) || 0) +
+      elapsedSinceStart;
+
+    const duration =
+      Number(task.duration) ||
+      PRIORITY_DURATION[task.priority] ||
+      5000;
+
+    task.progress =
+      Math.min(
+        100,
+        Math.floor(
+          (totalElapsed / duration) * 100
+        )
+      );
+
+    render();
+
+    if(totalElapsed >= duration){
+
+      clearInterval(timers.get(task.id));
+      timers.delete(task.id);
+
+      task.status = "completed";
+      task.progress = 100;
+      task.completedAt = now();
+      task.elapsedMs = Math.round(totalElapsed);
+
+      task.result =
+        `Task ${task.name} selesai diproses oleh REAL TASK ENGINE.`;
+
+      task.logs =
+        Array.isArray(task.logs)
+          ? task.logs
+          : [];
+
+      task.logs.push({
+        time:now(),
+        message:task.result
+      });
+
+      runtimeClock.delete(task.id);
+
+      await dbPut(task);
+
+      render();
+
+      log(
+        `COMPLETED ${task.name} | ATTEMPT ${formatAttempt(task.attempts)} | DURATION ${formatDuration(task.elapsedMs)}`,
+        "ok"
+      );
+    }
+
+  };
+
+  timers.set(
+    task.id,
+    setInterval(tick,200)
+  );
+
+  tick();
+}
+
+/* ---------------------------------------------------------
+   PAUSE
+--------------------------------------------------------- */
+
+async function pauseTask(task){
+
+  if(task.status !== "running"){
+    return;
+  }
+
+  const clock =
+    runtimeClock.get(task.id);
+
+  if(clock != null){
 
     task.elapsedMs +=
-      performance.now() -
-      clock;
+      performance.now() - clock;
 
   }
 
-  stopTimer(task.id);
-
   runtimeClock.delete(task.id);
+
+  if(timers.has(task.id)){
+    clearInterval(timers.get(task.id));
+    timers.delete(task.id);
+  }
 
   task.status = "paused";
 
-  task.result =
-    "Task dijeda.";
-
-  task.logs.push({
-
-    time:Date.now(),
-
-    event:"PAUSED",
-
-    message:
-      "Execution paused."
-
-  });
-
-  await put(task);
-
-  log(
-    `TASK PAUSED → ${task.name}`,
-    "warn"
-  );
+  await dbPut(task);
 
   render();
 
+  log(
+    `PAUSED ${task.name} | ATTEMPT ${formatAttempt(task.attempts)} | DURATION ${formatDuration(task.elapsedMs)}`,
+    "warn"
+  );
 }
 
-/* =========================================================
+/* ---------------------------------------------------------
    RESUME
-   ========================================================= */
+--------------------------------------------------------- */
 
 async function resumeTask(task){
 
-  if(task.status !== "paused")
+  if(task.status !== "paused"){
     return;
+  }
 
-  task.status =
-    "running";
-
-  task.result =
-    "Task dilanjutkan.";
-
-  task.logs.push({
-
-    time:Date.now(),
-
-    event:"RESUMED",
-
-    message:
-      "Execution resumed."
-
-  });
-
-  await put(task);
+  task.status = "running";
 
   runtimeClock.set(
     task.id,
     performance.now()
   );
 
-  log(
-    `TASK RESUMED → ${task.name}`,
-    "info"
-  );
+  await dbPut(task);
 
   render();
 
-  execute(task);
+  log(
+    `RESUMED ${task.name} | ATTEMPT ${formatAttempt(task.attempts)}`,
+    "info"
+  );
 
+  execute(task);
 }
 
-/* =========================================================
+/* ---------------------------------------------------------
    STOP
-   ========================================================= */
+--------------------------------------------------------- */
 
 async function stopTask(task){
-
-  if(
-    task.status !== "running" &&
-    task.status !== "paused"
-  ){
-
-    return;
-
-  }
 
   if(task.status === "running"){
 
     const clock =
       runtimeClock.get(task.id);
 
-    if(clock){
+    if(clock != null){
 
       task.elapsedMs +=
-        performance.now() -
-        clock;
+        performance.now() - clock;
+
+    }
+  }
+
+  runtimeClock.delete(task.id);
+
+  if(timers.has(task.id)){
+    clearInterval(timers.get(task.id));
+    timers.delete(task.id);
+  }
+
+  task.status = "cancelled";
+
+  await dbPut(task);
+
+  render();
+
+  log(
+    `STOPPED ${task.name} | ATTEMPT ${formatAttempt(task.attempts)} | DURATION ${formatDuration(task.elapsedMs)}`,
+    "warn"
+  );
+}
+
+/* ---------------------------------------------------------
+   RETRY
+--------------------------------------------------------- */
+
+async function retryTask(task){
+
+  if(timers.has(task.id)){
+    clearInterval(timers.get(task.id));
+    timers.delete(task.id);
+  }
+
+  runtimeClock.delete(task.id);
+
+  task.status = "queued";
+  task.progress = 0;
+  task.startedAt = null;
+  task.completedAt = null;
+  task.elapsedMs = 0;
+  task.error = "";
+  task.result = "Task masuk ke queue.";
+
+  /*
+    ATTEMPT TIDAK DI-RESET.
+    Retry berikutnya akan menjadi ATTEMPT 002,
+    ATTEMPT 003, dst.
+  */
+
+  await dbPut(task);
+
+  render();
+
+  log(
+    `RETRY QUEUED ${task.name} | CURRENT ATTEMPT ${formatAttempt(task.attempts)}`,
+    "warn"
+  );
+}
+
+/* ---------------------------------------------------------
+   DISPLAY DURATION
+--------------------------------------------------------- */
+
+function displayDuration(task){
+
+  if(task.status === "queued"){
+    return "00s";
+  }
+
+  let elapsed =
+    Number(task.elapsedMs) || 0;
+
+  if(task.status === "running"){
+
+    const clock =
+      runtimeClock.get(task.id);
+
+    if(clock != null){
+
+      elapsed +=
+        performance.now() - clock;
 
     }
 
   }
 
-  stopTimer(task.id);
+  return formatDuration(elapsed);
+}
 
-  runtimeClock.delete(task.id);
+/* ---------------------------------------------------------
+   RENDER
+--------------------------------------------------------- */
 
-  task.status =
-    "cancelled";
+function render(){
 
-  task.result =
-    "Task dihentikan oleh operator.";
+  const list =
+    document.getElementById("taskList");
 
-  task.logs.push({
+  document.getElementById("taskCount").textContent =
+    `${tasks.length} TASKS`;
 
-    time:Date.now(),
+  const total =
+    tasks.length;
 
-    event:"STOPPED",
+  const running =
+    tasks.filter(t=>t.status==="running").length;
 
-    message:
-      "Execution stopped."
+  const queued =
+    tasks.filter(t=>t.status==="queued").length;
 
-  });
+  const completed =
+    tasks.filter(t=>t.status==="completed").length;
 
-  await put(task);
+  const failed =
+    tasks.filter(
+      t=>t.status==="failed" ||
+         t.status==="cancelled"
+    ).length;
 
-  log(
-    `TASK STOPPED → ${task.name}`,
-    "warn"
-  );
+  document.getElementById("statTotal").textContent =
+    total;
 
-  render();
+  document.getElementById("statRunning").textContent =
+    running;
+
+  document.getElementById("statQueued").textContent =
+    queued;
+
+  document.getElementById("statCompleted").textContent =
+    completed;
+
+  document.getElementById("statFailed").textContent =
+    failed;
+
+  if(!tasks.length){
+
+    list.innerHTML =
+      `<div class="empty">
+        Belum ada task. Buat task pertama ALFA OS SOFTWARE.
+      </div>`;
+
+    return;
+  }
+
+  list.innerHTML =
+    tasks.map(task=>{
+
+      const attempt =
+        formatAttempt(task.attempts);
+
+      const duration =
+        displayDuration(task);
+
+      const status =
+        escapeHTML(task.status);
+
+      const type =
+        escapeHTML(task.type);
+
+      const priority =
+        escapeHTML(task.priority);
+
+      const name =
+        escapeHTML(task.name);
+
+      const id =
+        escapeHTML(task.id);
+
+      const result =
+        escapeHTML(
+          task.result ||
+          "Task siap dijalankan."
+        );
+
+      let actions = "";
+
+      if(task.status === "queued"){
+
+        actions +=
+          `<button class="btn primary"
+             onclick="startById('${task.id}')">
+             ▶ START
+           </button>`;
+
+      }
+
+      if(task.status === "running"){
+
+        actions +=
+          `<button class="btn"
+             onclick="pauseById('${task.id}')">
+             Ⅱ PAUSE
+           </button>`;
+
+        actions +=
+          `<button class="btn danger"
+             onclick="stopById('${task.id}')">
+             ■ STOP
+           </button>`;
+
+      }
+
+      if(task.status === "paused"){
+
+        actions +=
+          `<button class="btn primary"
+             onclick="resumeById('${task.id}')">
+             ▶ RESUME
+           </button>`;
+
+        actions +=
+          `<button class="btn danger"
+             onclick="stopById('${task.id}')">
+             ■ STOP
+           </button>`;
+
+      }
+
+      if(
+        task.status === "completed" ||
+        task.status === "failed" ||
+        task.status === "cancelled"
+      ){
+
+        actions +=
+          `<button class="btn"
+             onclick="retryById('${task.id}')">
+             ↻ RETRY
+           </button>`;
+
+      }
+
+      return `
+        <article class="task">
+
+          <div class="task-top">
+
+            <div>
+              <div class="task-name">${name}</div>
+              <div class="task-id">${id}</div>
+            </div>
+
+            <div class="status ${status}">
+              ${status.toUpperCase()}
+            </div>
+
+          </div>
+
+          <div class="meta">
+
+            <div class="meta-box">
+              <div class="meta-label">TYPE</div>
+              <div class="meta-value">${type}</div>
+            </div>
+
+            <div class="meta-box">
+              <div class="meta-label">PRIORITY</div>
+              <div class="meta-value">${priority}</div>
+            </div>
+
+            <div class="meta-box">
+              <div class="meta-label">ATTEMPT</div>
+              <div class="meta-value">${attempt}</div>
+            </div>
+
+            <div class="meta-box">
+              <div class="meta-label">DURATION</div>
+              <div class="meta-value">${duration}</div>
+            </div>
+
+          </div>
+
+          <div class="progress-wrap">
+
+            <div class="progress-info">
+              <span>PROGRESS</span>
+              <span>${task.progress}%</span>
+            </div>
+
+            <div class="progress">
+              <div
+                class="progress-bar"
+                style="width:${task.progress}%">
+              </div>
+            </div>
+
+          </div>
+
+          <div class="task-message">
+            ${result}
+          </div>
+
+          <div class="task-actions">
+            ${actions}
+          </div>
+
+        </article>
+      `;
+
+    }).join("");
 
 }
 
-/* =========================================================
-   RETRY
-   ========================================================= */
+/* ---------------------------------------------------------
+   ACTION BY ID
+--------------------------------------------------------- */
 
-async function retryTask(task){
-
-  stopTimer(task.id);
-
-  runtimeClock.delete(task.id);
-
-  task.status =
-    "queued";
-
-  task.progress = 0;
-
-  task.startedAt = null;
-
-  task.completedAt = null;
-
-  task.elapsedMs = null;
-
-  task.error = "";
-
-  task.result =
-    "Task masuk kembali ke queue.";
-
-  task.logs.push({
-
-    time:Date.now(),
-
-    event:"RETRY",
-
-    message:
-      "Returned to queue."
-
-  });
-
-  await put(task);
-
-  log(
-    `TASK RETRY → ${task.name} → QUEUED`,
-    "info"
-  );
-
-  render();
-
+function getTask(id){
+  return tasks.find(t=>t.id===id);
 }
 
-/* =========================================================
-   STOP TIMER
-   ========================================================= */
+async function startById(id){
 
-function stopTimer(id){
+  const task = getTask(id);
 
-  const timer =
-    timers.get(id);
-
-  if(timer){
-
-    clearInterval(timer);
-
-    timers.delete(id);
-
+  if(task){
+    await startTask(task);
   }
 
 }
 
-/* =========================================================
+async function pauseById(id){
+
+  const task = getTask(id);
+
+  if(task){
+    await pauseTask(task);
+  }
+
+}
+
+async function resumeById(id){
+
+  const task = getTask(id);
+
+  if(task){
+    await resumeTask(task);
+  }
+
+}
+
+async function stopById(id){
+
+  const task = getTask(id);
+
+  if(task){
+    await stopTask(task);
+  }
+
+}
+
+async function retryById(id){
+
+  const task = getTask(id);
+
+  if(task){
+    await retryTask(task);
+  }
+
+}
+
+/* ---------------------------------------------------------
    PAUSE ALL
-   ========================================================= */
+--------------------------------------------------------- */
 
 async function pauseAll(){
 
   const running =
     tasks.filter(
-      t => t.status === "running"
+      t=>t.status==="running"
     );
 
   for(const task of running){
-
     await pauseTask(task);
-
   }
 
 }
 
-/* =========================================================
+/* ---------------------------------------------------------
    RESUME ALL
-   ========================================================= */
+--------------------------------------------------------- */
 
 async function resumeAll(){
 
   const paused =
     tasks.filter(
-      t => t.status === "paused"
+      t=>t.status==="paused"
     );
 
   for(const task of paused){
-
     await resumeTask(task);
-
   }
 
 }
 
-/* =========================================================
+/* ---------------------------------------------------------
    DEMO
-   ========================================================= */
+--------------------------------------------------------- */
 
-async function demo(){
+async function createDemo(){
 
-  const data = [
+  const demo = [
 
-    [
-      "OSINT Asset Discovery",
-      "OSINT",
-      "NORMAL"
-    ],
+    ["OSINT Asset Discovery","OSINT","NORMAL"],
 
-    [
-      "Security Header Review",
-      "SECURITY",
-      "NORMAL"
-    ],
+    ["Security Header Review","SECURITY","NORMAL"],
 
-    [
-      "Authorized Bug Hunter Check",
-      "BUG",
-      "NORMAL"
-    ],
+    ["Authorized Bug Hunter Check","BUG","NORMAL"],
 
-    [
-      "Security Assessment Report",
-      "REPORT",
-      "NORMAL"
-    ],
+    ["Security Assessment Report","REPORT","NORMAL"],
 
-    [
-      "AI Security Assistant",
-      "AI",
-      "NORMAL"
-    ]
+    ["AI Security Assistant","AI","NORMAL"]
 
   ];
 
-  for(const row of data){
+  for(const item of demo){
 
-    await createTask(
-      row[0],
-      row[1],
-      row[2]
-    );
+    const task = {
+
+      id:uid(),
+
+      name:item[0],
+
+      type:item[1],
+
+      priority:item[2],
+
+      status:"queued",
+
+      progress:0,
+
+      attempts:0,
+
+      createdAt:now(),
+
+      startedAt:null,
+
+      completedAt:null,
+
+      elapsedMs:0,
+
+      duration:
+        PRIORITY_DURATION[item[2]],
+
+      result:"Task masuk ke queue.",
+
+      error:"",
+
+      logs:[
+
+        {
+          time:now(),
+          message:"Task masuk ke queue."
+        }
+
+      ]
+
+    };
+
+    tasks.unshift(task);
+
+    await dbPut(task);
 
   }
+
+  render();
 
   log(
     "DEMO ×5 CREATED.",
@@ -1798,519 +2172,131 @@ async function demo(){
 
 }
 
-/* =========================================================
+/* ---------------------------------------------------------
    CLEAR
-   ========================================================= */
+--------------------------------------------------------- */
 
 async function clearTasks(){
 
-  if(
-    !confirm(
-      "Hapus seluruh task history?"
-    )
-  ){
+  const yes =
+    confirm(
+      "Hapus seluruh TASK HISTORY dari database lokal?"
+    );
 
+  if(!yes){
     return;
-
   }
 
-  timers.forEach(
-    timer =>
-      clearInterval(timer)
-  );
+  timers.forEach(timer=>{
+    clearInterval(timer);
+  });
 
   timers.clear();
-
   runtimeClock.clear();
 
-  await clearDB();
+  await dbClear();
 
   tasks = [];
 
-  log(
-    "TASK DATABASE CLEARED.",
-    "warn"
-  );
-
   render();
 
-}
-
-/* =========================================================
-   FORMAT
-   ========================================================= */
-
-function format(ms){
-
-  if(
-    !Number.isFinite(ms) ||
-    ms <= 0
-  ){
-
-    return "00s";
-
-  }
-
-  const seconds =
-    Math.floor(ms / 1000);
-
-  const s =
-    seconds % 60;
-
-  const m =
-    Math.floor(seconds / 60) % 60;
-
-  const h =
-    Math.floor(seconds / 3600);
-
-  if(h > 0)
-    return `${h}h ${m}m ${s}s`;
-
-  if(m > 0)
-    return `${m}m ${s}s`;
-
-  return `${String(s).padStart(2,"0")}s`;
-
-}
-
-/* =========================================================
-   DISPLAY DURATION
-   ========================================================= */
-
-function displayDuration(task){
-
-  if(
-    task.status === "queued"
-  ){
-
-    return "00s";
-
-  }
-
-  if(
-    task.status === "running"
-  ){
-
-    const clock =
-      runtimeClock.get(task.id);
-
-    if(!clock)
-      return format(task.elapsedMs || 0);
-
-    return format(
-      Number(task.elapsedMs || 0) +
-      (
-        performance.now() -
-        clock
-      )
-    );
-
-  }
-
-  return format(
-    Number(task.elapsedMs || 0)
+  log(
+    "ALL TASK HISTORY CLEARED.",
+    "warn"
   );
-
 }
 
-/* =========================================================
-   ACTION HELPERS
-   ========================================================= */
-
-function find(id){
-
-  return tasks.find(
-    task => task.id === id
-  );
-
-}
-
-async function startById(id){
-
-  const task = find(id);
-
-  if(task)
-    await startTask(task);
-
-}
-
-async function pauseById(id){
-
-  const task = find(id);
-
-  if(task)
-    await pauseTask(task);
-
-}
-
-async function resumeById(id){
-
-  const task = find(id);
-
-  if(task)
-    await resumeTask(task);
-
-}
-
-async function stopById(id){
-
-  const task = find(id);
-
-  if(task)
-    await stopTask(task);
-
-}
-
-async function retryById(id){
-
-  const task = find(id);
-
-  if(task)
-    await retryTask(task);
-
-}
-
-/* =========================================================
-   RENDER
-   ========================================================= */
-
-function render(){
-
-  document.getElementById("total")
-    .textContent =
-      tasks.length;
-
-  document.getElementById("running")
-    .textContent =
-      tasks.filter(
-        t => t.status === "running"
-      ).length;
-
-  document.getElementById("queued")
-    .textContent =
-      tasks.filter(
-        t => t.status === "queued"
-      ).length;
-
-  document.getElementById("completed")
-    .textContent =
-      tasks.filter(
-        t => t.status === "completed"
-      ).length;
-
-  document.getElementById("failed")
-    .textContent =
-      tasks.filter(
-        t => t.status === "failed"
-      ).length;
-
-  document.getElementById("count")
-    .textContent =
-      `${tasks.length} TASKS`;
-
-  const list =
-    document.getElementById("list");
-
-  if(!tasks.length){
-
-    list.innerHTML =
-      `<div class="empty">
-        TASK QUEUE EMPTY
-      </div>`;
-
-    return;
-
-  }
-
-  const order = {
-
-    running:1,
-    queued:2,
-    paused:3,
-    failed:4,
-    completed:5,
-    cancelled:6
-
-  };
-
-  const sorted =
-    [...tasks].sort(
-      (a,b)=>
-        (order[a.status] || 9) -
-        (order[b.status] || 9)
-    );
-
-  list.innerHTML =
-    sorted.map(task=>{
-
-      const duration =
-        displayDuration(task);
-
-      return `
-
-      <div class="task">
-
-        <div class="task-top">
-
-          <div>
-
-            <div class="task-name">
-              ${escape(task.name)}
-            </div>
-
-            <div class="task-id">
-              ${escape(task.id)}
-            </div>
-
-          </div>
-
-          <div class="badge status-${task.status}">
-            ${task.status.toUpperCase()}
-          </div>
-
-        </div>
-
-        <div class="badges">
-
-          <span class="badge">
-            ${escape(task.type)}
-          </span>
-
-          <span class="badge">
-            ${escape(task.priority)}
-          </span>
-
-          <span class="badge">
-            ATTEMPT ${task.attempts}
-          </span>
-
-          <span class="badge">
-            ${duration}
-          </span>
-
-        </div>
-
-        <div class="progress">
-
-          <div
-            class="progress-bar"
-            style="width:${Math.max(
-              0,
-              Math.min(
-                100,
-                task.progress
-              )
-            )}%"
-          ></div>
-
-        </div>
-
-        <div class="task-info">
-
-          <div>
-            <small>STATUS</small>
-            <strong>
-              ${task.status.toUpperCase()}
-            </strong>
-          </div>
-
-          <div>
-            <small>PROGRESS</small>
-            <strong>
-              ${task.progress}%
-            </strong>
-          </div>
-
-          <div>
-            <small>PRIORITY</small>
-            <strong>
-              ${escape(task.priority)}
-            </strong>
-          </div>
-
-          <div>
-            <small>DURATION</small>
-            <strong>
-              ${duration}
-            </strong>
-          </div>
-
-        </div>
-
-        <div class="task-result">
-          ${escape(
-            task.error ||
-            task.result ||
-            "Task siap dijalankan."
-          )}
-        </div>
-
-        <div class="task-actions">
-
-          ${
-            task.status === "queued"
-            ? `
-              <button
-                class="btn green"
-                onclick="startById('${task.id}')"
-              >
-                ▶ START
-              </button>
-            `
-            : ""
-          }
-
-          ${
-            task.status === "running"
-            ? `
-              <button
-                class="btn"
-                onclick="pauseById('${task.id}')"
-              >
-                ⏸ PAUSE
-              </button>
-
-              <button
-                class="btn red"
-                onclick="stopById('${task.id}')"
-              >
-                ■ STOP
-              </button>
-            `
-            : ""
-          }
-
-          ${
-            task.status === "paused"
-            ? `
-              <button
-                class="btn green"
-                onclick="resumeById('${task.id}')"
-              >
-                ▶ RESUME
-              </button>
-
-              <button
-                class="btn red"
-                onclick="stopById('${task.id}')"
-              >
-                ■ STOP
-              </button>
-            `
-            : ""
-          }
-
-          ${
-            [
-              "completed",
-              "failed",
-              "cancelled"
-            ].includes(task.status)
-            ? `
-              <button
-                class="btn primary"
-                onclick="retryById('${task.id}')"
-              >
-                ↻ RETRY
-              </button>
-            `
-            : ""
-          }
-
-        </div>
-
-      </div>
-
-      `;
-
-    }).join("");
-
-}
-
-/* =========================================================
-   CHECKLIST
-   ========================================================= */
-
-function checklist(){
-
-  const all =
-    document.querySelectorAll(
-      ".check input"
-    );
-
-  let done = 0;
-
-  all.forEach(
-    item=>{
-      if(item.checked)
-        done++;
-    }
-  );
-
-  document.getElementById("checks")
-    .textContent =
-      `${done} / ${all.length}`;
-
-}
-
-/* =========================================================
+/* ---------------------------------------------------------
    MODULE
-   ========================================================= */
+--------------------------------------------------------- */
 
-function moduleClick(button,name){
+function selectModule(button,name){
 
   document
     .querySelectorAll(".nav button")
-    .forEach(
-      b => b.classList.remove("active")
-    );
+    .forEach(btn=>{
+      btn.classList.remove("active");
+    });
 
   button.classList.add("active");
 
   log(
-    `MODULE SELECTED → ${name}`,
+    `MODULE SELECTED: ${name}`,
     "info"
   );
+}
+
+/* ---------------------------------------------------------
+   CHECKLIST
+--------------------------------------------------------- */
+
+function updateChecklist(){
+
+  const boxes =
+    document.querySelectorAll(
+      ".check input"
+    );
+
+  let count = 0;
+
+  boxes.forEach(box=>{
+    if(box.checked){
+      count++;
+    }
+  });
+
+  document.getElementById("checkCount")
+    .textContent =
+      `${count}/${boxes.length}`;
 
 }
 
-/* =========================================================
+/* ---------------------------------------------------------
    BOOT
-   ========================================================= */
+--------------------------------------------------------- */
 
 async function boot(){
 
   try{
 
+    log(
+      "ALFA OS SOFTWARE V1.6.4 BOOTING...",
+      "info"
+    );
+
     await openDB();
 
-    const records =
-      await getAll();
-
     tasks =
-      records.map(normalize);
+      await dbGetAll();
 
     await migrateHistory();
 
     render();
 
+    updateChecklist();
+
     log(
-      "ALFA OS SOFTWARE V1.6.3 ONLINE.",
+      "LOCAL DATABASE ONLINE.",
       "ok"
     );
 
     log(
-      "REAL EXECUTION TIMER ACTIVE.",
+      "REAL TASK ENGINE ONLINE.",
       "ok"
     );
 
     log(
-      "performance.now() MONOTONIC CLOCK ACTIVE.",
-      "info"
+      "ATTEMPT DISPLAY FIX ACTIVE.",
+      "ok"
     );
 
     log(
-      "Legacy history preserved without guessing old runtime.",
+      "MONOTONIC TIMER ENGINE ACTIVE.",
+      "ok"
+    );
+
+    log(
+      "PASSIVE / AUTHORIZED SECURITY MODE.",
       "info"
     );
 
@@ -2319,8 +2305,8 @@ async function boot(){
     console.error(error);
 
     log(
-      "DATABASE ERROR → " +
-      error.message,
+      "DATABASE ERROR: " +
+      (error?.message || error),
       "error"
     );
 
@@ -2328,15 +2314,25 @@ async function boot(){
 
 }
 
-window.addEventListener(
-  "beforeunload",
-  ()=>{
-    timers.forEach(
-      timer =>
-        clearInterval(timer)
-    );
+/* ---------------------------------------------------------
+   REFRESH DISPLAY
+--------------------------------------------------------- */
+
+setInterval(()=>{
+
+  if(
+    tasks.some(
+      task=>task.status==="running"
+    )
+  ){
+    render();
   }
-);
+
+},250);
+
+/* ---------------------------------------------------------
+   START
+--------------------------------------------------------- */
 
 boot();
 
