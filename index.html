@@ -2,27 +2,30 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#030712">
-<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>ALFA OS SOFTWARE V1.7 | PROJECT MANAGER</title>
+<title>ALFA OS SOFTWARE V1.7.1 | PROJECT TASK DATABASE PRO</title>
+
+<meta name="theme-color" content="#050505">
+<meta name="description" content="ALFA OS SOFTWARE - Security, OSINT, AI and multitask command platform.">
 
 <style>
 :root{
-  --bg:#030712;
-  --panel:#07101f;
-  --panel2:#0a1628;
-  --line:#15304d;
-  --cyan:#22d3ee;
-  --blue:#38bdf8;
-  --green:#22c55e;
-  --yellow:#facc15;
-  --red:#ef4444;
-  --purple:#a78bfa;
-  --text:#e5f3ff;
-  --muted:#7890a8;
-  --shadow:0 0 30px rgba(34,211,238,.08);
+  --bg:#030303;
+  --bg2:#080808;
+  --panel:rgba(14,14,16,.82);
+  --panel2:rgba(22,22,24,.72);
+  --red:#ff1f3d;
+  --red2:#ff4059;
+  --red3:#8b0017;
+  --white:#f5f5f7;
+  --muted:#9a9aa2;
+  --line:rgba(255,31,61,.20);
+  --line2:rgba(255,255,255,.08);
+  --green:#55ff9a;
+  --yellow:#ffd75a;
+  --blue:#65bfff;
+  --shadow:0 0 28px rgba(255,20,50,.12);
 }
 
 *{
@@ -38,133 +41,169 @@ html{
 body{
   min-height:100vh;
   font-family:Inter,Segoe UI,Arial,sans-serif;
+  color:var(--white);
   background:
-    radial-gradient(circle at 15% 10%,rgba(34,211,238,.08),transparent 25%),
-    radial-gradient(circle at 85% 80%,rgba(99,102,241,.08),transparent 28%),
-    var(--bg);
-  color:var(--text);
+    radial-gradient(circle at 80% 10%,rgba(255,0,35,.10),transparent 28%),
+    radial-gradient(circle at 20% 90%,rgba(255,0,35,.07),transparent 30%),
+    linear-gradient(135deg,#000 0%,#050505 45%,#090909 100%);
   overflow-x:hidden;
 }
 
-button,
-input,
-select,
-textarea{
-  font:inherit;
+/* MATRIX / HOLOGRAM BACKGROUND */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-3;
+  opacity:.34;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,31,61,.035) 1px,transparent 1px);
+  background-size:42px 42px;
+  mask-image:linear-gradient(to bottom,black,transparent 90%);
 }
 
-button{
-  cursor:pointer;
+body::after{
+  content:"";
+  position:fixed;
+  left:0;
+  right:0;
+  top:-30%;
+  height:35%;
+  pointer-events:none;
+  z-index:100;
+  background:linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255,31,61,.055),
+    transparent
+  );
+  animation:scan 8s linear infinite;
 }
 
+@keyframes scan{
+  from{transform:translateY(0)}
+  to{transform:translateY(420vh)}
+}
+
+/* HOLOGRAM PARTICLES */
+.holo{
+  position:fixed;
+  width:3px;
+  height:3px;
+  background:#fff;
+  box-shadow:0 0 12px var(--red);
+  opacity:.35;
+  pointer-events:none;
+  z-index:-1;
+  animation:floatHolo linear infinite;
+}
+
+@keyframes floatHolo{
+  from{
+    transform:translateY(110vh) translateX(0);
+    opacity:0;
+  }
+  15%{opacity:.45}
+  85%{opacity:.25}
+  to{
+    transform:translateY(-20vh) translateX(80px);
+    opacity:0;
+  }
+}
+
+/* LAYOUT */
 .app{
-  min-height:100vh;
   display:flex;
+  min-height:100vh;
 }
-
-/* ================= SIDEBAR ================= */
 
 .sidebar{
-  width:250px;
-  min-height:100vh;
   position:fixed;
   left:0;
   top:0;
   bottom:0;
-  z-index:20;
-  background:rgba(3,7,18,.94);
-  border-right:1px solid var(--line);
-  backdrop-filter:blur(16px);
+  width:255px;
   padding:20px 14px;
+  border-right:1px solid var(--line);
+  background:
+    linear-gradient(180deg,rgba(5,5,6,.97),rgba(8,8,9,.94));
+  backdrop-filter:blur(16px);
+  z-index:50;
+  overflow-y:auto;
 }
 
 .brand{
-  padding:10px 10px 24px;
+  padding:12px 12px 20px;
   border-bottom:1px solid var(--line);
-  margin-bottom:15px;
+  margin-bottom:16px;
 }
 
 .brand-title{
-  font-size:20px;
   font-weight:900;
-  letter-spacing:2px;
+  font-size:20px;
+  letter-spacing:1.5px;
   color:#fff;
-}
-
-.brand-title span{
-  color:var(--cyan);
+  text-shadow:0 0 12px rgba(255,31,61,.55);
 }
 
 .brand-sub{
-  font-size:9px;
-  letter-spacing:2px;
-  color:var(--muted);
   margin-top:5px;
+  color:var(--red2);
+  font-size:10px;
+  letter-spacing:2px;
 }
 
-.system-status{
-  margin:14px 4px;
-  padding:10px;
-  border:1px solid rgba(34,197,94,.25);
-  background:rgba(34,197,94,.05);
-  border-radius:10px;
+.status{
+  margin-top:12px;
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:7px;
+  color:#aaa;
   font-size:11px;
-  color:#86efac;
 }
 
 .status-dot{
   width:8px;
   height:8px;
-  background:var(--green);
   border-radius:50%;
+  background:var(--green);
   box-shadow:0 0 12px var(--green);
-  animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-  50%{opacity:.35;transform:scale(.75)}
 }
 
 .nav{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
+  display:grid;
+  gap:7px;
 }
 
 .nav button{
-  border:1px solid transparent;
-  background:transparent;
-  color:#8fa8c2;
-  padding:12px;
+  width:100%;
   text-align:left;
+  padding:12px 13px;
+  color:#bbb;
+  border:1px solid transparent;
   border-radius:9px;
-  transition:.2s;
-  font-size:12px;
+  background:transparent;
+  cursor:pointer;
   font-weight:700;
+  font-size:12px;
+  transition:.2s;
 }
 
 .nav button:hover,
 .nav button.active{
   color:#fff;
-  border-color:#16456a;
-  background:linear-gradient(90deg,rgba(34,211,238,.12),transparent);
-  box-shadow:inset 3px 0 0 var(--cyan);
+  border-color:var(--line);
+  background:
+    linear-gradient(90deg,rgba(255,31,61,.14),rgba(255,31,61,.03));
+  box-shadow:inset 3px 0 0 var(--red),0 0 18px rgba(255,31,61,.06);
 }
-
-.nav-icon{
-  display:inline-block;
-  width:24px;
-}
-
-/* ================= MAIN ================= */
 
 .main{
-  width:calc(100% - 250px);
-  margin-left:250px;
-  padding:24px;
+  width:calc(100% - 255px);
+  margin-left:255px;
+  padding:22px;
 }
 
 .topbar{
@@ -172,90 +211,135 @@ button{
   justify-content:space-between;
   align-items:center;
   gap:15px;
-  margin-bottom:22px;
+  margin-bottom:20px;
 }
 
-.top-title{
-  font-size:14px;
+.page-title{
+  font-size:13px;
+  letter-spacing:2px;
+  color:#aaa;
+}
+
+.top-actions{
+  display:flex;
+  gap:8px;
+}
+
+button{
+  font-family:inherit;
+}
+
+.btn{
+  border:1px solid var(--line);
+  background:rgba(20,20,22,.8);
+  color:#fff;
+  border-radius:8px;
+  padding:9px 13px;
+  cursor:pointer;
+  font-size:11px;
   font-weight:800;
-  letter-spacing:1px;
+  transition:.2s;
 }
 
-.top-title span{
-  color:var(--cyan);
+.btn:hover{
+  transform:translateY(-1px);
+  border-color:var(--red);
+  box-shadow:0 0 18px rgba(255,31,61,.16);
 }
 
-.clock{
-  font-family:monospace;
-  color:var(--cyan);
-  font-size:12px;
+.btn-red{
+  background:linear-gradient(135deg,#c60021,#ff1f3d);
+  border-color:#ff4a61;
 }
 
-/* ================= HERO ================= */
+.btn-red:hover{
+  box-shadow:0 0 24px rgba(255,31,61,.28);
+}
+
+.btn-danger{
+  border-color:rgba(255,31,61,.45);
+  color:#ff6c7e;
+}
+
+.btn-success{
+  border-color:rgba(85,255,154,.25);
+  color:var(--green);
+}
+
+.btn-small{
+  padding:6px 9px;
+  font-size:10px;
+}
+
+/* SECTIONS */
+.section{
+  display:none;
+  animation:sectionIn .25s ease;
+}
+
+.section.active{
+  display:block;
+}
+
+@keyframes sectionIn{
+  from{
+    opacity:0;
+    transform:translateY(5px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
 
 .hero{
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:28px;
-  background:
-    linear-gradient(135deg,rgba(34,211,238,.08),rgba(59,130,246,.03)),
-    var(--panel);
-  box-shadow:var(--shadow);
   position:relative;
   overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:28px;
   margin-bottom:18px;
+  background:
+    linear-gradient(135deg,rgba(255,31,61,.09),rgba(255,255,255,.025)),
+    rgba(8,8,10,.78);
+  box-shadow:var(--shadow);
 }
 
-.hero:before{
+.hero::after{
   content:"";
   position:absolute;
-  width:300px;
-  height:300px;
-  right:-120px;
-  top:-150px;
-  border:1px solid rgba(34,211,238,.2);
+  right:-100px;
+  top:-100px;
+  width:280px;
+  height:280px;
+  border:1px solid rgba(255,31,61,.15);
   border-radius:50%;
-  box-shadow:0 0 80px rgba(34,211,238,.08);
+  box-shadow:
+    0 0 40px rgba(255,31,61,.08),
+    inset 0 0 40px rgba(255,31,61,.05);
 }
 
-.hero h1{
-  font-size:30px;
-  line-height:1.15;
-  letter-spacing:2px;
+.hero-kicker{
+  color:var(--red2);
+  font-size:11px;
+  letter-spacing:3px;
+  font-weight:900;
   margin-bottom:9px;
 }
 
-.hero h1 span{
-  color:var(--cyan);
-  text-shadow:0 0 20px rgba(34,211,238,.4);
+.hero h1{
+  font-size:clamp(25px,4vw,46px);
+  line-height:1;
+  letter-spacing:-1px;
+  margin-bottom:10px;
 }
 
 .hero p{
-  max-width:750px;
-  color:var(--muted);
-  font-size:13px;
+  color:#a9a9b0;
+  max-width:760px;
   line-height:1.7;
+  font-size:13px;
 }
-
-.badges{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:16px;
-}
-
-.badge{
-  border:1px solid #16405c;
-  background:#071522;
-  color:#9bdff0;
-  border-radius:999px;
-  padding:6px 10px;
-  font-size:9px;
-  letter-spacing:1px;
-  font-weight:800;
-}
-
-/* ================= STATS ================= */
 
 .stats{
   display:grid;
@@ -265,116 +349,115 @@ button{
 }
 
 .stat{
-  background:var(--panel);
   border:1px solid var(--line);
-  border-radius:14px;
+  border-radius:12px;
   padding:16px;
+  background:var(--panel);
+  backdrop-filter:blur(12px);
+  box-shadow:0 0 18px rgba(255,31,61,.04);
 }
 
 .stat-label{
-  color:var(--muted);
+  color:#85858d;
   font-size:9px;
-  letter-spacing:1.4px;
-  margin-bottom:8px;
+  letter-spacing:1.5px;
+  font-weight:800;
 }
 
 .stat-value{
+  margin-top:7px;
   font-size:25px;
   font-weight:900;
+  color:#fff;
 }
 
-.stat:nth-child(1) .stat-value{color:var(--cyan)}
-.stat:nth-child(2) .stat-value{color:var(--yellow)}
-.stat:nth-child(3) .stat-value{color:var(--blue)}
-.stat:nth-child(4) .stat-value{color:var(--green)}
-.stat:nth-child(5) .stat-value{color:var(--red)}
+.stat-value.red{
+  color:var(--red2);
+  text-shadow:0 0 12px rgba(255,31,61,.35);
+}
 
-/* ================= GRID ================= */
-
+/* GRID */
 .grid{
   display:grid;
-  grid-template-columns:1.15fr .85fr;
+  grid-template-columns:1.3fr .7fr;
   gap:16px;
-  margin-bottom:16px;
 }
 
-.panel{
-  background:rgba(7,16,31,.9);
+.card{
   border:1px solid var(--line);
-  border-radius:16px;
-  padding:18px;
-  box-shadow:var(--shadow);
+  border-radius:14px;
+  background:var(--panel);
+  backdrop-filter:blur(14px);
+  box-shadow:0 0 22px rgba(255,31,61,.045);
+  overflow:hidden;
 }
 
-.panel-title{
+.card-head{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:10px;
-  margin-bottom:15px;
-  padding-bottom:12px;
-  border-bottom:1px solid var(--line);
+  padding:15px 16px;
+  border-bottom:1px solid var(--line2);
 }
 
-.panel-title h2{
-  font-size:13px;
-  letter-spacing:1px;
+.card-title{
+  font-size:12px;
+  letter-spacing:1.4px;
+  font-weight:900;
 }
 
-.panel-title small{
-  color:var(--muted);
-  font-size:9px;
+.card-body{
+  padding:16px;
 }
-
-/* ================= FORMS ================= */
 
 .form-grid{
   display:grid;
-  grid-template-columns:1.5fr 1fr 1fr;
+  grid-template-columns:repeat(2,1fr);
   gap:10px;
 }
 
-.field{
-  display:flex;
-  flex-direction:column;
+.form-group{
+  display:grid;
   gap:6px;
 }
 
-.field label{
-  font-size:9px;
-  color:var(--muted);
-  letter-spacing:1px;
-}
-
-.field input,
-.field select,
-.field textarea,
-.search{
-  width:100%;
-  border:1px solid #173651;
-  background:#040b15;
-  color:#e8f7ff;
-  border-radius:9px;
-  outline:none;
-  padding:11px;
-  font-size:11px;
-}
-
-.field textarea{
-  resize:vertical;
-  min-height:80px;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus,
-.search:focus{
-  border-color:var(--cyan);
-  box-shadow:0 0 0 2px rgba(34,211,238,.06);
-}
-
-.full{
+.form-group.full{
   grid-column:1/-1;
+}
+
+label{
+  font-size:9px;
+  color:#8d8d94;
+  letter-spacing:1px;
+  font-weight:800;
+}
+
+input,
+select,
+textarea{
+  width:100%;
+  color:#fff;
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:8px;
+  padding:10px 11px;
+  outline:none;
+  font:inherit;
+  font-size:12px;
+  transition:.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:rgba(255,31,61,.55);
+  box-shadow:0 0 15px rgba(255,31,61,.09);
+}
+
+textarea{
+  min-height:90px;
+  resize:vertical;
 }
 
 .actions{
@@ -384,207 +467,162 @@ button{
   margin-top:12px;
 }
 
-.btn{
-  border:1px solid #1a4562;
-  background:#081522;
-  color:#bdeeff;
-  border-radius:8px;
-  padding:10px 13px;
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:.5px;
-  transition:.2s;
-}
-
-.btn:hover{
-  transform:translateY(-1px);
-  border-color:var(--cyan);
-  box-shadow:0 0 18px rgba(34,211,238,.1);
-}
-
-.btn.primary{
-  background:linear-gradient(135deg,#0b7490,#0c4f6d);
-  color:#fff;
-  border-color:#1dbbd8;
-}
-
-.btn.green{
-  border-color:#176c43;
-  color:#86efac;
-}
-
-.btn.yellow{
-  border-color:#705b13;
-  color:#fde68a;
-}
-
-.btn.red{
-  border-color:#70202a;
-  color:#fca5a5;
-}
-
-.btn.purple{
-  border-color:#513b7d;
-  color:#d8c7ff;
-}
-
-/* ================= PROJECTS ================= */
-
-.project-layout{
+/* PROJECTS */
+.project-list,
+.task-list{
   display:grid;
-  grid-template-columns:.8fr 1.2fr;
-  gap:14px;
+  gap:10px;
 }
 
-.project-list{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  max-height:520px;
-  overflow:auto;
-  padding-right:4px;
-}
-
-.project-card{
-  border:1px solid #14314b;
-  background:#050d18;
+.project-item{
+  border:1px solid rgba(255,31,61,.14);
   border-radius:11px;
-  padding:12px;
-  cursor:pointer;
+  padding:13px;
+  background:
+    linear-gradient(135deg,rgba(255,31,61,.055),rgba(255,255,255,.018));
   transition:.2s;
 }
 
-.project-card:hover,
-.project-card.selected{
-  border-color:var(--cyan);
-  background:linear-gradient(90deg,rgba(34,211,238,.08),#050d18);
+.project-item:hover{
+  border-color:rgba(255,31,61,.35);
+  transform:translateY(-1px);
+}
+
+.project-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
 }
 
 .project-name{
+  font-size:13px;
   font-weight:900;
-  font-size:12px;
-  margin-bottom:5px;
-}
-
-.project-desc{
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.5;
-  margin-bottom:8px;
 }
 
 .project-meta{
   display:flex;
   flex-wrap:wrap;
   gap:5px;
+  margin-top:7px;
 }
 
-.mini{
-  border:1px solid #18354e;
-  padding:4px 6px;
-  border-radius:5px;
+.badge{
+  border:1px solid rgba(255,255,255,.09);
+  padding:4px 7px;
+  border-radius:999px;
+  color:#aaa;
   font-size:8px;
-  color:#8eb0c7;
-}
-
-.project-detail{
-  min-height:300px;
-}
-
-.detail-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:15px;
-  margin-bottom:15px;
-}
-
-.detail-name{
-  font-size:20px;
   font-weight:900;
+  letter-spacing:.7px;
 }
 
-.detail-description{
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.6;
-  margin-top:5px;
+.badge.red{
+  color:#ff6678;
+  border-color:rgba(255,31,61,.25);
 }
 
-.progress-wrap{
-  margin:15px 0;
+.badge.green{
+  color:var(--green);
+  border-color:rgba(85,255,154,.2);
 }
 
-.progress-label{
-  display:flex;
-  justify-content:space-between;
-  font-size:9px;
-  color:var(--muted);
-  margin-bottom:6px;
+.badge.yellow{
+  color:var(--yellow);
+  border-color:rgba(255,215,90,.2);
+}
+
+.progress{
+  height:6px;
+  background:#171719;
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:12px;
 }
 
 .progress-bar{
-  height:8px;
-  border:1px solid #17334b;
-  background:#030812;
-  border-radius:999px;
-  overflow:hidden;
-}
-
-.progress-fill{
   height:100%;
-  background:linear-gradient(90deg,var(--cyan),var(--blue));
   width:0%;
-  transition:.35s;
-  box-shadow:0 0 15px rgba(34,211,238,.3);
+  background:linear-gradient(90deg,#8b0017,#ff1f3d,#fff);
+  box-shadow:0 0 12px rgba(255,31,61,.45);
+  transition:width .3s ease;
 }
 
-.project-info-grid{
+.project-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:10px;
+}
+
+/* DETAIL */
+.detail-empty{
+  color:#777;
+  font-size:12px;
+  line-height:1.7;
+}
+
+.detail-title{
+  font-size:20px;
+  font-weight:900;
+  margin-bottom:8px;
+}
+
+.detail-description{
+  color:#aaa;
+  font-size:12px;
+  line-height:1.7;
+}
+
+.detail-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:8px;
+  margin:15px 0;
 }
 
-.info{
-  border:1px solid #132e45;
-  border-radius:8px;
-  padding:9px;
-  background:#050c16;
+.detail-stat{
+  padding:10px;
+  border:1px solid var(--line2);
+  border-radius:9px;
+  background:rgba(0,0,0,.3);
 }
 
-.info label{
+.detail-stat span{
   display:block;
+  color:#777;
   font-size:8px;
-  color:var(--muted);
-  margin-bottom:5px;
+  letter-spacing:1px;
 }
 
-.info strong{
-  font-size:10px;
+.detail-stat strong{
+  display:block;
+  margin-top:4px;
+  font-size:15px;
 }
 
-/* ================= TASKS ================= */
-
-.task-list{
-  display:flex;
-  flex-direction:column;
-  gap:9px;
-  max-height:600px;
-  overflow:auto;
-}
-
-.task{
-  border:1px solid #14314b;
-  background:#050d18;
+/* TASK */
+.task-item{
+  border:1px solid rgba(255,255,255,.075);
   border-radius:11px;
   padding:12px;
+  background:rgba(5,5,6,.72);
+}
+
+.task-item.running{
+  border-color:rgba(255,31,61,.5);
+  box-shadow:0 0 18px rgba(255,31,61,.07);
+}
+
+.task-item.completed{
+  border-color:rgba(85,255,154,.12);
 }
 
 .task-head{
   display:flex;
   justify-content:space-between;
-  gap:10px;
   align-items:flex-start;
+  gap:10px;
 }
 
 .task-name{
@@ -593,49 +631,29 @@ button{
 }
 
 .task-id{
-  color:#526d83;
+  margin-top:4px;
+  color:#666;
   font-size:8px;
-  font-family:monospace;
-  margin-top:3px;
+  letter-spacing:.5px;
 }
 
-.status{
-  padding:5px 7px;
-  border-radius:5px;
-  font-size:8px;
+.task-status{
+  font-size:9px;
   font-weight:900;
-  border:1px solid;
+  letter-spacing:1px;
+  color:#aaa;
 }
 
-.status.queued{
-  color:#93c5fd;
-  border-color:#1e40af;
-  background:rgba(30,64,175,.08);
+.task-status.running{
+  color:var(--red2);
 }
 
-.status.running{
-  color:#67e8f9;
-  border-color:#0e7490;
-  background:rgba(14,116,144,.08);
+.task-status.completed{
+  color:var(--green);
 }
 
-.status.paused{
-  color:#fde68a;
-  border-color:#854d0e;
-  background:rgba(133,77,14,.08);
-}
-
-.status.completed{
-  color:#86efac;
-  border-color:#166534;
-  background:rgba(22,101,52,.08);
-}
-
-.status.failed,
-.status.cancelled{
-  color:#fca5a5;
-  border-color:#991b1b;
-  background:rgba(153,27,27,.08);
+.task-status.queued{
+  color:var(--yellow);
 }
 
 .task-meta{
@@ -645,212 +663,184 @@ button{
   margin-top:10px;
 }
 
-.task-meta div{
-  border:1px solid #10283d;
+.meta{
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:7px;
   padding:7px;
-  border-radius:6px;
-  background:#040a12;
+  background:rgba(0,0,0,.25);
 }
 
-.task-meta label{
+.meta small{
   display:block;
+  color:#666;
   font-size:7px;
-  color:#5e7890;
-  margin-bottom:3px;
+  letter-spacing:1px;
 }
 
-.task-meta strong{
+.meta strong{
+  display:block;
+  margin-top:3px;
+  font-size:10px;
+}
+
+.task-result{
+  margin-top:9px;
+  color:#85858d;
   font-size:9px;
 }
 
-.task-progress{
-  margin-top:9px;
-}
-
-.task-progress-line{
-  height:5px;
-  background:#020711;
-  border:1px solid #112a40;
-  border-radius:10px;
-  overflow:hidden;
-}
-
-.task-progress-fill{
-  height:100%;
-  background:linear-gradient(90deg,#22d3ee,#3b82f6);
-  transition:.2s;
-}
-
-.task-buttons{
+.task-actions{
   display:flex;
   flex-wrap:wrap;
-  gap:5px;
+  gap:6px;
   margin-top:9px;
 }
 
-.task-buttons button{
-  padding:6px 8px;
-  font-size:8px;
-  border-radius:5px;
-}
-
-/* ================= CONSOLE ================= */
-
+/* CONSOLE */
 .console{
-  background:#02060d;
-  border:1px solid #10283c;
-  border-radius:10px;
-  min-height:230px;
-  max-height:300px;
+  min-height:280px;
+  max-height:400px;
   overflow:auto;
-  padding:12px;
+  background:#020202;
+  padding:14px;
   font-family:Consolas,monospace;
   font-size:10px;
   line-height:1.7;
+  border-radius:9px;
 }
 
 .log{
-  color:#6f899f;
+  color:#aaa;
 }
 
-.log .time{
-  color:#365a72;
+.log::before{
+  content:"> ";
+  color:var(--red);
 }
 
-.log.info{
-  color:#8edcf0;
-}
-
-.log.success{
-  color:#7ee2a8;
+.log.ok{
+  color:#b7ffd3;
 }
 
 .log.warn{
-  color:#f5d878;
+  color:#ffe18a;
 }
 
 .log.error{
-  color:#f38a8a;
+  color:#ff7384;
 }
 
-/* ================= CHECKLIST ================= */
-
+/* CHECKLIST */
 .checklist{
   display:grid;
-  grid-template-columns:1fr 1fr;
   gap:8px;
 }
 
 .check{
-  border:1px solid #132e45;
-  background:#040a12;
-  border-radius:8px;
-  padding:9px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#aaa;
   font-size:10px;
-  color:#91a9bb;
 }
 
 .check input{
-  margin-right:6px;
-  accent-color:var(--cyan);
+  width:auto;
+  accent-color:var(--red);
 }
 
-/* ================= EMPTY ================= */
+/* MODULE */
+.module-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
 
+.module{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:17px;
+  background:var(--panel);
+  transition:.2s;
+}
+
+.module:hover{
+  transform:translateY(-2px);
+  border-color:var(--red);
+}
+
+.module-icon{
+  font-size:23px;
+  margin-bottom:9px;
+}
+
+.module h3{
+  font-size:12px;
+  margin-bottom:6px;
+}
+
+.module p{
+  color:#85858d;
+  font-size:10px;
+  line-height:1.6;
+}
+
+/* FILTER */
+.filter-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:12px;
+}
+
+.filter-row input,
+.filter-row select{
+  flex:1;
+  min-width:150px;
+}
+
+/* EMPTY */
 .empty{
-  padding:35px 15px;
+  padding:28px;
   text-align:center;
-  border:1px dashed #17334b;
+  color:#666;
+  font-size:11px;
+  border:1px dashed rgba(255,255,255,.07);
   border-radius:10px;
-  color:#597287;
-  font-size:10px;
 }
 
-.empty strong{
-  display:block;
-  color:#91aec3;
-  margin-bottom:5px;
-}
-
-/* ================= TOAST ================= */
-
-.toast{
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  z-index:100;
-  min-width:240px;
-  max-width:360px;
-  padding:13px 15px;
-  border:1px solid #1b4d66;
-  border-radius:10px;
-  background:#06111e;
-  box-shadow:0 15px 50px rgba(0,0,0,.4);
-  color:#bdeeff;
-  font-size:10px;
-  opacity:0;
-  pointer-events:none;
-  transform:translateY(15px);
-  transition:.25s;
-}
-
-.toast.show{
-  opacity:1;
-  transform:translateY(0);
-}
-
-/* ================= RESPONSIVE ================= */
-
+/* RESPONSIVE */
 @media(max-width:1100px){
   .stats{
     grid-template-columns:repeat(3,1fr);
   }
 
-  .grid,
-  .project-layout{
+  .grid{
     grid-template-columns:1fr;
+  }
+
+  .module-grid{
+    grid-template-columns:repeat(2,1fr);
   }
 }
 
 @media(max-width:800px){
   .sidebar{
-    width:70px;
-    padding:12px 8px;
+    position:relative;
+    width:100%;
+    height:auto;
+    bottom:auto;
+    border-right:0;
+    border-bottom:1px solid var(--line);
   }
 
-  .brand-title{
-    font-size:0;
-    text-align:center;
-  }
-
-  .brand-title:after{
-    content:"AOS";
-    font-size:17px;
-    color:var(--cyan);
-  }
-
-  .brand-sub,
-  .system-status span,
-  .nav button .nav-text{
-    display:none;
-  }
-
-  .system-status{
-    justify-content:center;
-  }
-
-  .nav button{
-    text-align:center;
-    padding:12px 4px;
-  }
-
-  .nav-icon{
-    width:auto;
+  .app{
+    display:block;
   }
 
   .main{
-    width:calc(100% - 70px);
-    margin-left:70px;
+    width:100%;
+    margin-left:0;
     padding:14px;
   }
 
@@ -862,36 +852,35 @@ button{
     grid-template-columns:1fr;
   }
 
-  .full{
+  .form-group.full{
     grid-column:auto;
   }
 
-  .task-meta,
-  .project-info-grid{
+  .detail-grid{
     grid-template-columns:repeat(2,1fr);
-  }
-
-  .checklist{
-    grid-template-columns:1fr;
   }
 }
 
-@media(max-width:500px){
-  .hero{
-    padding:20px;
-  }
-
-  .hero h1{
-    font-size:23px;
-  }
-
+@media(max-width:520px){
   .stats{
     grid-template-columns:1fr 1fr;
+  }
+
+  .module-grid{
+    grid-template-columns:1fr;
+  }
+
+  .task-meta{
+    grid-template-columns:repeat(2,1fr);
   }
 
   .topbar{
     align-items:flex-start;
     flex-direction:column;
+  }
+
+  .hero{
+    padding:20px;
   }
 }
 </style>
@@ -899,109 +888,100 @@ button{
 
 <body>
 
-<div class="app">
+<!-- HOLOGRAM PARTICLES -->
+<div class="holo" style="left:8%;animation-duration:12s"></div>
+<div class="holo" style="left:19%;animation-duration:16s;animation-delay:2s"></div>
+<div class="holo" style="left:34%;animation-duration:14s;animation-delay:5s"></div>
+<div class="holo" style="left:52%;animation-duration:18s;animation-delay:1s"></div>
+<div class="holo" style="left:68%;animation-duration:13s;animation-delay:4s"></div>
+<div class="holo" style="left:82%;animation-duration:17s;animation-delay:7s"></div>
+<div class="holo" style="left:94%;animation-duration:15s;animation-delay:3s"></div>
 
-<!-- ================= SIDEBAR ================= -->
+<div class="app">
 
 <aside class="sidebar">
 
   <div class="brand">
-    <div class="brand-title">ALFA <span>OS</span> SOFTWARE</div>
+    <div class="brand-title">ALFA OS SOFTWARE</div>
     <div class="brand-sub">SECURITY • OSINT • AI PLATFORM</div>
-  </div>
 
-  <div class="system-status">
-    <div class="status-dot"></div>
-    <span>SYSTEM ONLINE</span>
+    <div class="status">
+      <span class="status-dot"></span>
+      SYSTEM ONLINE
+    </div>
   </div>
 
   <nav class="nav">
 
-    <button class="active" onclick="showSection('dashboard',this)">
-      <span class="nav-icon">◈</span>
-      <span class="nav-text">Dashboard</span>
+    <button class="active" data-section="dashboard">
+      ◈ DASHBOARD
     </button>
 
-    <button onclick="showSection('projects',this)">
-      <span class="nav-icon">▣</span>
-      <span class="nav-text">Project Manager</span>
+    <button data-section="projects">
+      ◇ PROJECT MANAGER
     </button>
 
-    <button onclick="showSection('tasks',this)">
-      <span class="nav-icon">◫</span>
-      <span class="nav-text">Task Engine</span>
+    <button data-section="tasks">
+      ▣ TASK ENGINE
     </button>
 
-    <button onclick="showSection('osint',this)">
-      <span class="nav-icon">⌕</span>
-      <span class="nav-text">OSINT Engine</span>
+    <button data-section="osint">
+      ◎ OSINT ENGINE
     </button>
 
-    <button onclick="showSection('security',this)">
-      <span class="nav-icon">◉</span>
-      <span class="nav-text">Security Engine</span>
+    <button data-section="security">
+      ◉ SECURITY ENGINE
     </button>
 
-    <button onclick="showSection('bughunter',this)">
-      <span class="nav-icon">⚡</span>
-      <span class="nav-text">Bug Hunter</span>
+    <button data-section="bug">
+      ⚠ BUG HUNTER
     </button>
 
-    <button onclick="showSection('reports',this)">
-      <span class="nav-icon">▤</span>
-      <span class="nav-text">Reports</span>
+    <button data-section="reports">
+      ▤ REPORTS
     </button>
 
-    <button onclick="showSection('ai',this)">
-      <span class="nav-icon">✦</span>
-      <span class="nav-text">AI Security</span>
+    <button data-section="ai">
+      ✦ AI SECURITY
     </button>
 
-    <button onclick="showSection('settings',this)">
-      <span class="nav-icon">⚙</span>
-      <span class="nav-text">Settings</span>
+    <button data-section="settings">
+      ⚙ SETTINGS
     </button>
 
   </nav>
 
 </aside>
 
-<!-- ================= MAIN ================= -->
-
 <main class="main">
 
-  <div class="topbar">
-    <div class="top-title">
-      <span>ALFA OS SOFTWARE</span> / PROJECT MANAGER V1.7
-    </div>
-
-    <div class="clock" id="clock">--:--:--</div>
+<div class="topbar">
+  <div class="page-title">
+    ALFA OS SOFTWARE / COMMAND CENTER / V1.7.1
   </div>
 
-<!-- ================= DASHBOARD ================= -->
+  <div class="top-actions">
+    <button class="btn" onclick="refreshAll()">↻ REFRESH</button>
+    <button class="btn btn-red" onclick="runDemo()">⚡ DEMO</button>
+  </div>
+</div>
 
-<section id="dashboard" class="section">
+<!-- DASHBOARD -->
+<section id="dashboard" class="section active">
 
   <div class="hero">
 
-    <h1>
-      <span>ALFA SECURITY</span><br>
-      COMMAND PLATFORM
-    </h1>
+    <div class="hero-kicker">
+      BLACK // RED // HOLOGRAPHIC COMMAND
+    </div>
+
+    <h1>ALFA SECURITY COMMAND CENTER</h1>
 
     <p>
-      Multitask security workstation dengan Project Manager,
-      Task Engine, persistent local database, monitoring,
-      OSINT workspace dan security workflow.
+      ALFA OS SOFTWARE adalah command platform modular untuk
+      project management, task execution, OSINT workspace,
+      security workflow, reporting, dan AI security.
     </p>
-
-    <div class="badges">
-      <div class="badge">PROJECT MANAGER</div>
-      <div class="badge">TASK ENGINE</div>
-      <div class="badge">INDEXEDDB</div>
-      <div class="badge">MULTITASK</div>
-      <div class="badge">PASSIVE / AUTHORIZED</div>
-    </div>
 
   </div>
 
@@ -1009,7 +989,7 @@ button{
 
     <div class="stat">
       <div class="stat-label">TOTAL PROJECTS</div>
-      <div class="stat-value" id="statProjects">0</div>
+      <div class="stat-value red" id="statProjects">0</div>
     </div>
 
     <div class="stat">
@@ -1019,7 +999,7 @@ button{
 
     <div class="stat">
       <div class="stat-label">RUNNING</div>
-      <div class="stat-value" id="statRunning">0</div>
+      <div class="stat-value red" id="statRunning">0</div>
     </div>
 
     <div class="stat">
@@ -1036,25 +1016,72 @@ button{
 
   <div class="grid">
 
-    <div class="panel">
+    <div class="card">
 
-      <div class="panel-title">
-        <h2>PROJECT OVERVIEW</h2>
-        <small>LOCAL DATABASE</small>
+      <div class="card-head">
+        <div class="card-title">LIVE SECURITY CONSOLE</div>
+        <span class="badge red">LIVE</span>
       </div>
 
-      <div id="dashboardProjects"></div>
+      <div class="card-body">
+        <div class="console" id="console"></div>
+      </div>
 
     </div>
 
-    <div class="panel">
+    <div class="card">
 
-      <div class="panel-title">
-        <h2>LIVE SECURITY CONSOLE</h2>
-        <small>ALFA CORE</small>
+      <div class="card-head">
+        <div class="card-title">SECURITY CHECKLIST</div>
       </div>
 
-      <div class="console" id="console"></div>
+      <div class="card-body">
+
+        <div class="checklist">
+
+          <label class="check">
+            <input type="checkbox" checked>
+            Target authorization verified
+          </label>
+
+          <label class="check">
+            <input type="checkbox" checked>
+            Passive analysis enabled
+          </label>
+
+          <label class="check">
+            <input type="checkbox">
+            Scope documented
+          </label>
+
+          <label class="check">
+            <input type="checkbox">
+            Evidence collected
+          </label>
+
+          <label class="check">
+            <input type="checkbox">
+            Findings reviewed
+          </label>
+
+          <label class="check">
+            <input type="checkbox">
+            Report generated
+          </label>
+
+          <label class="check">
+            <input type="checkbox">
+            Sensitive data protected
+          </label>
+
+          <label class="check">
+            <input type="checkbox">
+            Final verification
+          </label>
+
+        </div>
+
+      </div>
 
     </div>
 
@@ -1062,109 +1089,143 @@ button{
 
 </section>
 
-<!-- ================= PROJECT MANAGER ================= -->
 
-<section id="projects" class="section" style="display:none">
+<!-- PROJECT MANAGER -->
+<section id="projects" class="section">
 
-  <div class="panel">
+  <div class="hero">
 
-    <div class="panel-title">
-      <h2>PROJECT MANAGER</h2>
-      <small>ALFA OS SOFTWARE V1.7</small>
+    <div class="hero-kicker">
+      PROJECT DATABASE / V1.7.1
     </div>
 
-    <div class="form-grid">
+    <h1>PROJECT MANAGER</h1>
 
-      <div class="field">
-        <label>PROJECT NAME</label>
-        <input id="projectName" placeholder="Contoh: WEBSITE CLIENT ALFA">
-      </div>
-
-      <div class="field">
-        <label>STATUS</label>
-        <select id="projectStatus">
-          <option value="planning">PLANNING</option>
-          <option value="active">ACTIVE</option>
-          <option value="paused">PAUSED</option>
-          <option value="completed">COMPLETED</option>
-          <option value="archived">ARCHIVED</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label>PRIORITY</label>
-        <select id="projectPriority">
-          <option value="LOW">LOW</option>
-          <option value="NORMAL" selected>NORMAL</option>
-          <option value="HIGH">HIGH</option>
-          <option value="CRITICAL">CRITICAL</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label>DEADLINE</label>
-        <input id="projectDeadline" type="date">
-      </div>
-
-      <div class="field full">
-        <label>DESCRIPTION</label>
-        <textarea id="projectDescription"
-          placeholder="Deskripsi project..."></textarea>
-      </div>
-
-      <div class="field full">
-        <label>PROJECT NOTES</label>
-        <textarea id="projectNotes"
-          placeholder="Catatan internal project..."></textarea>
-      </div>
-
-    </div>
-
-    <div class="actions">
-      <button class="btn primary" onclick="createProject()">
-        + CREATE PROJECT
-      </button>
-
-      <button class="btn" onclick="resetProjectForm()">
-        RESET FORM
-      </button>
-    </div>
+    <p>
+      Kelola project, deadline, status, priority, task,
+      progress, notes dan activity log dalam satu workspace.
+    </p>
 
   </div>
 
-  <br>
+  <div class="grid">
 
-  <div class="panel">
+    <div class="card">
 
-    <div class="panel-title">
+      <div class="card-head">
+        <div class="card-title">CREATE PROJECT</div>
+      </div>
 
-      <h2>PROJECT WORKSPACE</h2>
+      <div class="card-body">
 
-      <input
-        class="search"
-        id="projectSearch"
-        placeholder="Search project..."
-        oninput="renderProjects()"
-        style="max-width:240px"
-      >
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>PROJECT NAME</label>
+            <input id="projectName" placeholder="Contoh: ALFA Security Audit">
+          </div>
+
+          <div class="form-group">
+            <label>STATUS</label>
+
+            <select id="projectStatus">
+              <option value="planning">PLANNING</option>
+              <option value="active">ACTIVE</option>
+              <option value="paused">PAUSED</option>
+              <option value="completed">COMPLETED</option>
+              <option value="archived">ARCHIVED</option>
+            </select>
+
+          </div>
+
+          <div class="form-group">
+            <label>PRIORITY</label>
+
+            <select id="projectPriority">
+              <option value="LOW">LOW</option>
+              <option value="NORMAL" selected>NORMAL</option>
+              <option value="HIGH">HIGH</option>
+              <option value="CRITICAL">CRITICAL</option>
+            </select>
+
+          </div>
+
+          <div class="form-group">
+            <label>DEADLINE</label>
+            <input id="projectDeadline" type="date">
+          </div>
+
+          <div class="form-group full">
+            <label>DESCRIPTION</label>
+            <textarea id="projectDescription"
+              placeholder="Deskripsi project..."></textarea>
+          </div>
+
+          <div class="form-group full">
+            <label>NOTES</label>
+            <textarea id="projectNotes"
+              placeholder="Catatan project..."></textarea>
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <button class="btn btn-red" onclick="createProject()">
+            + CREATE PROJECT
+          </button>
+
+          <button class="btn" onclick="clearProjectForm()">
+            CLEAR
+          </button>
+
+        </div>
+
+      </div>
 
     </div>
 
-    <div class="project-layout">
 
-      <div>
+    <div class="card">
+
+      <div class="card-head">
+        <div class="card-title">PROJECT SEARCH</div>
+      </div>
+
+      <div class="card-body">
+
+        <input
+          id="projectSearch"
+          placeholder="Search project..."
+          oninput="renderProjects()"
+        >
+
+        <div style="height:10px"></div>
 
         <div id="projectList" class="project-list"></div>
 
       </div>
 
-      <div id="projectDetail" class="project-detail">
+    </div>
 
-        <div class="empty">
-          <strong>NO PROJECT SELECTED</strong>
-          Pilih project untuk melihat detail.
-        </div>
+  </div>
 
+  <div style="height:16px"></div>
+
+  <div class="card">
+
+    <div class="card-head">
+      <div class="card-title">PROJECT DETAIL</div>
+
+      <button class="btn btn-small" onclick="closeProjectDetail()">
+        CLOSE
+      </button>
+    </div>
+
+    <div class="card-body" id="projectDetail">
+
+      <div class="detail-empty">
+        Pilih project untuk melihat detail.
       </div>
 
     </div>
@@ -1173,67 +1234,88 @@ button{
 
 </section>
 
-<!-- ================= TASK ENGINE ================= -->
 
-<section id="tasks" class="section" style="display:none">
+<!-- TASK ENGINE -->
+<section id="tasks" class="section">
 
-  <div class="grid">
+  <div class="hero">
 
-    <div class="panel">
+    <div class="hero-kicker">
+      REAL TASK ENGINE / DATABASE LINKED
+    </div>
 
-      <div class="panel-title">
-        <h2>TASK CONTROL CENTER</h2>
-        <small>REAL EXECUTION ENGINE</small>
-      </div>
+    <h1>TASK ENGINE</h1>
+
+    <p>
+      Task queue, execution timer, attempt counter,
+      priority, project assignment, pause, resume,
+      retry dan progress tracking.
+    </p>
+
+  </div>
+
+  <div class="card">
+
+    <div class="card-head">
+      <div class="card-title">CREATE TASK</div>
+    </div>
+
+    <div class="card-body">
 
       <div class="form-grid">
 
-        <div class="field full">
+        <div class="form-group">
           <label>TASK NAME</label>
           <input id="taskName" placeholder="Contoh: Security Header Review">
         </div>
 
-        <div class="field">
+        <div class="form-group">
           <label>TYPE</label>
+
           <select id="taskType">
             <option value="OSINT">OSINT</option>
-            <option value="SECURITY">SECURITY</option>
-            <option value="BUG">BUG HUNTER</option>
+            <option value="SECURITY" selected>SECURITY</option>
+            <option value="BUG">BUG</option>
             <option value="REPORT">REPORT</option>
-            <option value="AI">AI SECURITY</option>
+            <option value="AI">AI</option>
           </select>
+
         </div>
 
-        <div class="field">
+        <div class="form-group">
           <label>PRIORITY</label>
+
           <select id="taskPriority">
             <option value="LOW">LOW</option>
             <option value="NORMAL" selected>NORMAL</option>
             <option value="HIGH">HIGH</option>
             <option value="CRITICAL">CRITICAL</option>
           </select>
+
         </div>
 
-        <div class="field full">
+        <div class="form-group">
           <label>PROJECT</label>
+
           <select id="taskProject">
             <option value="">UNASSIGNED</option>
           </select>
+
         </div>
 
       </div>
 
       <div class="actions">
 
-        <button class="btn primary" onclick="createTask()">
+        <button class="btn btn-red" onclick="createTask()">
           + CREATE TASK
         </button>
 
-        <button class="btn green" onclick="startNextTask()">
+        <button class="btn" onclick="startNextTask()">
           ▶ START NEXT
         </button>
 
-        <button class="btn yellow" onclick="pauseAll()">
+        <button class="btn" onclick="pauseAll()">
           ❚❚ PAUSE ALL
         </button>
 
@@ -1241,11 +1323,11 @@ button{
           ▶ RESUME ALL
         </button>
 
-        <button class="btn purple" onclick="createDemoTasks()">
-          DEMO ×5
+        <button class="btn" onclick="runDemo()">
+          ⚡ DEMO ×5
         </button>
 
-        <button class="btn red" onclick="clearCompleted()">
+        <button class="btn btn-danger" onclick="clearCompleted()">
           CLEAR COMPLETED
         </button>
 
@@ -1253,134 +1335,57 @@ button{
 
     </div>
 
-    <div class="panel">
+  </div>
 
-      <div class="panel-title">
-        <h2>TASK ENGINE STATUS</h2>
-        <small>LIVE</small>
+  <div style="height:16px"></div>
+
+  <div class="card">
+
+    <div class="card-head">
+
+      <div class="card-title">
+        TASK QUEUE / LIVE HISTORY
       </div>
 
-      <div class="console" id="taskConsole"></div>
+      <div style="display:flex;gap:7px">
+
+        <input
+          id="taskSearch"
+          placeholder="Search task..."
+          oninput="renderTasks()"
+          style="width:180px"
+        >
+
+        <select
+          id="taskFilterProject"
+          onchange="renderTasks()"
+          style="width:160px"
+        >
+          <option value="ALL">ALL PROJECTS</option>
+          <option value="">UNASSIGNED</option>
+        </select>
+
+        <select
+          id="taskFilterStatus"
+          onchange="renderTasks()"
+          style="width:130px"
+        >
+          <option value="ALL">ALL STATUS</option>
+          <option value="queued">QUEUED</option>
+          <option value="running">RUNNING</option>
+          <option value="paused">PAUSED</option>
+          <option value="completed">COMPLETED</option>
+          <option value="failed">FAILED</option>
+          <option value="cancelled">CANCELLED</option>
+        </select>
+
+      </div>
 
     </div>
 
-  </div>
+    <div class="card-body">
 
-  <div class="panel">
-
-    <div class="panel-title">
-
-      <h2>TASK QUEUE / LIVE HISTORY</h2>
-
-      <input
-        class="search"
-        id="taskSearch"
-        placeholder="Search task..."
-        oninput="renderTasks()"
-        style="max-width:240px"
-      >
-
-    </div>
-
-    <div id="taskList" class="task-list"></div>
-
-  </div>
-
-</section>
-
-<!-- ================= OSINT ================= -->
-
-<section id="osint" class="section" style="display:none">
-
-  <div class="panel">
-
-    <div class="panel-title">
-      <h2>OSINT ENGINE</h2>
-      <small>PASSIVE / AUTHORIZED WORKSPACE</small>
-    </div>
-
-    <div class="field">
-      <label>AUTHORIZED TARGET / ASSET</label>
-      <input id="osintTarget"
-        placeholder="Masukkan domain atau asset milik sendiri">
-    </div>
-
-    <div class="actions">
-      <button class="btn primary" onclick="runSafeModule('OSINT')">
-        INITIALIZE OSINT WORKSPACE
-      </button>
-    </div>
-
-  </div>
-
-</section>
-
-<!-- ================= SECURITY ================= -->
-
-<section id="security" class="section" style="display:none">
-
-  <div class="panel">
-
-    <div class="panel-title">
-      <h2>SECURITY ENGINE</h2>
-      <small>AUTHORIZED TESTING ONLY</small>
-    </div>
-
-    <div class="field">
-      <label>AUTHORIZED TARGET</label>
-      <input id="securityTarget"
-        placeholder="Target milik sendiri / authorized">
-    </div>
-
-    <div class="actions">
-      <button class="btn primary" onclick="runSafeModule('SECURITY')">
-        INITIALIZE SECURITY CHECK
-      </button>
-    </div>
-
-    <br>
-
-    <div class="checklist">
-
-      <label class="check">
-        <input type="checkbox">
-        HTTPS / TLS Review
-      </label>
-
-      <label class="check">
-        <input type="checkbox">
-        Security Headers
-      </label>
-
-      <label class="check">
-        <input type="checkbox">
-        Cookie Configuration
-      </label>
-
-      <label class="check">
-        <input type="checkbox">
-        Authentication Review
-      </label>
-
-      <label class="check">
-        <input type="checkbox">
-        Input Validation
-      </label>
-
-      <label class="check">
-        <input type="checkbox">
-        Access Control
-      </label>
-
-      <label class="check">
-        <input type="checkbox">
-        Error Handling
-      </label>
-
-      <label class="check">
-        <input type="checkbox">
-        Security Documentation
-      </label>
+      <div id="taskList" class="task-list"></div>
 
     </div>
 
@@ -1388,90 +1393,247 @@ button{
 
 </section>
 
-<!-- ================= BUG HUNTER ================= -->
 
-<section id="bughunter" class="section" style="display:none">
+<!-- OSINT -->
+<section id="osint" class="section">
 
-  <div class="panel">
+  <div class="hero">
+    <div class="hero-kicker">PASSIVE / AUTHORIZED WORKSPACE</div>
+    <h1>OSINT ENGINE</h1>
+    <p>
+      Workspace untuk analisis informasi publik dan aset
+      yang dimiliki atau telah diotorisasi.
+    </p>
+  </div>
 
-    <div class="panel-title">
-      <h2>AUTHORIZED BUG HUNTER</h2>
-      <small>LAB / OWNED TARGETS</small>
+  <div class="module-grid">
+
+    <div class="module">
+      <div class="module-icon">◎</div>
+      <h3>Asset Discovery</h3>
+      <p>Workspace untuk pencatatan aset dan target authorized.</p>
     </div>
 
-    <div class="empty">
-      <strong>BUG HUNTER WORKSPACE</strong>
-      Gunakan hanya pada sistem yang Anda miliki atau memiliki izin
-      untuk menguji.
-      <br><br>
-      V1.7 menyiapkan project/task workflow untuk modul bug hunting
-      pada tahap berikutnya.
+    <div class="module">
+      <div class="module-icon">⌁</div>
+      <h3>Domain Intelligence</h3>
+      <p>Modul analisis domain secara pasif.</p>
+    </div>
+
+    <div class="module">
+      <div class="module-icon">◌</div>
+      <h3>Evidence Workspace</h3>
+      <p>Persiapan evidence untuk laporan keamanan.</p>
     </div>
 
   </div>
 
 </section>
 
-<!-- ================= REPORTS ================= -->
 
-<section id="reports" class="section" style="display:none">
+<!-- SECURITY -->
+<section id="security" class="section">
 
-  <div class="panel">
+  <div class="hero">
+    <div class="hero-kicker">AUTHORIZED SECURITY WORKFLOW</div>
+    <h1>SECURITY ENGINE</h1>
+    <p>
+      Modul keamanan defensif untuk target milik sendiri
+      atau target yang memiliki izin pengujian.
+    </p>
+  </div>
 
-    <div class="panel-title">
-      <h2>REPORT CENTER</h2>
-      <small>PROJECT → TASK → FINDINGS → REPORT</small>
+  <div class="module-grid">
+
+    <div class="module">
+      <div class="module-icon">◉</div>
+      <h3>Security Review</h3>
+      <p>Review konfigurasi dan security posture.</p>
     </div>
 
-    <div class="empty">
-      <strong>REPORT ENGINE STANDBY</strong>
-      Struktur project dan task V1.7 sudah disiapkan untuk
-      Report Engine berikutnya.
+    <div class="module">
+      <div class="module-icon">▣</div>
+      <h3>Header Review</h3>
+      <p>Workspace untuk pemeriksaan security headers.</p>
+    </div>
+
+    <div class="module">
+      <div class="module-icon">◆</div>
+      <h3>Risk Assessment</h3>
+      <p>Catat finding, severity dan remediation.</p>
     </div>
 
   </div>
 
 </section>
 
-<!-- ================= AI ================= -->
 
-<section id="ai" class="section" style="display:none">
+<!-- BUG -->
+<section id="bug" class="section">
 
-  <div class="panel">
+  <div class="hero">
+    <div class="hero-kicker">AUTHORIZED BUG HUNTER</div>
+    <h1>BUG HUNTER</h1>
+    <p>
+      Workspace untuk vulnerability research pada aset
+      yang dimiliki atau telah mendapat izin.
+    </p>
+  </div>
 
-    <div class="panel-title">
-      <h2>AI SECURITY ASSISTANT</h2>
-      <small>WORKSPACE</small>
+  <div class="module-grid">
+
+    <div class="module">
+      <div class="module-icon">⚠</div>
+      <h3>Finding Tracker</h3>
+      <p>Kelola temuan dan severity.</p>
     </div>
 
-    <div class="empty">
-      <strong>AI SECURITY MODULE</strong>
-      Workspace siap dihubungkan ke AI engine pada fase berikutnya.
-      Tidak ada perubahan pada Worker ALFA AI.
+    <div class="module">
+      <div class="module-icon">⌕</div>
+      <h3>Scope Manager</h3>
+      <p>Catat scope dan authorization.</p>
+    </div>
+
+    <div class="module">
+      <div class="module-icon">✓</div>
+      <h3>Remediation</h3>
+      <p>Catat rekomendasi perbaikan.</p>
     </div>
 
   </div>
 
 </section>
 
-<!-- ================= SETTINGS ================= -->
 
-<section id="settings" class="section" style="display:none">
+<!-- REPORTS -->
+<section id="reports" class="section">
 
-  <div class="panel">
+  <div class="hero">
+    <div class="hero-kicker">REPORT ENGINE</div>
+    <h1>REPORT CENTER</h1>
+    <p>
+      Project dan task yang tersusun akan menjadi fondasi
+      report engine pada tahap berikutnya.
+    </p>
+  </div>
 
-    <div class="panel-title">
-      <h2>SYSTEM SETTINGS</h2>
-      <small>ALFA OS SOFTWARE</small>
+  <div class="module-grid">
+
+    <div class="module">
+      <div class="module-icon">▤</div>
+      <h3>Project Report</h3>
+      <p>Ringkasan project dan progress.</p>
     </div>
 
-    <div class="empty">
-      <strong>DATABASE</strong>
-      IndexedDB persistent local storage aktif.
-      <br>
-      Database: ALFA_OS_SOFTWARE_DB
-      <br>
-      Schema: V7
+    <div class="module">
+      <div class="module-icon">▥</div>
+      <h3>Task Report</h3>
+      <p>Ringkasan execution dan hasil task.</p>
+    </div>
+
+    <div class="module">
+      <div class="module-icon">▦</div>
+      <h3>Security Report</h3>
+      <p>Fondasi laporan security assessment.</p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- AI -->
+<section id="ai" class="section">
+
+  <div class="hero">
+    <div class="hero-kicker">AI SECURITY WORKSPACE</div>
+    <h1>AI SECURITY</h1>
+    <p>
+      Area integrasi AI security untuk tahap pengembangan
+      berikutnya. Tidak mengubah ALFA AI Worker.
+    </p>
+  </div>
+
+  <div class="module-grid">
+
+    <div class="module">
+      <div class="module-icon">✦</div>
+      <h3>AI Assistant</h3>
+      <p>Workspace AI untuk analisis security.</p>
+    </div>
+
+    <div class="module">
+      <div class="module-icon">◇</div>
+      <h3>Finding Analysis</h3>
+      <p>Analisis finding dan rekomendasi.</p>
+    </div>
+
+    <div class="module">
+      <div class="module-icon">⚡</div>
+      <h3>Automation</h3>
+      <p>Fondasi automation workflow.</p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- SETTINGS -->
+<section id="settings" class="section">
+
+  <div class="hero">
+    <div class="hero-kicker">SYSTEM CONFIGURATION</div>
+    <h1>SETTINGS</h1>
+    <p>
+      Konfigurasi lokal ALFA OS SOFTWARE.
+    </p>
+  </div>
+
+  <div class="card">
+
+    <div class="card-head">
+      <div class="card-title">SYSTEM INFORMATION</div>
+    </div>
+
+    <div class="card-body">
+
+      <div class="detail-grid">
+
+        <div class="detail-stat">
+          <span>APPLICATION</span>
+          <strong>ALFA OS SOFTWARE</strong>
+        </div>
+
+        <div class="detail-stat">
+          <span>VERSION</span>
+          <strong>V1.7.1</strong>
+        </div>
+
+        <div class="detail-stat">
+          <span>DATABASE</span>
+          <strong>INDEXEDDB</strong>
+        </div>
+
+        <div class="detail-stat">
+          <span>MODE</span>
+          <strong>LOCAL</strong>
+        </div>
+
+      </div>
+
+      <div class="actions">
+
+        <button class="btn" onclick="refreshAll()">
+          ↻ REFRESH DATA
+        </button>
+
+        <button class="btn btn-danger" onclick="clearLogs()">
+          CLEAR CONSOLE
+        </button>
+
+      </div>
+
     </div>
 
   </div>
@@ -1481,16 +1643,16 @@ button{
 </main>
 </div>
 
-<div class="toast" id="toast"></div>
 
 <script>
 /* =========================================================
-   ALFA OS SOFTWARE V1.7
-   PROJECT MANAGER + REAL TASK ENGINE
+   ALFA OS SOFTWARE V1.7.1
+   PROJECT + TASK DATABASE PRO
+   DATABASE VERSION 8
    ========================================================= */
 
 const DB_NAME = "ALFA_OS_SOFTWARE_DB";
-const DB_VERSION = 7;
+const DB_VERSION = 8;
 
 const TASK_STORE = "tasks";
 const PROJECT_STORE = "projects";
@@ -1500,53 +1662,41 @@ let db = null;
 let tasks = [];
 let projects = [];
 
-let selectedProjectId = null;
-
 const runtimeClock = new Map();
-const runtimeTimers = new Map();
+const runtimeIntervals = new Map();
 
 const DURATIONS = {
-  CRITICAL: 8000,
-  HIGH: 6500,
-  NORMAL: 5000,
-  LOW: 3500
+  CRITICAL:8000,
+  HIGH:6500,
+  NORMAL:5000,
+  LOW:3500
 };
 
-const PRIORITY_ORDER = {
-  CRITICAL: 0,
-  HIGH: 1,
-  NORMAL: 2,
-  LOW: 3
+const PRIORITY_WEIGHT = {
+  CRITICAL:4,
+  HIGH:3,
+  NORMAL:2,
+  LOW:1
 };
 
-/* ================= BASIC HELPERS ================= */
 
-function uid(prefix="ID"){
-  return prefix + "_" +
-    Date.now().toString(36) +
-    "_" +
-    Math.random().toString(36).slice(2,8);
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function uid(prefix="ALFA"){
+  return prefix + "-" +
+    Date.now().toString(36).toUpperCase() +
+    "-" +
+    Math.random().toString(36).slice(2,6).toUpperCase();
 }
 
 function now(){
   return Date.now();
 }
 
-function esc(value){
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-
-function formatAttempt(value){
-  const n = Number.isFinite(Number(value))
-    ? Math.max(0,Math.floor(Number(value)))
-    : 0;
-
-  return String(n).padStart(3,"0");
+function clamp(n,min,max){
+  return Math.max(min,Math.min(max,n));
 }
 
 function formatDuration(ms){
@@ -1559,114 +1709,79 @@ function formatDuration(ms){
   const s = totalSeconds%60;
 
   if(h > 0){
-    return `${String(h).padStart(2,"0")}h ${String(m).padStart(2,"0")}m`;
+    return String(h).padStart(2,"0")+"h "+
+           String(m).padStart(2,"0")+"m";
   }
 
   if(m > 0){
-    return `${String(m).padStart(2,"0")}m ${String(s).padStart(2,"0")}s`;
+    return String(m).padStart(2,"0")+"m "+
+           String(s).padStart(2,"0")+"s";
   }
 
-  return `${String(s).padStart(2,"0")}s`;
+  return String(s).padStart(2,"0")+"s";
 }
 
-function projectStatusLabel(status){
-  return String(status || "planning").toUpperCase();
+function formatAttempt(value){
+  const n = Number.isFinite(Number(value))
+    ? Math.max(0,Math.floor(Number(value)))
+    : 0;
+
+  return String(n).padStart(3,"0");
 }
 
-function showToast(message){
-  const el = document.getElementById("toast");
-
-  el.textContent = message;
-  el.classList.add("show");
-
-  clearTimeout(showToast.timer);
-
-  showToast.timer = setTimeout(()=>{
-    el.classList.remove("show");
-  },2200);
+function escapeHTML(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 
-/* ================= CLOCK ================= */
+function projectName(id){
+  if(!id) return "UNASSIGNED";
 
-function updateClock(){
-  const d = new Date();
+  const p = projects.find(x => x.id === id);
 
-  document.getElementById("clock").textContent =
-    d.toLocaleTimeString("id-ID");
+  return p ? p.name : "UNASSIGNED";
 }
 
-setInterval(updateClock,1000);
-updateClock();
 
-/* ================= CONSOLE ================= */
+/* =========================================================
+   CONSOLE
+   ========================================================= */
 
-function addLog(message,type=""){
-  const consoleEl = document.getElementById("console");
+function log(message,type=""){
+  const consoleBox = document.getElementById("console");
 
-  if(!consoleEl) return;
-
-  const time = new Date().toLocaleTimeString("id-ID");
+  if(!consoleBox) return;
 
   const row = document.createElement("div");
 
   row.className = "log " + type;
 
-  row.innerHTML =
-    `<span class="time">[${esc(time)}]</span> ${esc(message)}`;
+  const time = new Date().toLocaleTimeString();
 
-  consoleEl.appendChild(row);
+  row.textContent =
+    "["+time+"] " + message;
 
-  consoleEl.scrollTop = consoleEl.scrollHeight;
+  consoleBox.appendChild(row);
+
+  consoleBox.scrollTop = consoleBox.scrollHeight;
 }
 
-function addTaskLog(message,type=""){
-  const consoleEl = document.getElementById("taskConsole");
+function clearLogs(){
+  const c = document.getElementById("console");
 
-  if(!consoleEl) return;
+  if(c) c.innerHTML = "";
 
-  const time = new Date().toLocaleTimeString("id-ID");
-
-  const row = document.createElement("div");
-
-  row.className = "log " + type;
-
-  row.innerHTML =
-    `<span class="time">[${esc(time)}]</span> ${esc(message)}`;
-
-  consoleEl.appendChild(row);
-
-  consoleEl.scrollTop = consoleEl.scrollHeight;
+  log("CONSOLE CLEARED","ok");
 }
 
-/* ================= NAV ================= */
 
-function showSection(id,button){
-
-  document.querySelectorAll(".section").forEach(section=>{
-    section.style.display =
-      section.id === id ? "block" : "none";
-  });
-
-  document.querySelectorAll(".nav button").forEach(btn=>{
-    btn.classList.remove("active");
-  });
-
-  if(button){
-    button.classList.add("active");
-  }
-
-  if(id === "projects"){
-    renderProjects();
-    updateProjectSelect();
-  }
-
-  if(id === "tasks"){
-    renderTasks();
-    updateProjectSelect();
-  }
-}
-
-/* ================= INDEXED DB ================= */
+/* =========================================================
+   DATABASE
+   ========================================================= */
 
 function openDatabase(){
 
@@ -1675,15 +1790,38 @@ function openDatabase(){
     const request =
       indexedDB.open(DB_NAME,DB_VERSION);
 
+    request.onblocked = () => {
+
+      log(
+        "DATABASE UPGRADE BLOCKED. CLOSE OTHER ALFA OS TABS.",
+        "warn"
+      );
+
+    };
+
+    request.onerror = () => {
+
+      log(
+        "DATABASE ERROR: " +
+        (request.error?.message || "unknown"),
+        "error"
+      );
+
+      reject(request.error);
+
+    };
+
     request.onupgradeneeded = event => {
 
       const database = event.target.result;
 
-      /* V1.6.x task store */
+      /* TASK STORE */
+
+      let taskStore;
 
       if(!database.objectStoreNames.contains(TASK_STORE)){
 
-        const taskStore =
+        taskStore =
           database.createObjectStore(
             TASK_STORE,
             {keyPath:"id"}
@@ -1707,12 +1845,18 @@ function openDatabase(){
           {unique:false}
         );
 
+        taskStore.createIndex(
+          "projectId",
+          "projectId",
+          {unique:false}
+        );
+
       }else{
 
-        const tx = event.target.transaction;
-
-        const taskStore =
-          tx.objectStore(TASK_STORE);
+        taskStore =
+          event.target.transaction.objectStore(
+            TASK_STORE
+          );
 
         if(!taskStore.indexNames.contains("status")){
           taskStore.createIndex(
@@ -1748,11 +1892,14 @@ function openDatabase(){
 
       }
 
-      /* V1.7 PROJECT STORE */
+
+      /* PROJECT STORE */
+
+      let projectStore;
 
       if(!database.objectStoreNames.contains(PROJECT_STORE)){
 
-        const projectStore =
+        projectStore =
           database.createObjectStore(
             PROJECT_STORE,
             {keyPath:"id"}
@@ -1776,47 +1923,80 @@ function openDatabase(){
           {unique:false}
         );
 
+      }else{
+
+        projectStore =
+          event.target.transaction.objectStore(
+            PROJECT_STORE
+          );
+
+        if(!projectStore.indexNames.contains("status")){
+          projectStore.createIndex(
+            "status",
+            "status",
+            {unique:false}
+          );
+        }
+
+        if(!projectStore.indexNames.contains("priority")){
+          projectStore.createIndex(
+            "priority",
+            "priority",
+            {unique:false}
+          );
+        }
+
+        if(!projectStore.indexNames.contains("createdAt")){
+          projectStore.createIndex(
+            "createdAt",
+            "createdAt",
+            {unique:false}
+          );
+        }
+
       }
+
+      log(
+        "DATABASE SCHEMA UPGRADED TO V1.7.1 / DB V8",
+        "ok"
+      );
 
     };
 
-    request.onsuccess = event => {
+    request.onsuccess = () => {
 
-      db = event.target.result;
+      db = request.result;
 
-      db.onversionchange = ()=>{
+      db.onversionchange = () => {
+
         db.close();
+
+        log(
+          "DATABASE VERSION CHANGED. PLEASE RELOAD.",
+          "warn"
+        );
+
       };
 
       resolve(db);
-    };
 
-    request.onerror = ()=>{
-      reject(request.error);
-    };
-
-    request.onblocked = ()=>{
-      addLog(
-        "Database upgrade blocked. Tutup tab ALFA OS lain lalu reload.",
-        "warn"
-      );
     };
 
   });
 
 }
 
-/* ================= DB READ ================= */
 
-function readStore(storeName){
+/* =========================================================
+   DATABASE CRUD
+   ========================================================= */
+
+function dbGetAll(storeName){
 
   return new Promise((resolve,reject)=>{
 
     const tx =
-      db.transaction(
-        storeName,
-        "readonly"
-      );
+      db.transaction(storeName,"readonly");
 
     const store =
       tx.objectStore(storeName);
@@ -1824,308 +2004,267 @@ function readStore(storeName){
     const request =
       store.getAll();
 
-    request.onsuccess = ()=>{
-      resolve(request.result || []);
-    };
+    request.onsuccess =
+      () => resolve(request.result || []);
 
-    request.onerror = ()=>{
-      reject(request.error);
-    };
+    request.onerror =
+      () => reject(request.error);
 
   });
+
 }
 
-/* ================= DB WRITE ================= */
-
-function putRecord(storeName,record){
+function dbPut(storeName,data){
 
   return new Promise((resolve,reject)=>{
 
     const tx =
-      db.transaction(
-        storeName,
-        "readwrite"
-      );
+      db.transaction(storeName,"readwrite");
 
-    const store =
-      tx.objectStore(storeName);
+    tx.objectStore(storeName).put(data);
 
-    const request =
-      store.put(record);
+    tx.oncomplete =
+      () => resolve();
 
-    request.onsuccess = ()=>{
-      resolve();
-    };
-
-    request.onerror = ()=>{
-      reject(request.error);
-    };
+    tx.onerror =
+      () => reject(tx.error);
 
   });
+
 }
 
-function deleteRecord(storeName,id){
+function dbDelete(storeName,id){
 
   return new Promise((resolve,reject)=>{
 
     const tx =
-      db.transaction(
-        storeName,
-        "readwrite"
-      );
+      db.transaction(storeName,"readwrite");
 
-    const store =
-      tx.objectStore(storeName);
+    tx.objectStore(storeName).delete(id);
 
-    const request =
-      store.delete(id);
+    tx.oncomplete =
+      () => resolve();
 
-    request.onsuccess = ()=>{
-      resolve();
-    };
-
-    request.onerror = ()=>{
-      reject(request.error);
-    };
+    tx.onerror =
+      () => reject(tx.error);
 
   });
+
 }
 
-/* ================= TASK NORMALIZATION ================= */
 
-function normalizeTask(oldTask){
+/* =========================================================
+   NORMALIZATION
+   ========================================================= */
 
-  const task = oldTask || {};
+function normalizeTask(old={}){
 
   return {
 
-    id:
-      task.id ||
-      uid("TASK"),
+    id: old.id || uid("ALFA"),
 
-    name:
-      task.name ||
-      "Unnamed Task",
+    name: old.name || "Unnamed Task",
 
     type:
-      task.type ||
-      "SECURITY",
+      ["OSINT","SECURITY","BUG","REPORT","AI"]
+      .includes(old.type)
+        ? old.type
+        : "SECURITY",
+
+    projectId:
+      old.projectId || null,
 
     priority:
       ["LOW","NORMAL","HIGH","CRITICAL"]
-        .includes(task.priority)
-        ? task.priority
+      .includes(old.priority)
+        ? old.priority
         : "NORMAL",
 
-    projectId:
-      task.projectId ||
-      null,
-
     status:
-      [
-        "queued",
-        "running",
-        "paused",
-        "completed",
-        "failed",
-        "cancelled"
-      ].includes(task.status)
-        ? task.status
+      ["queued","running","paused","completed","failed","cancelled"]
+      .includes(old.status)
+        ? old.status
         : "queued",
 
     progress:
-      Number.isFinite(Number(task.progress))
-        ? Math.min(100,Math.max(0,Number(task.progress)))
-        : 0,
+      clamp(Number(old.progress)||0,0,100),
 
     attempts:
-      Number.isFinite(Number(task.attempts))
-        ? Math.max(0,Math.floor(Number(task.attempts)))
-        : 0,
+      Math.max(
+        0,
+        Math.floor(Number(old.attempts)||0)
+      ),
 
     createdAt:
-      Number(task.createdAt) || now(),
+      Number(old.createdAt)||now(),
 
     startedAt:
-      task.startedAt
-        ? Number(task.startedAt)
-        : null,
+      old.startedAt || null,
 
     completedAt:
-      task.completedAt
-        ? Number(task.completedAt)
-        : null,
+      old.completedAt || null,
 
     elapsedMs:
-      Number(task.elapsedMs) >= 0
-        ? Number(task.elapsedMs)
-        : 0,
+      Math.max(
+        0,
+        Number(old.elapsedMs)||0
+      ),
 
     duration:
-      Number(task.duration) > 0
-        ? Number(task.duration)
-        : DURATIONS[
-            ["LOW","NORMAL","HIGH","CRITICAL"]
-              .includes(task.priority)
-              ? task.priority
-              : "NORMAL"
-          ],
+      Number(old.duration) ||
+      DURATIONS[
+        old.priority || "NORMAL"
+      ] ||
+      DURATIONS.NORMAL,
 
     result:
-      task.result || "",
+      old.result || "READY",
 
     error:
-      task.error || "",
+      old.error || null,
 
     logs:
-      Array.isArray(task.logs)
-        ? task.logs
+      Array.isArray(old.logs)
+        ? old.logs
         : []
 
   };
+
 }
 
-/* ================= PROJECT NORMALIZATION ================= */
-
-function normalizeProject(oldProject){
-
-  const project = oldProject || {};
+function normalizeProject(old={}){
 
   return {
 
     id:
-      project.id ||
-      uid("PROJECT"),
+      old.id || uid("PROJECT"),
 
     name:
-      project.name ||
-      "Unnamed Project",
-
-    description:
-      project.description ||
-      "",
+      old.name || "Unnamed Project",
 
     status:
-      [
-        "planning",
-        "active",
-        "paused",
-        "completed",
-        "archived"
-      ].includes(project.status)
-        ? project.status
+      ["planning","active","paused","completed","archived"]
+      .includes(old.status)
+        ? old.status
         : "planning",
 
     priority:
-      [
-        "LOW",
-        "NORMAL",
-        "HIGH",
-        "CRITICAL"
-      ].includes(project.priority)
-        ? project.priority
+      ["LOW","NORMAL","HIGH","CRITICAL"]
+      .includes(old.priority)
+        ? old.priority
         : "NORMAL",
 
     deadline:
-      project.deadline ||
-      "",
+      old.deadline || "",
+
+    description:
+      old.description || "",
 
     notes:
-      project.notes ||
-      "",
+      old.notes || "",
 
     createdAt:
-      Number(project.createdAt) || now(),
+      Number(old.createdAt)||now(),
 
     updatedAt:
-      Number(project.updatedAt) || now()
+      Number(old.updatedAt)||now(),
+
+    activity:
+      Array.isArray(old.activity)
+        ? old.activity
+        : []
 
   };
+
 }
 
-/* ================= BOOT / MIGRATION ================= */
 
-async function boot(){
+/* =========================================================
+   LOAD DATA
+   ========================================================= */
 
-  try{
+async function loadData(){
 
-    await openDatabase();
+  const rawTasks =
+    await dbGetAll(TASK_STORE);
 
-    tasks =
-      (await readStore(TASK_STORE))
-        .map(normalizeTask);
+  const rawProjects =
+    await dbGetAll(PROJECT_STORE);
 
-    projects =
-      (await readStore(PROJECT_STORE))
-        .map(normalizeProject);
+  tasks =
+    rawTasks.map(normalizeTask);
 
-    /* Preserve existing tasks */
+  projects =
+    rawProjects.map(normalizeProject);
 
-    for(const task of tasks){
-      await putRecord(TASK_STORE,task);
+
+  for(const task of tasks){
+
+    if(
+      task.status === "running"
+    ){
+
+      task.status = "queued";
+      task.progress = 0;
+      task.startedAt = null;
+      task.completedAt = null;
+      task.elapsedMs = 0;
+      task.result = "READY AFTER RELOAD";
+
+      await dbPut(
+        TASK_STORE,
+        task
+      );
+
     }
 
-    for(const project of projects){
-      await putRecord(PROJECT_STORE,project);
-    }
+  }
 
-    renderAll();
 
-    addLog(
-      "ALFA OS SOFTWARE V1.7 ONLINE.",
-      "success"
-    );
+  for(const task of tasks){
 
-    addLog(
-      "PROJECT MANAGER initialized.",
-      "info"
-    );
-
-    addLog(
-      "Existing V1.6.x task history preserved.",
-      "success"
-    );
-
-    addLog(
-      "IndexedDB schema V7 active.",
-      "info"
-    );
-
-    addTaskLog(
-      "REAL TASK ENGINE ONLINE.",
-      "success"
-    );
-
-    addTaskLog(
-      "PROJECT ↔ TASK relationship ready.",
-      "info"
-    );
-
-  }catch(error){
-
-    console.error(error);
-
-    addLog(
-      "Database initialization error: " +
-      error.message,
-      "error"
+    await dbPut(
+      TASK_STORE,
+      task
     );
 
   }
 
+  for(const project of projects){
+
+    await dbPut(
+      PROJECT_STORE,
+      project
+    );
+
+  }
+
+  renderAll();
+
+  log(
+    "DATABASE LOADED: " +
+    tasks.length +
+    " TASKS / " +
+    projects.length +
+    " PROJECTS",
+    "ok"
+  );
+
 }
 
-/* ================= PROJECT CREATE ================= */
+
+/* =========================================================
+   PROJECT
+   ========================================================= */
 
 async function createProject(){
 
   const name =
-    document.getElementById("projectName")
-      .value.trim();
+    document.getElementById("projectName").value.trim();
 
   if(!name){
 
-    showToast("Isi PROJECT NAME terlebih dahulu.");
+    alert("PROJECT NAME wajib diisi.");
 
     return;
   }
@@ -2136,124 +2275,66 @@ async function createProject(){
 
     name,
 
-    description:
-      document.getElementById("projectDescription")
-        .value.trim(),
-
     status:
-      document.getElementById("projectStatus")
-        .value,
+      document.getElementById("projectStatus").value,
 
     priority:
-      document.getElementById("projectPriority")
-        .value,
+      document.getElementById("projectPriority").value,
 
     deadline:
-      document.getElementById("projectDeadline")
-        .value,
+      document.getElementById("projectDeadline").value,
+
+    description:
+      document.getElementById("projectDescription").value.trim(),
 
     notes:
-      document.getElementById("projectNotes")
-        .value.trim(),
+      document.getElementById("projectNotes").value.trim(),
 
     createdAt:now(),
 
-    updatedAt:now()
+    updatedAt:now(),
+
+    activity:[
+      {
+        time:now(),
+        message:"Project created."
+      }
+    ]
 
   };
 
-  await putRecord(
+  projects.unshift(project);
+
+  await dbPut(
     PROJECT_STORE,
     project
   );
 
-  projects.unshift(project);
-
-  selectedProjectId = project.id;
-
-  resetProjectForm();
+  clearProjectForm();
 
   renderAll();
 
-  addLog(
-    `Project created: ${project.name}`,
-    "success"
+  selectProject(project.id);
+
+  log(
+    "PROJECT CREATED: " + project.name,
+    "ok"
   );
 
-  showToast("PROJECT CREATED");
-
 }
 
-/* ================= PROJECT FORM ================= */
-
-function resetProjectForm(){
+function clearProjectForm(){
 
   document.getElementById("projectName").value = "";
-
   document.getElementById("projectDescription").value = "";
-
   document.getElementById("projectNotes").value = "";
-
+  document.getElementById("projectDeadline").value = "";
   document.getElementById("projectStatus").value = "planning";
-
   document.getElementById("projectPriority").value = "NORMAL";
 
-  document.getElementById("projectDeadline").value = "";
-
 }
 
-/* ================= PROJECT SELECT ================= */
-
-function selectProject(id){
-
-  selectedProjectId = id;
-
-  renderProjects();
-
-  updateProjectSelect();
-
-}
-
-function updateProjectSelect(){
-
-  const select =
-    document.getElementById("taskProject");
-
-  if(!select) return;
-
-  const current =
-    select.value;
-
-  select.innerHTML =
-    `<option value="">UNASSIGNED</option>` +
-    projects
-      .filter(p=>p.status !== "archived")
-      .map(p=>
-        `<option value="${esc(p.id)}">
-          ${esc(p.name)}
-        </option>`
-      )
-      .join("");
-
-  if(
-    current &&
-    projects.some(p=>p.id===current)
-  ){
-    select.value = current;
-  }
-
-  if(
-    selectedProjectId &&
-    projects.some(p=>p.id===selectedProjectId)
-  ){
-    select.value = selectedProjectId;
-  }
-
-}
-
-/* ================= PROJECT TASKS ================= */
-
-function getProjectTasks(projectId){
+function projectTasks(projectId){
 
   return tasks.filter(
     task => task.projectId === projectId
@@ -2261,16 +2342,21 @@ function getProjectTasks(projectId){
 
 }
 
-function getProjectProgress(projectId){
+function projectProgress(projectId){
 
   const list =
-    getProjectTasks(projectId);
+    projectTasks(projectId);
 
-  if(!list.length) return 0;
+  if(!list.length){
+
+    return 0;
+
+  }
 
   const total =
     list.reduce(
-      (sum,task)=>sum + Number(task.progress || 0),
+      (sum,task) =>
+        sum + clamp(Number(task.progress)||0,0,100),
       0
     );
 
@@ -2278,501 +2364,575 @@ function getProjectProgress(projectId){
 
 }
 
-/* ================= PROJECT RENDER ================= */
+function projectCounts(projectId){
 
-function renderProjects(){
+  const list =
+    projectTasks(projectId);
 
-  const listEl =
-    document.getElementById("projectList");
+  return {
 
-  if(!listEl) return;
+    total:list.length,
 
-  const search =
-    (
-      document.getElementById("projectSearch")
-        ?.value || ""
-    ).toLowerCase().trim();
+    queued:
+      list.filter(x => x.status === "queued").length,
 
-  const visible =
-    projects.filter(project => {
+    running:
+      list.filter(x => x.status === "running").length,
 
-      if(!search) return true;
+    completed:
+      list.filter(x => x.status === "completed").length,
 
-      return (
-        project.name.toLowerCase().includes(search) ||
-        project.description.toLowerCase().includes(search) ||
-        project.status.toLowerCase().includes(search)
-      );
+    failed:
+      list.filter(x => x.status === "failed").length
 
-    });
-
-  if(!visible.length){
-
-    listEl.innerHTML = `
-      <div class="empty">
-        <strong>NO PROJECT</strong>
-        Belum ada project yang sesuai.
-      </div>
-    `;
-
-  }else{
-
-    listEl.innerHTML =
-      visible.map(project=>{
-
-        const projectTasks =
-          getProjectTasks(project.id);
-
-        const progress =
-          getProjectProgress(project.id);
-
-        return `
-          <div
-            class="project-card ${
-              selectedProjectId === project.id
-                ? "selected"
-                : ""
-            }"
-            onclick="selectProject('${esc(project.id)}')"
-          >
-
-            <div class="project-name">
-              ${esc(project.name)}
-            </div>
-
-            <div class="project-desc">
-              ${
-                esc(
-                  project.description ||
-                  "No description"
-                )
-              }
-            </div>
-
-            <div class="progress-wrap">
-
-              <div class="progress-label">
-                <span>PROGRESS</span>
-                <strong>${progress}%</strong>
-              </div>
-
-              <div class="progress-bar">
-                <div
-                  class="progress-fill"
-                  style="width:${progress}%"
-                ></div>
-              </div>
-
-            </div>
-
-            <div class="project-meta">
-
-              <span class="mini">
-                ${projectStatusLabel(project.status)}
-              </span>
-
-              <span class="mini">
-                ${esc(project.priority)}
-              </span>
-
-              <span class="mini">
-                TASKS ${projectTasks.length}
-              </span>
-
-            </div>
-
-          </div>
-        `;
-
-      }).join("");
-
-  }
-
-  renderProjectDetail();
+  };
 
 }
 
-/* ================= PROJECT DETAIL ================= */
-
-function renderProjectDetail(){
-
-  const detail =
-    document.getElementById("projectDetail");
-
-  if(!detail) return;
-
-  const project =
-    projects.find(
-      p=>p.id === selectedProjectId
-    );
-
-  if(!project){
-
-    detail.innerHTML = `
-      <div class="empty">
-        <strong>NO PROJECT SELECTED</strong>
-        Pilih project di sebelah kiri.
-      </div>
-    `;
-
-    return;
-  }
-
-  const projectTasks =
-    getProjectTasks(project.id);
+async function updateProjectStatus(project){
 
   const progress =
-    getProjectProgress(project.id);
+    projectProgress(project.id);
 
-  const completed =
-    projectTasks.filter(
-      t=>t.status==="completed"
-    ).length;
+  const counts =
+    projectCounts(project.id);
 
-  const running =
-    projectTasks.filter(
-      t=>t.status==="running"
-    ).length;
+  if(
+    counts.total > 0 &&
+    progress >= 100
+  ){
 
-  const queued =
-    projectTasks.filter(
-      t=>t.status==="queued"
-    ).length;
+    project.status = "completed";
 
-  detail.innerHTML = `
+  }else if(
+    project.status === "planning" &&
+    counts.running > 0
+  ){
 
-    <div class="detail-head">
+    project.status = "active";
 
-      <div>
-
-        <div class="detail-name">
-          ${esc(project.name)}
-        </div>
-
-        <div class="detail-description">
-          ${esc(
-            project.description ||
-            "No project description."
-          )}
-        </div>
-
-      </div>
-
-      <div class="status ${
-        project.status === "active"
-          ? "running"
-          : project.status === "completed"
-            ? "completed"
-            : project.status === "paused"
-              ? "paused"
-              : "queued"
-      }">
-        ${projectStatusLabel(project.status)}
-      </div>
-
-    </div>
-
-    <div class="progress-wrap">
-
-      <div class="progress-label">
-        <span>PROJECT PROGRESS</span>
-        <strong>${progress}%</strong>
-      </div>
-
-      <div class="progress-bar">
-        <div
-          class="progress-fill"
-          style="width:${progress}%"
-        ></div>
-      </div>
-
-    </div>
-
-    <div class="project-info-grid">
-
-      <div class="info">
-        <label>PRIORITY</label>
-        <strong>${esc(project.priority)}</strong>
-      </div>
-
-      <div class="info">
-        <label>TOTAL TASK</label>
-        <strong>${projectTasks.length}</strong>
-      </div>
-
-      <div class="info">
-        <label>COMPLETED</label>
-        <strong>${completed}</strong>
-      </div>
-
-      <div class="info">
-        <label>RUNNING</label>
-        <strong>${running}</strong>
-      </div>
-
-    </div>
-
-    <br>
-
-    <div class="project-info-grid">
-
-      <div class="info">
-        <label>QUEUED</label>
-        <strong>${queued}</strong>
-      </div>
-
-      <div class="info">
-        <label>DEADLINE</label>
-        <strong>${esc(project.deadline || "NONE")}</strong>
-      </div>
-
-      <div class="info">
-        <label>CREATED</label>
-        <strong>
-          ${new Date(project.createdAt).toLocaleDateString("id-ID")}
-        </strong>
-      </div>
-
-      <div class="info">
-        <label>UPDATED</label>
-        <strong>
-          ${new Date(project.updatedAt).toLocaleDateString("id-ID")}
-        </strong>
-      </div>
-
-    </div>
-
-    <br>
-
-    <div class="panel-title">
-      <h2>PROJECT NOTES</h2>
-      <small>LOCAL</small>
-    </div>
-
-    <div class="project-description">
-      ${
-        esc(project.notes || "No notes.")
-      }
-    </div>
-
-    <br>
-
-    <div class="actions">
-
-      <button
-        class="btn primary"
-        onclick="useProjectForNewTask('${esc(project.id)}')"
-      >
-        + ADD TASK
-      </button>
-
-      <button
-        class="btn"
-        onclick="setProjectStatus('${esc(project.id)}','active')"
-      >
-        SET ACTIVE
-      </button>
-
-      <button
-        class="btn yellow"
-        onclick="setProjectStatus('${esc(project.id)}','paused')"
-      >
-        PAUSE PROJECT
-      </button>
-
-      <button
-        class="btn green"
-        onclick="setProjectStatus('${esc(project.id)}','completed')"
-      >
-        COMPLETE PROJECT
-      </button>
-
-      <button
-        class="btn red"
-        onclick="deleteProject('${esc(project.id)}')"
-      >
-        DELETE PROJECT
-      </button>
-
-    </div>
-
-    <br>
-
-    <div class="panel-title">
-      <h2>PROJECT TASKS</h2>
-      <small>${projectTasks.length} TASK(S)</small>
-    </div>
-
-    ${
-      projectTasks.length
-      ? `
-        <div class="task-list">
-          ${projectTasks.map(task=>renderTaskHTML(task)).join("")}
-        </div>
-      `
-      : `
-        <div class="empty">
-          <strong>NO TASK</strong>
-          Project ini belum memiliki task.
-        </div>
-      `
-    }
-
-  `;
-
-}
-
-/* ================= PROJECT STATUS ================= */
-
-async function setProjectStatus(id,status){
-
-  const project =
-    projects.find(p=>p.id===id);
-
-  if(!project) return;
-
-  project.status = status;
+  }
 
   project.updatedAt = now();
 
-  await putRecord(
+  await dbPut(
     PROJECT_STORE,
     project
   );
 
-  renderAll();
+}
 
-  addLog(
-    `Project ${project.name} → ${status.toUpperCase()}`,
-    "info"
+async function addProjectActivity(
+  projectId,
+  message
+){
+
+  if(!projectId) return;
+
+  const project =
+    projects.find(
+      x => x.id === projectId
+    );
+
+  if(!project) return;
+
+  if(!Array.isArray(project.activity)){
+    project.activity = [];
+  }
+
+  project.activity.unshift({
+
+    time:now(),
+
+    message
+
+  });
+
+  project.activity =
+    project.activity.slice(0,50);
+
+  project.updatedAt = now();
+
+  await dbPut(
+    PROJECT_STORE,
+    project
   );
 
 }
 
-/* ================= DELETE PROJECT ================= */
+function selectProject(id){
+
+  renderProjectDetail(id);
+
+}
 
 async function deleteProject(id){
 
   const project =
-    projects.find(p=>p.id===id);
+    projects.find(
+      x => x.id === id
+    );
 
   if(!project) return;
 
-  const linked =
-    tasks.filter(
-      task=>task.projectId===id
-    );
+  if(
+    !confirm(
+      "Delete project '" +
+      project.name +
+      "'?\n\nTask akan tetap dipertahankan dan menjadi UNASSIGNED."
+    )
+  ){
 
-  if(linked.length){
-
-    const ok =
-      confirm(
-        `Project memiliki ${linked.length} task.\n\n` +
-        `Task akan tetap dipertahankan sebagai UNASSIGNED.\n\n` +
-        `Hapus project?`
-      );
-
-    if(!ok) return;
-
-  }else{
-
-    const ok =
-      confirm(
-        `Hapus project "${project.name}"?`
-      );
-
-    if(!ok) return;
+    return;
 
   }
+
+  const linked =
+    projectTasks(id);
 
   for(const task of linked){
 
     task.projectId = null;
 
-    await putRecord(
+    await dbPut(
       TASK_STORE,
       task
     );
 
   }
 
-  await deleteRecord(
+  await dbDelete(
     PROJECT_STORE,
     id
   );
 
   projects =
     projects.filter(
-      p=>p.id!==id
+      x => x.id !== id
     );
-
-  selectedProjectId = null;
 
   renderAll();
 
-  addLog(
-    `Project deleted: ${project.name}`,
+  log(
+    "PROJECT DELETED: " +
+    project.name +
+    " / TASKS PRESERVED",
     "warn"
   );
 
 }
 
-/* ================= USE PROJECT ================= */
+async function changeProjectStatus(
+  id,
+  status
+){
 
-function useProjectForNewTask(projectId){
+  const project =
+    projects.find(
+      x => x.id === id
+    );
 
-  selectedProjectId = projectId;
+  if(!project) return;
 
-  document.getElementById("taskProject").value =
-    projectId;
+  project.status = status;
 
-  showSection(
-    "tasks",
-    document.querySelectorAll(".nav button")[2]
+  await addProjectActivity(
+    id,
+    "Project status changed to " +
+    status.toUpperCase()
   );
 
-  document.getElementById("taskName").focus();
+  renderAll();
 
-  showToast("PROJECT SELECTED FOR NEW TASK");
+  renderProjectDetail(id);
 
 }
 
-/* ================= CREATE TASK ================= */
+function closeProjectDetail(){
+
+  document.getElementById("projectDetail").innerHTML =
+    '<div class="detail-empty">Pilih project untuk melihat detail.</div>';
+
+}
+
+
+/* =========================================================
+   PROJECT RENDER
+   ========================================================= */
+
+function renderProjects(){
+
+  const box =
+    document.getElementById("projectList");
+
+  if(!box) return;
+
+  const search =
+    (
+      document.getElementById("projectSearch")?.value ||
+      ""
+    ).toLowerCase();
+
+  const filtered =
+    projects.filter(
+      p =>
+        p.name.toLowerCase().includes(search) ||
+        p.description.toLowerCase().includes(search)
+    );
+
+  if(!filtered.length){
+
+    box.innerHTML =
+      '<div class="empty">NO PROJECT FOUND</div>';
+
+    return;
+
+  }
+
+  box.innerHTML =
+    filtered.map(project => {
+
+      const progress =
+        projectProgress(project.id);
+
+      const counts =
+        projectCounts(project.id);
+
+      const statusClass =
+        project.status === "completed"
+          ? "green"
+          : project.status === "active"
+            ? "red"
+            : "yellow";
+
+      return `
+
+        <div class="project-item">
+
+          <div class="project-top">
+
+            <div>
+
+              <div class="project-name">
+                ${escapeHTML(project.name)}
+              </div>
+
+              <div class="project-meta">
+
+                <span class="badge ${statusClass}">
+                  ${project.status.toUpperCase()}
+                </span>
+
+                <span class="badge">
+                  ${project.priority}
+                </span>
+
+                <span class="badge">
+                  TASK ${counts.total}
+                </span>
+
+              </div>
+
+            </div>
+
+            <strong>
+              ${progress}%
+            </strong>
+
+          </div>
+
+          <div class="progress">
+            <div
+              class="progress-bar"
+              style="width:${progress}%"
+            ></div>
+          </div>
+
+          <div class="project-meta">
+
+            <span class="badge">
+              RUN ${counts.running}
+            </span>
+
+            <span class="badge green">
+              DONE ${counts.completed}
+            </span>
+
+            <span class="badge">
+              QUEUED ${counts.queued}
+            </span>
+
+          </div>
+
+          <div class="project-actions">
+
+            <button
+              class="btn btn-small"
+              onclick="selectProject('${project.id}')"
+            >
+              OPEN
+            </button>
+
+            <button
+              class="btn btn-small"
+              onclick="setProjectActive('${project.id}')"
+            >
+              ACTIVE
+            </button>
+
+            <button
+              class="btn btn-small"
+              onclick="setProjectPaused('${project.id}')"
+            >
+              PAUSE
+            </button>
+
+            <button
+              class="btn btn-small btn-danger"
+              onclick="deleteProject('${project.id}')"
+            >
+              DELETE
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }).join("");
+
+}
+
+async function setProjectActive(id){
+
+  await changeProjectStatus(
+    id,
+    "active"
+  );
+
+}
+
+async function setProjectPaused(id){
+
+  await changeProjectStatus(
+    id,
+    "paused"
+  );
+
+}
+
+
+/* =========================================================
+   PROJECT DETAIL
+   ========================================================= */
+
+function renderProjectDetail(id){
+
+  const box =
+    document.getElementById("projectDetail");
+
+  const project =
+    projects.find(
+      x => x.id === id
+    );
+
+  if(!project){
+
+    box.innerHTML =
+      '<div class="detail-empty">Project tidak ditemukan.</div>';
+
+    return;
+
+  }
+
+  const linked =
+    projectTasks(id);
+
+  const progress =
+    projectProgress(id);
+
+  const counts =
+    projectCounts(id);
+
+  box.innerHTML = `
+
+    <div class="detail-title">
+      ${escapeHTML(project.name)}
+    </div>
+
+    <div class="detail-description">
+      ${escapeHTML(project.description || "No description.")}
+    </div>
+
+    <div class="project-meta">
+
+      <span class="badge red">
+        ${project.status.toUpperCase()}
+      </span>
+
+      <span class="badge">
+        PRIORITY ${project.priority}
+      </span>
+
+      <span class="badge">
+        DEADLINE ${escapeHTML(project.deadline || "NONE")}
+      </span>
+
+    </div>
+
+    <div class="detail-grid">
+
+      <div class="detail-stat">
+        <span>PROGRESS</span>
+        <strong>${progress}%</strong>
+      </div>
+
+      <div class="detail-stat">
+        <span>TASKS</span>
+        <strong>${counts.total}</strong>
+      </div>
+
+      <div class="detail-stat">
+        <span>COMPLETED</span>
+        <strong>${counts.completed}</strong>
+      </div>
+
+      <div class="detail-stat">
+        <span>RUNNING</span>
+        <strong>${counts.running}</strong>
+      </div>
+
+    </div>
+
+    <div class="progress">
+      <div
+        class="progress-bar"
+        style="width:${progress}%"
+      ></div>
+    </div>
+
+    <div style="height:18px"></div>
+
+    <div class="card-title">
+      PROJECT TASKS
+    </div>
+
+    <div style="height:10px"></div>
+
+    ${
+      linked.length
+      ? linked.map(t => `
+
+        <div class="task-item">
+
+          <div class="task-head">
+
+            <div>
+
+              <div class="task-name">
+                ${escapeHTML(t.name)}
+              </div>
+
+              <div class="task-id">
+                ${escapeHTML(t.id)}
+              </div>
+
+            </div>
+
+            <div class="task-status ${t.status}">
+              ${t.status.toUpperCase()}
+            </div>
+
+          </div>
+
+          <div class="progress">
+            <div
+              class="progress-bar"
+              style="width:${t.progress}%"
+            ></div>
+          </div>
+
+        </div>
+
+      `).join("")
+      : '<div class="empty">NO TASK LINKED</div>'
+    }
+
+    <div style="height:18px"></div>
+
+    <div class="card-title">
+      PROJECT NOTES
+    </div>
+
+    <div style="height:8px"></div>
+
+    <div class="detail-description">
+      ${escapeHTML(project.notes || "No notes.")}
+    </div>
+
+    <div style="height:18px"></div>
+
+    <div class="card-title">
+      ACTIVITY LOG
+    </div>
+
+    <div style="height:8px"></div>
+
+    ${
+      project.activity?.length
+      ? project.activity.slice(0,12).map(a => `
+
+        <div class="task-result">
+          [${new Date(a.time).toLocaleString()}]
+          ${escapeHTML(a.message)}
+        </div>
+
+      `).join("")
+      : '<div class="detail-description">No activity.</div>'
+    }
+
+  `;
+
+}
+
+
+/* =========================================================
+   TASK
+   ========================================================= */
 
 async function createTask(){
 
   const name =
-    document.getElementById("taskName")
-      .value.trim();
+    document.getElementById("taskName").value.trim();
 
   if(!name){
 
-    showToast("Isi TASK NAME terlebih dahulu.");
+    alert("TASK NAME wajib diisi.");
 
     return;
+
   }
 
   const priority =
-    document.getElementById("taskPriority")
-      .value;
+    document.getElementById("taskPriority").value;
 
   const projectId =
-    document.getElementById("taskProject")
-      .value || null;
+    document.getElementById("taskProject").value ||
+    null;
 
-  const task = {
+  const task = normalizeTask({
 
-    id:uid("TASK"),
+    id:uid("ALFA"),
 
     name,
 
     type:
-      document.getElementById("taskType")
-        .value,
-
-    priority,
+      document.getElementById("taskType").value,
 
     projectId,
+
+    priority,
 
     status:"queued",
 
@@ -2788,43 +2948,29 @@ async function createTask(){
 
     elapsedMs:0,
 
-    duration:
-      DURATIONS[priority],
+    duration:DURATIONS[priority],
 
-    result:"",
-
-    error:"",
+    result:"READY",
 
     logs:[
       "Task masuk ke queue."
     ]
 
-  };
+  });
 
-  await putRecord(
+  tasks.unshift(task);
+
+  await dbPut(
     TASK_STORE,
     task
   );
 
-  tasks.unshift(task);
-
   if(projectId){
 
-    const project =
-      projects.find(
-        p=>p.id===projectId
-      );
-
-    if(project){
-
-      project.updatedAt = now();
-
-      await putRecord(
-        PROJECT_STORE,
-        project
-      );
-
-    }
+    await addProjectActivity(
+      projectId,
+      "Task created: " + task.name
+    );
 
   }
 
@@ -2832,57 +2978,34 @@ async function createTask(){
 
   renderAll();
 
-  addTaskLog(
-    `Task created: ${task.name}`,
-    "success"
+  log(
+    "TASK CREATED: " +
+    task.name +
+    " / PROJECT: " +
+    projectName(projectId),
+    "ok"
   );
 
-  showToast("TASK CREATED");
-
 }
 
-/* ================= START NEXT ================= */
-
-function startNextTask(){
-
-  const next =
-    tasks
-      .filter(
-        t=>t.status==="queued"
-      )
-      .sort(
-        (a,b)=>
-          PRIORITY_ORDER[a.priority] -
-          PRIORITY_ORDER[b.priority] ||
-          a.createdAt-b.createdAt
-      )[0];
-
-  if(!next){
-
-    showToast("Tidak ada task QUEUED.");
-
-    return;
-  }
-
-  startTask(next.id);
-
-}
-
-/* ================= START TASK ================= */
-
-async function startTask(id){
-
-  const task =
-    tasks.find(
-      t=>t.id===id
-    );
-
-  if(!task) return;
+async function startTask(task){
 
   if(
+    !task ||
     !["queued","paused"].includes(task.status)
   ){
+
     return;
+
+  }
+
+  if(
+    task.status === "paused" &&
+    runtimeIntervals.has(task.id)
+  ){
+
+    return;
+
   }
 
   const previousElapsed =
@@ -2892,23 +3015,38 @@ async function startTask(id){
 
   task.status = "running";
 
-  task.progress = 0;
-
   task.startedAt =
     now() - previousElapsed;
 
   task.completedAt = null;
 
-  task.elapsedMs = previousElapsed;
+  task.progress =
+    clamp(
+      Number(task.progress)||0,
+      0,
+      99
+    );
 
   task.attempts =
-    Math.max(0,Number(task.attempts)||0) + 1;
+    Math.max(
+      0,
+      Number(task.attempts)||0
+    ) + 1;
+
+  task.result = "RUNNING";
+
+  task.error = null;
+
+  task.logs =
+    Array.isArray(task.logs)
+      ? task.logs
+      : [];
 
   task.logs.push(
-    `Execution started. Attempt ${formatAttempt(task.attempts)}.`
+    "Execution started."
   );
 
-  await putRecord(
+  await dbPut(
     TASK_STORE,
     task
   );
@@ -2918,183 +3056,183 @@ async function startTask(id){
     performance.now()
   );
 
-  addTaskLog(
-    `START ${task.name} | ATTEMPT ${formatAttempt(task.attempts)}`,
-    "info"
+  log(
+    "START: " +
+    task.name +
+    " / ATTEMPT " +
+    formatAttempt(task.attempts),
+    "ok"
   );
 
-  executeTask(task.id);
-
-  renderAll();
+  executeTask(task);
 
 }
 
-/* ================= EXECUTE TASK ================= */
+function executeTask(task){
 
-function executeTask(id){
+  if(runtimeIntervals.has(task.id)){
 
-  clearRuntime(id);
+    clearInterval(
+      runtimeIntervals.get(task.id)
+    );
 
-  const timer =
-    setInterval(async()=>{
+  }
 
-      const task =
-        tasks.find(
-          t=>t.id===id
-        );
+  const duration =
+    task.duration ||
+    DURATIONS[task.priority] ||
+    DURATIONS.NORMAL;
 
-      if(!task){
+  const startClock =
+    runtimeClock.get(task.id) ??
+    performance.now();
 
-        clearRuntime(id);
+  runtimeClock.set(
+    task.id,
+    startClock
+  );
 
-        return;
-      }
+  const interval =
+    setInterval(
+      async () => {
 
-      if(task.status !== "running"){
+        if(
+          !["running"].includes(task.status)
+        ){
 
-        clearRuntime(id);
+          clearInterval(interval);
 
-        return;
-      }
+          runtimeIntervals.delete(task.id);
 
-      const start =
-        runtimeClock.get(id);
+          return;
 
-      if(typeof start !== "number"){
+        }
 
-        runtimeClock.set(
-          id,
-          performance.now()
-        );
+        const delta =
+          performance.now() -
+          startClock;
 
-        return;
-      }
+        const totalElapsed =
+          (Number(task.elapsedMs)||0) +
+          delta;
 
-      const elapsed =
-        Number(task.elapsedMs||0) +
-        (
-          performance.now() - start
-        );
+        task.elapsedMs =
+          totalElapsed;
 
-      const duration =
-        Number(task.duration) ||
-        DURATIONS.NORMAL;
-
-      task.progress =
-        Math.min(
-          100,
-          Math.round(
-            elapsed/duration*100
-          )
-        );
-
-      renderTasks();
-      updateStats();
-      renderProjectDetail();
-
-      if(elapsed >= duration){
-
-        task.progress = 100;
-
-        task.elapsedMs = duration;
-
-        task.completedAt = now();
-
-        task.status = "completed";
-
-        task.result =
-          "Task completed successfully.";
-
-        task.logs.push(
-          `Task completed in ${formatDuration(duration)}.`
-        );
-
-        clearRuntime(id);
-
-        await putRecord(
-          TASK_STORE,
-          task
-        );
-
-        addTaskLog(
-          `COMPLETED ${task.name} | ${formatDuration(duration)}`,
-          "success"
-        );
-
-        updateProjectAfterTask(task);
+        task.progress =
+          clamp(
+            Math.floor(
+              (totalElapsed / duration) * 100
+            ),
+            0,
+            99
+          );
 
         renderAll();
 
-      }else{
+        if(totalElapsed >= duration){
 
-        task.elapsedMs = elapsed;
+          clearInterval(interval);
 
-      }
+          runtimeIntervals.delete(task.id);
 
-    },200);
+          runtimeClock.delete(task.id);
 
-  runtimeTimers.set(id,timer);
+          task.status =
+            "completed";
 
-}
+          task.progress = 100;
 
-/* ================= UPDATE PROJECT ================= */
+          task.completedAt = now();
 
-async function updateProjectAfterTask(task){
+          task.elapsedMs =
+            Math.max(
+              duration,
+              Math.round(totalElapsed)
+            );
 
-  if(!task.projectId) return;
+          task.result =
+            "READY";
 
-  const project =
-    projects.find(
-      p=>p.id===task.projectId
+          task.logs.push(
+            "Task completed."
+          );
+
+          await dbPut(
+            TASK_STORE,
+            task
+          );
+
+          if(task.projectId){
+
+            await addProjectActivity(
+              task.projectId,
+              "Task completed: " +
+              task.name
+            );
+
+            const project =
+              projects.find(
+                x => x.id === task.projectId
+              );
+
+            if(project){
+
+              await updateProjectStatus(
+                project
+              );
+
+            }
+
+          }
+
+          renderAll();
+
+          log(
+            "COMPLETED: " +
+            task.name +
+            " / " +
+            formatDuration(task.elapsedMs),
+            "ok"
+          );
+
+        }
+
+      },
+      200
     );
 
-  if(!project) return;
-
-  project.updatedAt = now();
-
-  const progress =
-    getProjectProgress(project.id);
-
-  if(
-    progress >= 100 &&
-    project.status !== "archived"
-  ){
-
-    project.status = "completed";
-
-  }else if(
-    project.status === "planning"
-  ){
-
-    project.status = "active";
-
-  }
-
-  await putRecord(
-    PROJECT_STORE,
-    project
+  runtimeIntervals.set(
+    task.id,
+    interval
   );
 
 }
 
-/* ================= PAUSE ================= */
+async function pauseTask(task){
 
-async function pauseTask(id){
+  if(task.status !== "running") return;
 
-  const task =
-    tasks.find(t=>t.id===id);
+  const clock =
+    runtimeClock.get(task.id);
 
-  if(!task || task.status!=="running"){
-    return;
-  }
-
-  const start =
-    runtimeClock.get(id);
-
-  if(typeof start==="number"){
+  if(clock != null){
 
     task.elapsedMs +=
-      performance.now() - start;
+      performance.now() - clock;
+
+  }
+
+  runtimeClock.delete(task.id);
+
+  const interval =
+    runtimeIntervals.get(task.id);
+
+  if(interval){
+
+    clearInterval(interval);
+
+    runtimeIntervals.delete(task.id);
 
   }
 
@@ -3104,92 +3242,93 @@ async function pauseTask(id){
     "Task paused."
   );
 
-  clearRuntime(id);
-
-  await putRecord(
+  await dbPut(
     TASK_STORE,
     task
   );
 
-  addTaskLog(
-    `PAUSED ${task.name}`,
+  renderAll();
+
+  log(
+    "PAUSED: " + task.name,
     "warn"
   );
 
-  renderAll();
+}
+
+async function resumeTask(task){
+
+  if(task.status !== "paused") return;
+
+  await startTask(task);
 
 }
 
-/* ================= RESUME ================= */
+async function stopTask(task){
 
-async function resumeTask(id){
+  if(task.status === "running"){
 
-  const task =
-    tasks.find(t=>t.id===id);
+    const clock =
+      runtimeClock.get(task.id);
 
-  if(!task || task.status!=="paused"){
-    return;
-  }
-
-  await startTask(id);
-
-}
-
-/* ================= STOP ================= */
-
-async function stopTask(id){
-
-  const task =
-    tasks.find(t=>t.id===id);
-
-  if(!task) return;
-
-  if(task.status==="running"){
-
-    const start =
-      runtimeClock.get(id);
-
-    if(typeof start==="number"){
+    if(clock != null){
 
       task.elapsedMs +=
-        performance.now()-start;
+        performance.now() - clock;
 
     }
 
   }
 
-  clearRuntime(id);
+  runtimeClock.delete(task.id);
+
+  const interval =
+    runtimeIntervals.get(task.id);
+
+  if(interval){
+
+    clearInterval(interval);
+
+    runtimeIntervals.delete(task.id);
+
+  }
 
   task.status = "cancelled";
 
+  task.result = "STOPPED";
+
   task.logs.push(
-    "Task cancelled."
+    "Task stopped."
   );
 
-  await putRecord(
+  await dbPut(
     TASK_STORE,
     task
   );
 
-  addTaskLog(
-    `STOPPED ${task.name}`,
+  renderAll();
+
+  log(
+    "STOPPED: " + task.name,
     "warn"
   );
 
-  renderAll();
-
 }
 
-/* ================= RETRY ================= */
+async function retryTask(task){
 
-async function retryTask(id){
+  const interval =
+    runtimeIntervals.get(task.id);
 
-  const task =
-    tasks.find(t=>t.id===id);
+  if(interval){
 
-  if(!task) return;
+    clearInterval(interval);
 
-  clearRuntime(id);
+    runtimeIntervals.delete(task.id);
+
+  }
+
+  runtimeClock.delete(task.id);
 
   task.status = "queued";
 
@@ -3201,103 +3340,125 @@ async function retryTask(id){
 
   task.elapsedMs = 0;
 
-  task.result = "";
+  task.result = "READY";
 
-  task.error = "";
+  task.error = null;
+
+  task.logs =
+    Array.isArray(task.logs)
+      ? task.logs
+      : [];
 
   task.logs.push(
-    "Task returned to queue for retry."
+    "Task returned to queue."
   );
 
-  await putRecord(
+  await dbPut(
     TASK_STORE,
     task
   );
 
-  addTaskLog(
-    `RETRY QUEUED ${task.name}`,
-    "info"
-  );
-
   renderAll();
 
+  log(
+    "RETRY QUEUED: " + task.name,
+    "warn"
+  );
+
 }
 
-/* ================= CLEAR RUNTIME ================= */
+async function startNextTask(){
 
-function clearRuntime(id){
+  const candidates =
+    tasks
+      .filter(
+        t => t.status === "queued"
+      )
+      .sort(
+        (a,b) =>
+          PRIORITY_WEIGHT[b.priority] -
+          PRIORITY_WEIGHT[a.priority] ||
+          a.createdAt-b.createdAt
+      );
 
-  const timer =
-    runtimeTimers.get(id);
+  if(!candidates.length){
 
-  if(timer){
-    clearInterval(timer);
+    log(
+      "NO QUEUED TASK AVAILABLE.",
+      "warn"
+    );
+
+    return;
+
   }
 
-  runtimeTimers.delete(id);
-
-  runtimeClock.delete(id);
+  await startTask(
+    candidates[0]
+  );
 
 }
-
-/* ================= PAUSE ALL ================= */
 
 async function pauseAll(){
 
-  const running =
-    tasks.filter(
-      t=>t.status==="running"
-    );
+  for(const task of [...tasks]){
 
-  for(const task of running){
+    if(task.status === "running"){
 
-    await pauseTask(task.id);
+      await pauseTask(task);
+
+    }
 
   }
 
-  showToast(
-    running.length
-      ? `${running.length} TASK PAUSED`
-      : "Tidak ada task running."
-  );
-
 }
-
-/* ================= RESUME ALL ================= */
 
 async function resumeAll(){
 
-  const paused =
-    tasks.filter(
-      t=>t.status==="paused"
-    );
+  for(const task of [...tasks]){
 
-  for(const task of paused){
+    if(task.status === "paused"){
 
-    await resumeTask(task.id);
+      await resumeTask(task);
+
+    }
 
   }
 
-  showToast(
-    paused.length
-      ? `${paused.length} TASK RESUMED`
-      : "Tidak ada task paused."
-  );
-
 }
-
-/* ================= CLEAR COMPLETED ================= */
 
 async function clearCompleted(){
 
   const completed =
     tasks.filter(
-      t=>t.status==="completed"
+      t => t.status === "completed"
     );
+
+  if(!completed.length){
+
+    log(
+      "NO COMPLETED TASK TO CLEAR.",
+      "warn"
+    );
+
+    return;
+
+  }
+
+  if(
+    !confirm(
+      "Clear " +
+      completed.length +
+      " completed tasks?"
+    )
+  ){
+
+    return;
+
+  }
 
   for(const task of completed){
 
-    await deleteRecord(
+    await dbDelete(
       TASK_STORE,
       task.id
     );
@@ -3306,39 +3467,491 @@ async function clearCompleted(){
 
   tasks =
     tasks.filter(
-      t=>t.status!=="completed"
+      t => t.status !== "completed"
     );
 
   renderAll();
 
-  showToast(
-    `${completed.length} COMPLETED TASK REMOVED`
+  log(
+    completed.length +
+    " COMPLETED TASKS CLEARED.",
+    "warn"
   );
 
 }
 
-/* ================= DEMO ================= */
 
-async function createDemoTasks(){
+/* =========================================================
+   TASK RENDER
+   ========================================================= */
+
+function taskDuration(task){
+
+  if(task.status === "queued"){
+
+    return 0;
+
+  }
+
+  if(task.status === "running"){
+
+    const clock =
+      runtimeClock.get(task.id);
+
+    if(clock != null){
+
+      return (
+        Number(task.elapsedMs)||0
+      ) +
+      (
+        performance.now() -
+        clock
+      );
+
+    }
+
+  }
+
+  return Number(task.elapsedMs)||0;
+
+}
+
+function renderTaskProjects(){
+
+  const select =
+    document.getElementById("taskProject");
+
+  const filter =
+    document.getElementById("taskFilterProject");
+
+  if(!select || !filter) return;
+
+  const currentSelect =
+    select.value;
+
+  const currentFilter =
+    filter.value;
+
+  select.innerHTML =
+    '<option value="">UNASSIGNED</option>' +
+    projects.map(
+      p =>
+        `<option value="${p.id}">
+          ${escapeHTML(p.name)}
+        </option>`
+    ).join("");
+
+  filter.innerHTML =
+    `
+      <option value="ALL">ALL PROJECTS</option>
+      <option value="">UNASSIGNED</option>
+    ` +
+    projects.map(
+      p =>
+        `<option value="${p.id}">
+          ${escapeHTML(p.name)}
+        </option>`
+    ).join("");
+
+  if(
+    projects.some(
+      p => p.id === currentSelect
+    )
+  ){
+
+    select.value =
+      currentSelect;
+
+  }
+
+  if(
+    currentFilter === "ALL" ||
+    currentFilter === "" ||
+    projects.some(
+      p => p.id === currentFilter
+    )
+  ){
+
+    filter.value =
+      currentFilter;
+
+  }
+
+}
+
+function renderTasks(){
+
+  const box =
+    document.getElementById("taskList");
+
+  if(!box) return;
+
+  const search =
+    (
+      document.getElementById("taskSearch")?.value ||
+      ""
+    ).toLowerCase();
+
+  const projectFilter =
+    document.getElementById("taskFilterProject")?.value ||
+    "ALL";
+
+  const statusFilter =
+    document.getElementById("taskFilterStatus")?.value ||
+    "ALL";
+
+  let filtered =
+    tasks.filter(task => {
+
+      const matchesSearch =
+        task.name
+          .toLowerCase()
+          .includes(search) ||
+        task.id
+          .toLowerCase()
+          .includes(search);
+
+      const matchesProject =
+        projectFilter === "ALL"
+          ? true
+          : task.projectId === (
+              projectFilter || null
+            );
+
+      const matchesStatus =
+        statusFilter === "ALL"
+          ? true
+          : task.status === statusFilter;
+
+      return (
+        matchesSearch &&
+        matchesProject &&
+        matchesStatus
+      );
+
+    });
+
+  filtered.sort(
+    (a,b) =>
+      PRIORITY_WEIGHT[b.priority] -
+      PRIORITY_WEIGHT[a.priority] ||
+      b.createdAt-a.createdAt
+  );
+
+  if(!filtered.length){
+
+    box.innerHTML =
+      '<div class="empty">NO TASK FOUND</div>';
+
+    return;
+
+  }
+
+  box.innerHTML =
+    filtered.map(task => {
+
+      const duration =
+        taskDuration(task);
+
+      const statusClass =
+        task.status;
+
+      let buttons = "";
+
+      if(task.status === "queued"){
+
+        buttons += `
+          <button
+            class="btn btn-small btn-red"
+            onclick="startTaskById('${task.id}')"
+          >
+            START
+          </button>
+        `;
+
+      }
+
+      if(task.status === "running"){
+
+        buttons += `
+          <button
+            class="btn btn-small"
+            onclick="pauseTaskById('${task.id}')"
+          >
+            PAUSE
+          </button>
+
+          <button
+            class="btn btn-small btn-danger"
+            onclick="stopTaskById('${task.id}')"
+          >
+            STOP
+          </button>
+        `;
+
+      }
+
+      if(task.status === "paused"){
+
+        buttons += `
+          <button
+            class="btn btn-small btn-red"
+            onclick="resumeTaskById('${task.id}')"
+          >
+            RESUME
+          </button>
+
+          <button
+            class="btn btn-small btn-danger"
+            onclick="stopTaskById('${task.id}')"
+          >
+            STOP
+          </button>
+        `;
+
+      }
+
+      if(
+        ["completed","failed","cancelled"].includes(
+          task.status
+        )
+      ){
+
+        buttons += `
+          <button
+            class="btn btn-small"
+            onclick="retryTaskById('${task.id}')"
+          >
+            RETRY
+          </button>
+        `;
+
+      }
+
+      return `
+
+        <div class="task-item ${task.status}">
+
+          <div class="task-head">
+
+            <div>
+
+              <div class="task-name">
+                ${escapeHTML(task.name)}
+              </div>
+
+              <div class="task-id">
+                ${escapeHTML(task.id)}
+              </div>
+
+            </div>
+
+            <div class="task-status ${statusClass}">
+              ${task.status.toUpperCase()}
+            </div>
+
+          </div>
+
+          <div class="task-meta">
+
+            <div class="meta">
+              <small>TYPE</small>
+              <strong>${task.type}</strong>
+            </div>
+
+            <div class="meta">
+              <small>PROJECT</small>
+              <strong>
+                ${escapeHTML(
+                  projectName(task.projectId)
+                )}
+              </strong>
+            </div>
+
+            <div class="meta">
+              <small>PRIORITY</small>
+              <strong>${task.priority}</strong>
+            </div>
+
+            <div class="meta">
+              <small>ATTEMPT</small>
+              <strong>${formatAttempt(task.attempts)}</strong>
+            </div>
+
+          </div>
+
+          <div class="task-meta">
+
+            <div class="meta">
+              <small>DURATION</small>
+              <strong>${formatDuration(duration)}</strong>
+            </div>
+
+            <div class="meta">
+              <small>PROGRESS</small>
+              <strong>${task.progress}%</strong>
+            </div>
+
+            <div class="meta">
+              <small>RESULT</small>
+              <strong>${escapeHTML(task.result)}</strong>
+            </div>
+
+            <div class="meta">
+              <small>DATABASE</small>
+              <strong>LOCAL</strong>
+            </div>
+
+          </div>
+
+          <div class="progress">
+            <div
+              class="progress-bar"
+              style="width:${task.progress}%"
+            ></div>
+          </div>
+
+          <div class="task-result">
+            ${escapeHTML(
+              task.logs?.[task.logs.length-1] ||
+              "Task ready."
+            )}
+          </div>
+
+          <div class="task-actions">
+            ${buttons}
+          </div>
+
+        </div>
+
+      `;
+
+    }).join("");
+
+}
+
+
+/* =========================================================
+   TASK BY ID
+   ========================================================= */
+
+function findTask(id){
+
+  return tasks.find(
+    x => x.id === id
+  );
+
+}
+
+async function startTaskById(id){
+
+  const task =
+    findTask(id);
+
+  if(task){
+
+    await startTask(task);
+
+  }
+
+}
+
+async function pauseTaskById(id){
+
+  const task =
+    findTask(id);
+
+  if(task){
+
+    await pauseTask(task);
+
+  }
+
+}
+
+async function resumeTaskById(id){
+
+  const task =
+    findTask(id);
+
+  if(task){
+
+    await resumeTask(task);
+
+  }
+
+}
+
+async function stopTaskById(id){
+
+  const task =
+    findTask(id);
+
+  if(task){
+
+    await stopTask(task);
+
+  }
+
+}
+
+async function retryTaskById(id){
+
+  const task =
+    findTask(id);
+
+  if(task){
+
+    await retryTask(task);
+
+  }
+
+}
+
+
+/* =========================================================
+   DEMO
+   ========================================================= */
+
+async function runDemo(){
 
   const demo = [
 
-    ["OSINT Asset Discovery","OSINT","HIGH"],
+    {
+      name:"OSINT Asset Discovery",
+      type:"OSINT",
+      priority:"NORMAL"
+    },
 
-    ["Security Header Review","SECURITY","HIGH"],
+    {
+      name:"Security Header Review",
+      type:"SECURITY",
+      priority:"NORMAL"
+    },
 
-    ["Bug Hunter Check","BUG","NORMAL"],
+    {
+      name:"Authorized Bug Hunter Check",
+      type:"BUG",
+      priority:"NORMAL"
+    },
 
-    ["Generate Security Report","REPORT","NORMAL"],
+    {
+      name:"Security Assessment Report",
+      type:"REPORT",
+      priority:"NORMAL"
+    },
 
-    ["AI Security Analysis","AI","LOW"]
+    {
+      name:"AI Security Assistant",
+      type:"AI",
+      priority:"NORMAL"
+    }
 
   ];
 
-  let projectId =
-    selectedProjectId;
+  let projectId = null;
 
-  if(!projectId && projects.length){
+  if(projects.length){
 
     projectId =
       projects[0].id;
@@ -3347,534 +3960,300 @@ async function createDemoTasks(){
 
   for(const item of demo){
 
-    const [name,type,priority] = item;
+    const task =
+      normalizeTask({
 
-    const task = {
+        id:uid("TASK"),
 
-      id:uid("TASK"),
+        name:item.name,
 
-      name,
+        type:item.type,
 
-      type,
+        priority:item.priority,
 
-      priority,
+        projectId,
 
-      projectId,
+        status:"queued",
 
-      status:"queued",
+        progress:0,
 
-      progress:0,
+        attempts:0,
 
-      attempts:0,
+        createdAt:now(),
 
-      createdAt:now(),
+        elapsedMs:0,
 
-      startedAt:null,
+        duration:DURATIONS[item.priority],
 
-      completedAt:null,
+        result:"READY",
 
-      elapsedMs:0,
+        logs:[
+          "Demo task created."
+        ]
 
-      duration:DURATIONS[priority],
+      });
 
-      result:"",
+    tasks.unshift(task);
 
-      error:"",
-
-      logs:[
-        "Demo task masuk ke queue."
-      ]
-
-    };
-
-    await putRecord(
+    await dbPut(
       TASK_STORE,
       task
     );
-
-    tasks.unshift(task);
 
   }
 
   renderAll();
 
-  addTaskLog(
-    "5 demo tasks created.",
-    "success"
+  log(
+    "DEMO TASK PACK CREATED: 5",
+    "ok"
   );
 
-  showToast("DEMO ×5 CREATED");
+  let started = 0;
 
-}
+  for(const task of tasks){
 
-/* ================= TASK DURATION ================= */
+    if(
+      task.status === "queued" &&
+      started < 3
+    ){
 
-function displayDuration(task){
+      await startTask(task);
 
-  if(task.status==="queued"){
-    return "00s";
-  }
-
-  let ms =
-    Number(task.elapsedMs)||0;
-
-  if(task.status==="running"){
-
-    const start =
-      runtimeClock.get(task.id);
-
-    if(typeof start==="number"){
-
-      ms +=
-        performance.now()-start;
+      started++;
 
     }
 
   }
 
-  return formatDuration(ms);
+}
+
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+function renderStats(){
+
+  document.getElementById("statProjects").textContent =
+    projects.length;
+
+  document.getElementById("statTasks").textContent =
+    tasks.length;
+
+  document.getElementById("statRunning").textContent =
+    tasks.filter(
+      x => x.status === "running"
+    ).length;
+
+  document.getElementById("statCompleted").textContent =
+    tasks.filter(
+      x => x.status === "completed"
+    ).length;
+
+  document.getElementById("statFailed").textContent =
+    tasks.filter(
+      x => x.status === "failed"
+    ).length;
 
 }
 
-/* ================= TASK HTML ================= */
 
-function renderTaskHTML(task){
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
 
-  const project =
-    projects.find(
-      p=>p.id===task.projectId
-    );
+function setupNavigation(){
 
-  const projectName =
-    project
-      ? project.name
-      : "UNASSIGNED";
+  document
+    .querySelectorAll(".nav button")
+    .forEach(button => {
 
-  return `
+      button.addEventListener(
+        "click",
+        () => {
 
-    <div class="task">
+          document
+            .querySelectorAll(".nav button")
+            .forEach(x =>
+              x.classList.remove("active")
+            );
 
-      <div class="task-head">
+          button.classList.add("active");
 
-        <div>
+          const target =
+            button.dataset.section;
 
-          <div class="task-name">
-            ${esc(task.name)}
-          </div>
+          document
+            .querySelectorAll(".section")
+            .forEach(section =>
+              section.classList.remove("active")
+            );
 
-          <div class="task-id">
-            ${esc(task.id)}
-          </div>
+          const section =
+            document.getElementById(target);
 
-        </div>
+          if(section){
 
-        <div class="status ${esc(task.status)}">
-          ${esc(task.status.toUpperCase())}
-        </div>
+            section.classList.add("active");
 
-      </div>
+          }
 
-      <div class="task-meta">
+          if(target === "projects"){
 
-        <div>
-          <label>TYPE</label>
-          <strong>${esc(task.type)}</strong>
-        </div>
+            renderProjects();
 
-        <div>
-          <label>PROJECT</label>
-          <strong>${esc(projectName)}</strong>
-        </div>
+          }
 
-        <div>
-          <label>PRIORITY</label>
-          <strong>${esc(task.priority)}</strong>
-        </div>
+          if(target === "tasks"){
 
-        <div>
-          <label>ATTEMPT</label>
-          <strong>${formatAttempt(task.attempts)}</strong>
-        </div>
+            renderTasks();
 
-      </div>
+          }
 
-      <div class="task-meta">
-
-        <div>
-          <label>DURATION</label>
-          <strong>${displayDuration(task)}</strong>
-        </div>
-
-        <div>
-          <label>PROGRESS</label>
-          <strong>${Math.round(task.progress)}%</strong>
-        </div>
-
-        <div>
-          <label>RESULT</label>
-          <strong>
-            ${
-              task.result
-                ? "READY"
-                : "—"
-            }
-          </strong>
-        </div>
-
-        <div>
-          <label>DATABASE</label>
-          <strong>LOCAL</strong>
-        </div>
-
-      </div>
-
-      <div class="task-progress">
-
-        <div class="task-progress-line">
-
-          <div
-            class="task-progress-fill"
-            style="width:${Math.round(task.progress)}%"
-          ></div>
-
-        </div>
-
-      </div>
-
-      <div class="task-buttons">
-
-        ${
-          task.status==="queued"
-          ? `
-            <button
-              class="btn green"
-              onclick="startTask('${esc(task.id)}')"
-            >
-              START
-            </button>
-          `
-          : ""
         }
+      );
 
-        ${
-          task.status==="running"
-          ? `
-            <button
-              class="btn yellow"
-              onclick="pauseTask('${esc(task.id)}')"
-            >
-              PAUSE
-            </button>
-
-            <button
-              class="btn red"
-              onclick="stopTask('${esc(task.id)}')"
-            >
-              STOP
-            </button>
-          `
-          : ""
-        }
-
-        ${
-          task.status==="paused"
-          ? `
-            <button
-              class="btn green"
-              onclick="resumeTask('${esc(task.id)}')"
-            >
-              RESUME
-            </button>
-
-            <button
-              class="btn red"
-              onclick="stopTask('${esc(task.id)}')"
-            >
-              STOP
-            </button>
-          `
-          : ""
-        }
-
-        ${
-          [
-            "completed",
-            "failed",
-            "cancelled"
-          ].includes(task.status)
-          ? `
-            <button
-              class="btn purple"
-              onclick="retryTask('${esc(task.id)}')"
-            >
-              RETRY
-            </button>
-          `
-          : ""
-        }
-
-      </div>
-
-    </div>
-
-  `;
+    });
 
 }
 
-/* ================= RENDER TASKS ================= */
 
-function renderTasks(){
-
-  const list =
-    document.getElementById("taskList");
-
-  if(!list) return;
-
-  const search =
-    (
-      document.getElementById("taskSearch")
-        ?.value || ""
-    ).toLowerCase().trim();
-
-  const visible =
-    tasks
-      .filter(task=>{
-
-        if(!search) return true;
-
-        const project =
-          projects.find(
-            p=>p.id===task.projectId
-          );
-
-        return (
-          task.name.toLowerCase().includes(search) ||
-          task.type.toLowerCase().includes(search) ||
-          task.status.toLowerCase().includes(search) ||
-          (
-            project &&
-            project.name.toLowerCase().includes(search)
-          )
-        );
-
-      })
-      .sort((a,b)=>{
-
-        const statusOrder = {
-          running:0,
-          queued:1,
-          paused:2,
-          completed:3,
-          failed:4,
-          cancelled:5
-        };
-
-        return (
-          (statusOrder[a.status] -
-           statusOrder[b.status]) ||
-          (
-            PRIORITY_ORDER[a.priority] -
-            PRIORITY_ORDER[b.priority]
-          ) ||
-          b.createdAt-a.createdAt
-        );
-
-      });
-
-  if(!visible.length){
-
-    list.innerHTML = `
-      <div class="empty">
-        <strong>NO TASK</strong>
-        Belum ada task.
-      </div>
-    `;
-
-    return;
-  }
-
-  list.innerHTML =
-    visible
-      .map(renderTaskHTML)
-      .join("");
-
-}
-
-/* ================= STATS ================= */
-
-function updateStats(){
-
-  document.getElementById("statProjects")
-    .textContent = projects.length;
-
-  document.getElementById("statTasks")
-    .textContent = tasks.length;
-
-  document.getElementById("statRunning")
-    .textContent =
-      tasks.filter(
-        t=>t.status==="running"
-      ).length;
-
-  document.getElementById("statCompleted")
-    .textContent =
-      tasks.filter(
-        t=>t.status==="completed"
-      ).length;
-
-  document.getElementById("statFailed")
-    .textContent =
-      tasks.filter(
-        t=>t.status==="failed"
-      ).length;
-
-}
-
-/* ================= DASHBOARD PROJECTS ================= */
-
-function renderDashboardProjects(){
-
-  const el =
-    document.getElementById(
-      "dashboardProjects"
-    );
-
-  if(!el) return;
-
-  if(!projects.length){
-
-    el.innerHTML = `
-      <div class="empty">
-        <strong>NO PROJECTS</strong>
-        Buat project pertama melalui Project Manager.
-      </div>
-    `;
-
-    return;
-  }
-
-  el.innerHTML =
-    projects
-      .slice(0,5)
-      .map(project=>{
-
-        const progress =
-          getProjectProgress(project.id);
-
-        return `
-
-          <div
-            class="project-card"
-            onclick="
-              selectedProjectId='${esc(project.id)}';
-              showSection(
-                'projects',
-                document.querySelectorAll('.nav button')[1]
-              );
-            "
-          >
-
-            <div class="project-name">
-              ${esc(project.name)}
-            </div>
-
-            <div class="progress-wrap">
-
-              <div class="progress-label">
-                <span>
-                  ${projectStatusLabel(project.status)}
-                </span>
-
-                <strong>${progress}%</strong>
-              </div>
-
-              <div class="progress-bar">
-
-                <div
-                  class="progress-fill"
-                  style="width:${progress}%"
-                ></div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        `;
-
-      })
-      .join("");
-
-}
-
-/* ================= MODULE PLACEHOLDER ================= */
-
-function runSafeModule(type){
-
-  addLog(
-    `${type} workspace initialized. Passive / authorized mode.`,
-    "info"
-  );
-
-  showToast(
-    `${type} WORKSPACE READY`
-  );
-
-}
-
-/* ================= RENDER ALL ================= */
+/* =========================================================
+   RENDER ALL
+   ========================================================= */
 
 function renderAll(){
 
-  updateStats();
+  renderStats();
 
-  renderTasks();
+  renderTaskProjects();
 
   renderProjects();
 
-  renderDashboardProjects();
-
-  updateProjectSelect();
-
-  renderProjectDetail();
+  renderTasks();
 
 }
 
-/* ================= LIVE UI LOOP ================= */
 
-setInterval(()=>{
+/* =========================================================
+   REFRESH
+   ========================================================= */
 
-  if(
-    tasks.some(
-      task=>task.status==="running"
-    )
-  ){
+async function refreshAll(){
 
-    renderTasks();
+  await loadData();
 
-    updateStats();
+  log(
+    "SYSTEM DATA REFRESHED.",
+    "ok"
+  );
 
-    renderProjectDetail();
+}
+
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+
+async function boot(){
+
+  setupNavigation();
+
+  log(
+    "ALFA OS SOFTWARE BOOTING..."
+  );
+
+  try{
+
+    await openDatabase();
+
+    await loadData();
+
+    log(
+      "ALFA OS SOFTWARE V1.7.1 ONLINE.",
+      "ok"
+    );
+
+    log(
+      "PROJECT ↔ TASK DATABASE LINK READY.",
+      "ok"
+    );
+
+    log(
+      "BLACK / RED / WHITE HOLOGRAM UI ACTIVE.",
+      "ok"
+    );
+
+    log(
+      "NO ACTIVE NETWORK SCAN EXECUTED.",
+      "warn"
+    );
+
+    log(
+      "AUTHORIZED / PASSIVE SECURITY WORKFLOW.",
+      "warn"
+    );
+
+  }catch(error){
+
+    log(
+      "BOOT ERROR: " +
+      (error?.message || error),
+      "error"
+    );
 
   }
 
-},250);
+}
 
-/* ================= CLEANUP ================= */
+boot();
+
+
+/* =========================================================
+   LIVE UI REFRESH
+   ========================================================= */
+
+setInterval(
+  () => {
+
+    if(
+      document.visibilityState === "visible"
+    ){
+
+      renderStats();
+
+      renderTasks();
+
+      renderProjects();
+
+    }
+
+  },
+  500
+);
+
+
+/* =========================================================
+   CLEANUP
+   ========================================================= */
 
 window.addEventListener(
   "beforeunload",
-  ()=>{
-    runtimeTimers.forEach(
-      timer=>clearInterval(timer)
-    );
+  () => {
+
+    for(const interval of runtimeIntervals.values()){
+
+      clearInterval(interval);
+
+    }
+
+    runtimeIntervals.clear();
+
+    runtimeClock.clear();
+
   }
 );
-
-/* ================= START ================= */
-
-boot();
 
 </script>
 
