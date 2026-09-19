@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#030712">
+
+<title>ALFA OS SECURITY V1</title>
+
+<style>
+:root{
+  --bg:#030712;
+  --panel:rgba(10,18,35,.82);
+  --panel2:rgba(15,25,48,.72);
+  --line:rgba(56,189,248,.18);
+  --cyan:#22d3ee;
+  --blue:#38bdf8;
+  --green:#22c55e;
+  --yellow:#facc15;
+  --red:#fb7185;
+  --text:#e5f7ff;
+  --muted:#8ba4b7;
+  --shadow:0 20px 60px rgba(0,0,0,.45);
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 20% 10%,rgba(34,211,238,.10),transparent 28%),
+    radial-gradient(circle at 80% 20%,rgba(59,130,246,.12),transparent 30%),
+    radial-gradient(circle at 50% 90%,rgba(168,85,247,.08),transparent 30%),
+    var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  overflow-x:hidden;
+}
+
+/* BACKGROUND */
+
+.grid{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.16;
+  background-image:
+    linear-gradient(rgba(34,211,238,.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(34,211,238,.08) 1px,transparent 1px);
+  background-size:45px 45px;
+  mask-image:linear-gradient(to bottom,black,transparent);
+}
+
+.scanline{
+  position:fixed;
+  left:0;
+  right:0;
+  height:2px;
+  top:-10px;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(34,211,238,.65),
+    transparent
+  );
+  box-shadow:0 0 20px rgba(34,211,238,.7);
+  animation:scan 7s linear infinite;
+  pointer-events:none;
+  z-index:20;
+}
+
+@keyframes scan{
+  0%{top:-10px}
+  100%{top:100%}
+}
+
+/* HEADER */
+
+header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  backdrop-filter:blur(18px);
+  background:rgba(3,7,18,.78);
+  border-bottom:1px solid var(--line);
+}
+
+.topbar{
+  max-width:1450px;
+  margin:auto;
+  padding:15px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo{
+  width:46px;
+  height:46px;
+  border:1px solid rgba(34,211,238,.5);
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  font-size:23px;
+  background:linear-gradient(
+    135deg,
+    rgba(34,211,238,.16),
+    rgba(59,130,246,.08)
+  );
+  box-shadow:
+    0 0 25px rgba(34,211,238,.14),
+    inset 0 0 20px rgba(34,211,238,.06);
+}
+
+.brand h1{
+  font-size:18px;
+  letter-spacing:1.4px;
+}
+
+.brand p{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:3px;
+}
+
+.status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:9px 13px;
+  border:1px solid rgba(34,197,94,.2);
+  border-radius:999px;
+  color:#bbf7d0;
+  background:rgba(34,197,94,.06);
+  font-size:12px;
+}
+
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 12px var(--green);
+}
+
+/* LAYOUT */
+
+.layout{
+  max-width:1450px;
+  margin:auto;
+  padding:22px;
+  display:grid;
+  grid-template-columns:245px 1fr;
+  gap:20px;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  height:calc(100vh - 105px);
+  position:sticky;
+  top:85px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:15px;
+  background:var(--panel);
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(16px);
+}
+
+.menu-title{
+  font-size:10px;
+  color:#5f7a8e;
+  letter-spacing:2px;
+  margin:8px 10px 12px;
+}
+
+.nav{
+  display:grid;
+  gap:8px;
+}
+
+.nav button{
+  width:100%;
+  border:1px solid transparent;
+  background:transparent;
+  color:#b7cddd;
+  padding:12px 13px;
+  border-radius:12px;
+  text-align:left;
+  cursor:pointer;
+  transition:.2s;
+  font-size:13px;
+}
+
+.nav button:hover,
+.nav button.active{
+  color:white;
+  border-color:rgba(34,211,238,.2);
+  background:rgba(34,211,238,.07);
+  transform:translateX(2px);
+}
+
+.nav button span{
+  display:inline-block;
+  width:25px;
+}
+
+/* MAIN */
+
+main{
+  min-width:0;
+}
+
+.hero{
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:28px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(15,23,42,.9),
+      rgba(3,7,18,.78)
+    );
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  width:260px;
+  height:260px;
+  right:-100px;
+  top:-120px;
+  border-radius:50%;
+  background:rgba(34,211,238,.08);
+  filter:blur(15px);
+}
+
+.hero small{
+  color:var(--cyan);
+  letter-spacing:2px;
+}
+
+.hero h2{
+  margin-top:10px;
+  font-size:clamp(28px,5vw,52px);
+  line-height:1.05;
+}
+
+.hero h2 span{
+  color:var(--cyan);
+  text-shadow:0 0 30px rgba(34,211,238,.28);
+}
+
+.hero p{
+  max-width:760px;
+  margin-top:15px;
+  color:var(--muted);
+  line-height:1.7;
+  font-size:14px;
+}
+
+.target-box{
+  margin-top:22px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.target-box input{
+  flex:1;
+  min-width:230px;
+  border:1px solid rgba(56,189,248,.2);
+  background:rgba(2,6,23,.7);
+  color:white;
+  padding:13px 15px;
+  border-radius:12px;
+  outline:none;
+}
+
+.target-box input:focus{
+  border-color:rgba(34,211,238,.55);
+  box-shadow:0 0 20px rgba(34,211,238,.08);
+}
+
+.btn{
+  border:1px solid rgba(34,211,238,.3);
+  background:rgba(34,211,238,.08);
+  color:#dffaff;
+  padding:13px 17px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:700;
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+  border-color:rgba(34,211,238,.7);
+  box-shadow:0 10px 25px rgba(34,211,238,.08);
+}
+
+.btn.primary{
+  background:linear-gradient(
+    135deg,
+    rgba(34,211,238,.2),
+    rgba(59,130,246,.18)
+  );
+}
+
+/* CARDS */
+
+.stats{
+  margin-top:20px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+
+.card{
+  border:1px solid var(--line);
+  background:var(--panel);
+  border-radius:18px;
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+
+.stat-icon{
+  font-size:22px;
+}
+
+.stat-label{
+  margin-top:10px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.stat-value{
+  margin-top:5px;
+  font-size:25px;
+  font-weight:800;
+}
+
+.green{color:#86efac}
+.cyan{color:#67e8f9}
+.yellow{color:#fde68a}
+.red{color:#fda4af}
+
+.section{
+  margin-top:20px;
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.section-head h3{
+  font-size:16px;
+}
+
+.section-head span{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.modules{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+
+.module{
+  cursor:pointer;
+  transition:.2s;
+  min-height:150px;
+}
+
+.module:hover{
+  transform:translateY(-4px);
+  border-color:rgba(34,211,238,.4);
+}
+
+.module-icon{
+  font-size:28px;
+}
+
+.module h4{
+  margin-top:13px;
+  font-size:16px;
+}
+
+.module p{
+  margin-top:7px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+
+.module .open{
+  display:inline-block;
+  margin-top:13px;
+  color:var(--cyan);
+  font-size:11px;
+}
+
+/* CONSOLE */
+
+.console{
+  height:245px;
+  overflow:auto;
+  border-radius:16px;
+  padding:15px;
+  background:#01040a;
+  border:1px solid rgba(34,211,238,.15);
+  font-family:Consolas,monospace;
+  font-size:12px;
+  line-height:1.8;
+}
+
+.log{
+  color:#91a8b8;
+}
+
+.log.ok{
+  color:#86efac;
+}
+
+.log.info{
+  color:#67e8f9;
+}
+
+.log.warn{
+  color:#fde68a;
+}
+
+.cursor{
+  display:inline-block;
+  width:7px;
+  height:13px;
+  background:var(--cyan);
+  animation:blink 1s infinite;
+  vertical-align:-2px;
+}
+
+@keyframes blink{
+  50%{opacity:0}
+}
+
+/* CHECKLIST */
+
+.checklist{
+  display:grid;
+  gap:9px;
+}
+
+.check{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px;
+  border-radius:11px;
+  border:1px solid rgba(148,163,184,.1);
+  background:rgba(15,23,42,.45);
+  color:#b9ccda;
+  font-size:12px;
+}
+
+.check input{
+  accent-color:var(--cyan);
+}
+
+/* FOOTER */
+
+footer{
+  max-width:1450px;
+  margin:0 auto;
+  padding:15px 22px 30px;
+  color:#5f7585;
+  text-align:center;
+  font-size:11px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    position:relative;
+    top:auto;
+    height:auto;
+  }
+
+  .nav{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:650px){
+  .topbar{
+    padding:12px;
+  }
+
+  .brand h1{
+    font-size:15px;
+  }
+
+  .status{
+    font-size:10px;
+    padding:7px 9px;
+  }
+
+  .layout{
+    padding:12px;
+  }
+
+  .hero{
+    padding:20px;
+  }
+
+  .nav{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .stats,
+  .modules{
+    grid-template-columns:1fr;
+  }
+
+  .target-box{
+    flex-direction:column;
+  }
+
+  .target-box input,
+  .btn{
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="grid"></div>
+<div class="scanline"></div>
+
+<header>
+  <div class="topbar">
+
+    <div class="brand">
+      <div class="logo">⚡</div>
+
+      <div>
+        <h1>ALFA OS SOFTWARE</h1>
+        <p>SECURITY • OSINT • AI PLATFORM</p>
+      </div>
+    </div>
+
+    <div class="status">
+      <span class="dot"></span>
+      SYSTEM ONLINE
+    </div>
+
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="menu-title">COMMAND CENTER</div>
+
+    <nav class="nav">
+
+      <button class="active" onclick="activate(this,'Dashboard')">
+        <span>🏠</span> Dashboard
+      </button>
+
+      <button onclick="activate(this,'OSINT')">
+        <span>🔎</span> OSINT
+      </button>
+
+      <button onclick="activate(this,'Security')">
+        <span>🛡️</span> Security
+      </button>
+
+      <button onclick="activate(this,'Bug Hunter')">
+        <span>🐛</span> Bug Hunter
+      </button>
+
+      <button onclick="activate(this,'Reports')">
+        <span>📊</span> Reports
+      </button>
+
+      <button onclick="activate(this,'AI Security')">
+        <span>🤖</span> AI Security
+      </button>
+
+      <button onclick="activate(this,'Settings')">
+        <span>⚙️</span> Settings
+      </button>
+
+    </nav>
+
+  </aside>
+
+  <!-- MAIN -->
+
+  <main>
+
+    <section class="hero">
+
+      <small>ALFA SECURITY COMMAND CENTER</small>
+
+      <h2>
+        BUILD YOUR
+        <span>SECURITY OS.</span>
+      </h2>
+
+      <p>
+        Platform keamanan modular untuk OSINT, security assessment,
+        bug hunting yang terotorisasi, monitoring, dokumentasi,
+        dan AI-assisted security workflow.
+      </p>
+
+      <div class="target-box">
+
+        <input
+          id="targetInput"
+          type="text"
+          placeholder="Masukkan target milik sendiri / authorized..."
+        >
+
+        <button
+          class="btn primary"
+          onclick="analyzeTarget()"
+        >
+          🔎 Analyze Target
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- STATS -->
+
+    <section class="stats">
+
+      <div class="card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-label">ACTIVE TARGET</div>
+        <div id="targetCount" class="stat-value cyan">0</div>
+      </div>
+
+      <div class="card">
+        <div class="stat-icon">🛡️</div>
+        <div class="stat-label">SECURITY CHECKS</div>
+        <div id="checkCount" class="stat-value green">12</div>
+      </div>
+
+      <div class="card">
+        <div class="stat-icon">🐛</div>
+        <div class="stat-label">FINDINGS</div>
+        <div id="findingCount" class="stat-value yellow">0</div>
+      </div>
+
+      <div class="card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-label">REPORTS</div>
+        <div id="reportCount" class="stat-value red">0</div>
+      </div>
+
+    </section>
+
+    <!-- MODULES -->
+
+    <section class="section">
+
+      <div class="section-head">
+        <h3>Security Modules</h3>
+        <span>V1 FOUNDATION</span>
+      </div>
+
+      <div class="modules">
+
+        <div class="card module" onclick="moduleAction('OSINT')">
+
+          <div class="module-icon">🔎</div>
+
+          <h4>OSINT Analyzer</h4>
+
+          <p>
+            Workspace untuk domain, DNS, IP, HTTP information
+            dan technology discovery.
+          </p>
+
+          <span class="open">OPEN MODULE →</span>
+
+        </div>
+
+        <div class="card module" onclick="moduleAction('Security')">
+
+          <div class="module-icon">🛡️</div>
+
+          <h4>Security Scanner</h4>
+
+          <p>
+            Dasar security checklist untuk HTTPS,
+            headers, cookies dan konfigurasi.
+          </p>
+
+          <span class="open">OPEN MODULE →</span>
+
+        </div>
+
+        <div class="card module" onclick="moduleAction('Bug Hunter')">
+
+          <div class="module-icon">🐛</div>
+
+          <h4>Bug Hunter</h4>
+
+          <p>
+            Workspace untuk authorized security testing,
+            finding, evidence dan remediation.
+          </p>
+
+          <span class="open">OPEN MODULE →</span>
+
+        </div>
+
+        <div class="card module" onclick="moduleAction('Reports')">
+
+          <div class="module-icon">📊</div>
+
+          <h4>Report Center</h4>
+
+          <p>
+            Dokumentasi temuan, severity, status,
+            rekomendasi dan laporan keamanan.
+          </p>
+
+          <span class="open">OPEN MODULE →</span>
+
+        </div>
+
+        <div class="card module" onclick="moduleAction('AI Security')">
+
+          <div class="module-icon">🤖</div>
+
+          <h4>AI Security Assistant</h4>
+
+          <p>
+            Pondasi AI untuk menjelaskan security finding
+            dan membantu membuat remediation report.
+          </p>
+
+          <span class="open">OPEN MODULE →</span>
+
+        </div>
+
+        <div class="card module" onclick="moduleAction('Settings')">
+
+          <div class="module-icon">⚙️</div>
+
+          <h4>System Settings</h4>
+
+          <p>
+            Pengaturan platform, interface,
+            preferences dan konfigurasi proyek.
+          </p>
+
+          <span class="open">OPEN MODULE →</span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- CONSOLE -->
+
+    <section class="section">
+
+      <div class="section-head">
+        <h3>Live Security Console</h3>
+        <span id="consoleStatus">READY</span>
+      </div>
+
+      <div id="console" class="console">
+
+        <div class="log info">
+          [ALFA] Initializing Security Command Center...
+        </div>
+
+        <div class="log ok">
+          [SYSTEM] Core interface loaded successfully.
+        </div>
+
+        <div class="log ok">
+          [SYSTEM] Local security workspace ready.
+        </div>
+
+        <div class="log">
+          [INFO] Waiting for authorized target...
+        </div>
+
+        <div>
+          <span class="cursor"></span>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- CHECKLIST -->
+
+    <section class="section">
+
+      <div class="section-head">
+        <h3>Security Checklist</h3>
+        <span>LOCAL WORKSPACE</span>
+      </div>
+
+      <div class="card">
+
+        <div class="checklist">
+
+          <label class="check">
+            <input type="checkbox" onchange="updateChecks()">
+            HTTPS configuration reviewed
+          </label>
+
+          <label class="check">
+            <input type="checkbox" onchange="updateChecks()">
+            Security headers reviewed
+          </label>
+
+          <label class="check">
+            <input type="checkbox" onchange="updateChecks()">
+            Authentication flow reviewed
+          </label>
+
+          <label class="check">
+            <input type="checkbox" onchange="updateChecks()">
+            Authorization controls reviewed
+          </label>
+
+          <label class="check">
+            <input type="checkbox" onchange="updateChecks()">
+            Input validation reviewed
+          </label>
+
+          <label class="check">
+            <input type="checkbox" onchange="updateChecks()">
+            API endpoints documented
+          </label>
+
+          <label class="check">
+            <input type="checkbox" onchange="updateChecks()">
+            Sensitive information exposure reviewed
+          </label>
+
+          <label class="check">
+            <input type="checkbox" onchange="updateChecks()">
+            Error handling reviewed
+          </label>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<footer>
+  ⚡ ALFA OS SOFTWARE • SECURITY EDITION V1 • Defensive Security Platform
+</footer>
+
+<script>
+
+let targets = 0;
+let findings = 0;
+let reports = 0;
+
+const consoleBox =
+  document.getElementById("console");
+
+const consoleStatus =
+  document.getElementById("consoleStatus");
+
+function addLog(message,type=""){
+  const row =
+    document.createElement("div");
+
+  row.className =
+    "log " + type;
+
+  const time =
+    new Date().toLocaleTimeString("id-ID");
+
+  row.textContent =
+    "[" + time + "] " + message;
+
+  consoleBox.appendChild(row);
+
+  consoleBox.scrollTop =
+    consoleBox.scrollHeight;
+}
+
+function activate(button,name){
+
+  document
+    .querySelectorAll(".nav button")
+    .forEach(btn=>{
+      btn.classList.remove("active");
+    });
+
+  button.classList.add("active");
+
+  addLog(
+    "Module selected: " + name,
+    "info"
+  );
+
+  consoleStatus.textContent =
+    name.toUpperCase();
+}
+
+function moduleAction(name){
+
+  addLog(
+    "Opening " + name + " module...",
+    "info"
+  );
+
+  setTimeout(()=>{
+    addLog(
+      name + " workspace ready.",
+      "ok"
+    );
+  },500);
+
+}
+
+function analyzeTarget(){
+
+  const input =
+    document.getElementById("targetInput");
+
+  const target =
+    input.value.trim();
+
+  if(!target){
+
+    addLog(
+      "Target belum diisi.",
+      "warn"
+    );
+
+    input.focus();
+
+    return;
+  }
+
+  targets++;
+
+  document.getElementById(
+    "targetCount"
+  ).textContent = targets;
+
+  consoleStatus.textContent =
+    "ANALYZING";
+
+  addLog(
+    "Target registered: " + target,
+    "info"
+  );
+
+  addLog(
+    "Preparing passive analysis workspace...",
+    "info"
+  );
+
+  setTimeout(()=>{
+
+    addLog(
+      "Target workspace initialized.",
+      "ok"
+    );
+
+    addLog(
+      "No active network scan executed in V1.",
+      "warn"
+    );
+
+    addLog(
+      "Use only targets you own or are authorized to test.",
+      "warn"
+    );
+
+    consoleStatus.textContent =
+      "READY";
+
+  },800);
+
+}
+
+function updateChecks(){
+
+  const checked =
+    document.querySelectorAll(
+      '.check input:checked'
+    ).length;
+
+  const total =
+    document.querySelectorAll(
+      '.check input'
+    ).length;
+
+  document.getElementById(
+    "checkCount"
+  ).textContent =
+    checked + "/" + total;
+
+  addLog(
+    "Checklist updated: " +
+    checked +
+    "/" +
+    total,
+    "ok"
+  );
+
+}
+
+addLog(
+  "ALFA OS Security Core V1 online.",
+  "ok"
+);
+
+addLog(
+  "OSINT / Security / Bug Hunter workspace loaded.",
+  "info"
+);
+
+</script>
+
+</body>
+</html>
