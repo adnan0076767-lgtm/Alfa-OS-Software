@@ -4,55 +4,52 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#030712">
+<meta name="color-scheme" content="dark">
 
-<title>ALFA OS SOFTWARE V1.6.4 | TASK DISPLAY FIX</title>
+<title>ALFA OS SOFTWARE V1.7 | PROJECT MANAGER</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
 :root{
   --bg:#030712;
-  --panel:#07111f;
-  --panel2:#0b1626;
-  --line:#17304b;
+  --panel:#07101f;
+  --panel2:#0a1628;
+  --line:#15304d;
   --cyan:#22d3ee;
   --blue:#38bdf8;
   --green:#22c55e;
   --yellow:#facc15;
   --red:#ef4444;
   --purple:#a78bfa;
-  --text:#e5f6ff;
-  --muted:#7893aa;
+  --text:#e5f3ff;
+  --muted:#7890a8;
+  --shadow:0 0 30px rgba(34,211,238,.08);
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
 }
 
 body{
   min-height:100vh;
-  background:
-    radial-gradient(circle at 20% 10%,rgba(34,211,238,.08),transparent 28%),
-    radial-gradient(circle at 90% 80%,rgba(56,189,248,.07),transparent 30%),
-    #030712;
-  color:var(--text);
   font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 15% 10%,rgba(34,211,238,.08),transparent 25%),
+    radial-gradient(circle at 85% 80%,rgba(99,102,241,.08),transparent 28%),
+    var(--bg);
+  color:var(--text);
   overflow-x:hidden;
 }
 
-body:before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  background:
-    linear-gradient(rgba(34,211,238,.025) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(34,211,238,.025) 1px,transparent 1px);
-  background-size:40px 40px;
-  mask-image:linear-gradient(to bottom,black,transparent);
-}
-
-button,input,select{
+button,
+input,
+select,
+textarea{
   font:inherit;
 }
 
@@ -61,101 +58,113 @@ button{
 }
 
 .app{
-  display:flex;
   min-height:100vh;
+  display:flex;
 }
 
-/* SIDEBAR */
+/* ================= SIDEBAR ================= */
 
 .sidebar{
-  width:255px;
-  flex-shrink:0;
+  width:250px;
+  min-height:100vh;
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  z-index:20;
   background:rgba(3,7,18,.94);
   border-right:1px solid var(--line);
-  padding:22px 15px;
-  position:sticky;
-  top:0;
-  height:100vh;
-  z-index:20;
+  backdrop-filter:blur(16px);
+  padding:20px 14px;
 }
 
-.logo{
-  padding:10px 12px 24px;
+.brand{
+  padding:10px 10px 24px;
   border-bottom:1px solid var(--line);
-  margin-bottom:18px;
+  margin-bottom:15px;
 }
 
-.logo-main{
-  color:var(--cyan);
+.brand-title{
   font-size:20px;
   font-weight:900;
-  letter-spacing:1.5px;
+  letter-spacing:2px;
+  color:#fff;
 }
 
-.logo-sub{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:5px;
+.brand-title span{
+  color:var(--cyan);
+}
+
+.brand-sub{
+  font-size:9px;
   letter-spacing:2px;
+  color:var(--muted);
+  margin-top:5px;
 }
 
 .system-status{
+  margin:14px 4px;
+  padding:10px;
+  border:1px solid rgba(34,197,94,.25);
+  background:rgba(34,197,94,.05);
+  border-radius:10px;
   display:flex;
   align-items:center;
   gap:8px;
-  margin:15px 8px;
-  padding:9px 10px;
-  border:1px solid rgba(34,197,94,.2);
-  background:rgba(34,197,94,.05);
-  border-radius:10px;
-  color:#86efac;
   font-size:11px;
+  color:#86efac;
 }
 
 .status-dot{
   width:8px;
   height:8px;
-  border-radius:50%;
   background:var(--green);
-  box-shadow:0 0 14px var(--green);
+  border-radius:50%;
+  box-shadow:0 0 12px var(--green);
   animation:pulse 1.5s infinite;
 }
 
 @keyframes pulse{
-  50%{opacity:.35;transform:scale(.7)}
+  50%{opacity:.35;transform:scale(.75)}
 }
 
 .nav{
   display:flex;
   flex-direction:column;
-  gap:7px;
+  gap:6px;
 }
 
 .nav button{
-  width:100%;
-  text-align:left;
   border:1px solid transparent;
   background:transparent;
-  color:#8ca7bd;
-  padding:12px 13px;
-  border-radius:10px;
+  color:#8fa8c2;
+  padding:12px;
+  text-align:left;
+  border-radius:9px;
   transition:.2s;
+  font-size:12px;
+  font-weight:700;
 }
 
 .nav button:hover,
 .nav button.active{
-  color:#e8fbff;
-  background:rgba(34,211,238,.07);
-  border-color:rgba(34,211,238,.2);
-  transform:translateX(3px);
+  color:#fff;
+  border-color:#16456a;
+  background:linear-gradient(90deg,rgba(34,211,238,.12),transparent);
+  box-shadow:inset 3px 0 0 var(--cyan);
 }
 
-/* MAIN */
+.nav-icon{
+  display:inline-block;
+  width:24px;
+}
+
+/* ================= MAIN ================= */
 
 .main{
-  flex:1;
-  min-width:0;
-  padding:22px;
+  width:calc(100% - 250px);
+  margin-left:250px;
+  padding:24px;
 }
 
 .topbar{
@@ -166,72 +175,87 @@ button{
   margin-bottom:22px;
 }
 
-.page-title{
-  font-size:25px;
-  font-weight:900;
-  letter-spacing:.5px;
-}
-
-.page-subtitle{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:5px;
-}
-
-.live-badge{
-  padding:9px 13px;
-  border:1px solid rgba(34,211,238,.25);
-  color:var(--cyan);
-  background:rgba(34,211,238,.05);
-  border-radius:10px;
-  font-size:11px;
+.top-title{
+  font-size:14px;
   font-weight:800;
+  letter-spacing:1px;
 }
 
-/* HERO */
+.top-title span{
+  color:var(--cyan);
+}
+
+.clock{
+  font-family:monospace;
+  color:var(--cyan);
+  font-size:12px;
+}
+
+/* ================= HERO ================= */
 
 .hero{
   border:1px solid var(--line);
-  background:
-    linear-gradient(135deg,rgba(34,211,238,.07),rgba(7,17,31,.92) 45%,rgba(56,189,248,.04));
   border-radius:18px;
-  padding:26px;
+  padding:28px;
+  background:
+    linear-gradient(135deg,rgba(34,211,238,.08),rgba(59,130,246,.03)),
+    var(--panel);
+  box-shadow:var(--shadow);
   position:relative;
   overflow:hidden;
   margin-bottom:18px;
 }
 
-.hero:after{
+.hero:before{
   content:"";
   position:absolute;
-  width:250px;
-  height:250px;
-  right:-80px;
-  top:-100px;
+  width:300px;
+  height:300px;
+  right:-120px;
+  top:-150px;
+  border:1px solid rgba(34,211,238,.2);
   border-radius:50%;
-  border:1px solid rgba(34,211,238,.12);
-  box-shadow:0 0 60px rgba(34,211,238,.06);
+  box-shadow:0 0 80px rgba(34,211,238,.08);
 }
 
 .hero h1{
-  font-size:clamp(25px,4vw,42px);
-  font-weight:950;
-  letter-spacing:1px;
+  font-size:30px;
+  line-height:1.15;
+  letter-spacing:2px;
+  margin-bottom:9px;
 }
 
 .hero h1 span{
   color:var(--cyan);
+  text-shadow:0 0 20px rgba(34,211,238,.4);
 }
 
 .hero p{
-  margin-top:9px;
-  color:#89a7bc;
-  max-width:800px;
-  line-height:1.6;
+  max-width:750px;
+  color:var(--muted);
   font-size:13px;
+  line-height:1.7;
 }
 
-/* STATS */
+.badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:16px;
+}
+
+.badge{
+  border:1px solid #16405c;
+  background:#071522;
+  color:#9bdff0;
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:9px;
+  letter-spacing:1px;
+  font-weight:800;
+}
+
+/* ================= STATS ================= */
 
 .stats{
   display:grid;
@@ -241,478 +265,633 @@ button{
 }
 
 .stat{
-  background:rgba(7,17,31,.8);
+  background:var(--panel);
   border:1px solid var(--line);
   border-radius:14px;
-  padding:17px;
+  padding:16px;
 }
 
 .stat-label{
   color:var(--muted);
-  font-size:10px;
-  letter-spacing:1.5px;
-  font-weight:800;
+  font-size:9px;
+  letter-spacing:1.4px;
+  margin-bottom:8px;
 }
 
 .stat-value{
-  margin-top:8px;
-  font-size:27px;
+  font-size:25px;
   font-weight:900;
-  color:var(--cyan);
 }
 
-/* CONTROL */
+.stat:nth-child(1) .stat-value{color:var(--cyan)}
+.stat:nth-child(2) .stat-value{color:var(--yellow)}
+.stat:nth-child(3) .stat-value{color:var(--blue)}
+.stat:nth-child(4) .stat-value{color:var(--green)}
+.stat:nth-child(5) .stat-value{color:var(--red)}
 
-.control{
-  background:rgba(7,17,31,.85);
+/* ================= GRID ================= */
+
+.grid{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:16px;
+  margin-bottom:16px;
+}
+
+.panel{
+  background:rgba(7,16,31,.9);
   border:1px solid var(--line);
   border-radius:16px;
   padding:18px;
-  margin-bottom:18px;
+  box-shadow:var(--shadow);
 }
 
-.section-title{
-  font-size:13px;
-  font-weight:900;
-  letter-spacing:1.3px;
-  color:#c9efff;
-  margin-bottom:14px;
+.panel-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:15px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--line);
 }
+
+.panel-title h2{
+  font-size:13px;
+  letter-spacing:1px;
+}
+
+.panel-title small{
+  color:var(--muted);
+  font-size:9px;
+}
+
+/* ================= FORMS ================= */
 
 .form-grid{
   display:grid;
-  grid-template-columns:2fr 1fr 1fr auto;
+  grid-template-columns:1.5fr 1fr 1fr;
   gap:10px;
 }
 
-input,
-select{
-  width:100%;
-  background:#040b15;
-  color:#dff8ff;
-  border:1px solid #18324c;
-  border-radius:9px;
-  padding:12px;
-  outline:none;
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
 }
 
-input:focus,
-select:focus{
+.field label{
+  font-size:9px;
+  color:var(--muted);
+  letter-spacing:1px;
+}
+
+.field input,
+.field select,
+.field textarea,
+.search{
+  width:100%;
+  border:1px solid #173651;
+  background:#040b15;
+  color:#e8f7ff;
+  border-radius:9px;
+  outline:none;
+  padding:11px;
+  font-size:11px;
+}
+
+.field textarea{
+  resize:vertical;
+  min-height:80px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus,
+.search:focus{
   border-color:var(--cyan);
-  box-shadow:0 0 0 2px rgba(34,211,238,.08);
+  box-shadow:0 0 0 2px rgba(34,211,238,.06);
+}
+
+.full{
+  grid-column:1/-1;
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
 }
 
 .btn{
-  border:1px solid #1a405b;
-  background:#071524;
-  color:#bfeeff;
-  border-radius:9px;
-  padding:11px 14px;
+  border:1px solid #1a4562;
+  background:#081522;
+  color:#bdeeff;
+  border-radius:8px;
+  padding:10px 13px;
+  font-size:10px;
   font-weight:800;
+  letter-spacing:.5px;
   transition:.2s;
 }
 
 .btn:hover{
   transform:translateY(-1px);
   border-color:var(--cyan);
-  color:#fff;
+  box-shadow:0 0 18px rgba(34,211,238,.1);
 }
 
 .btn.primary{
-  background:rgba(34,211,238,.1);
-  border-color:rgba(34,211,238,.4);
-  color:var(--cyan);
+  background:linear-gradient(135deg,#0b7490,#0c4f6d);
+  color:#fff;
+  border-color:#1dbbd8;
 }
 
-.btn.danger{
+.btn.green{
+  border-color:#176c43;
+  color:#86efac;
+}
+
+.btn.yellow{
+  border-color:#705b13;
+  color:#fde68a;
+}
+
+.btn.red{
+  border-color:#70202a;
   color:#fca5a5;
-  border-color:rgba(239,68,68,.3);
 }
 
-.quick-actions{
+.btn.purple{
+  border-color:#513b7d;
+  color:#d8c7ff;
+}
+
+/* ================= PROJECTS ================= */
+
+.project-layout{
+  display:grid;
+  grid-template-columns:.8fr 1.2fr;
+  gap:14px;
+}
+
+.project-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  max-height:520px;
+  overflow:auto;
+  padding-right:4px;
+}
+
+.project-card{
+  border:1px solid #14314b;
+  background:#050d18;
+  border-radius:11px;
+  padding:12px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.project-card:hover,
+.project-card.selected{
+  border-color:var(--cyan);
+  background:linear-gradient(90deg,rgba(34,211,238,.08),#050d18);
+}
+
+.project-name{
+  font-weight:900;
+  font-size:12px;
+  margin-bottom:5px;
+}
+
+.project-desc{
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.5;
+  margin-bottom:8px;
+}
+
+.project-meta{
   display:flex;
   flex-wrap:wrap;
-  gap:8px;
-  margin-top:12px;
+  gap:5px;
 }
 
-/* GRID */
-
-.content-grid{
-  display:grid;
-  grid-template-columns:minmax(0,1.5fr) minmax(300px,.8fr);
-  gap:18px;
+.mini{
+  border:1px solid #18354e;
+  padding:4px 6px;
+  border-radius:5px;
+  font-size:8px;
+  color:#8eb0c7;
 }
 
-.panel{
-  background:rgba(7,17,31,.85);
-  border:1px solid var(--line);
-  border-radius:16px;
-  overflow:hidden;
-  min-width:0;
+.project-detail{
+  min-height:300px;
 }
 
-.panel-head{
-  padding:15px 17px;
-  border-bottom:1px solid var(--line);
+.detail-head{
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  gap:10px;
+  align-items:flex-start;
+  gap:15px;
+  margin-bottom:15px;
 }
 
-.panel-head h2{
-  font-size:13px;
-  letter-spacing:1px;
+.detail-name{
+  font-size:20px;
+  font-weight:900;
 }
 
-.panel-head span{
+.detail-description{
   color:var(--muted);
+  font-size:11px;
+  line-height:1.6;
+  margin-top:5px;
+}
+
+.progress-wrap{
+  margin:15px 0;
+}
+
+.progress-label{
+  display:flex;
+  justify-content:space-between;
+  font-size:9px;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+
+.progress-bar{
+  height:8px;
+  border:1px solid #17334b;
+  background:#030812;
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--cyan),var(--blue));
+  width:0%;
+  transition:.35s;
+  box-shadow:0 0 15px rgba(34,211,238,.3);
+}
+
+.project-info-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+}
+
+.info{
+  border:1px solid #132e45;
+  border-radius:8px;
+  padding:9px;
+  background:#050c16;
+}
+
+.info label{
+  display:block;
+  font-size:8px;
+  color:var(--muted);
+  margin-bottom:5px;
+}
+
+.info strong{
   font-size:10px;
 }
 
-.panel-body{
-  padding:14px;
-}
-
-/* TASK CARD */
+/* ================= TASKS ================= */
 
 .task-list{
   display:flex;
   flex-direction:column;
-  gap:10px;
+  gap:9px;
+  max-height:600px;
+  overflow:auto;
 }
 
 .task{
-  border:1px solid #15314a;
-  background:rgba(4,11,21,.75);
-  border-radius:13px;
-  padding:14px;
-  transition:.2s;
+  border:1px solid #14314b;
+  background:#050d18;
+  border-radius:11px;
+  padding:12px;
 }
 
-.task:hover{
-  border-color:rgba(34,211,238,.3);
-}
-
-.task-top{
+.task-head{
   display:flex;
   justify-content:space-between;
+  gap:10px;
   align-items:flex-start;
-  gap:12px;
 }
 
 .task-name{
+  font-size:12px;
   font-weight:900;
-  font-size:14px;
-  color:#e7fbff;
 }
 
 .task-id{
-  color:#537087;
-  font-size:9px;
-  margin-top:4px;
-  font-family:Consolas,monospace;
+  color:#526d83;
+  font-size:8px;
+  font-family:monospace;
+  margin-top:3px;
 }
 
 .status{
-  font-size:9px;
+  padding:5px 7px;
+  border-radius:5px;
+  font-size:8px;
   font-weight:900;
-  padding:5px 8px;
-  border-radius:7px;
   border:1px solid;
-  white-space:nowrap;
 }
 
 .status.queued{
   color:#93c5fd;
-  border-color:rgba(59,130,246,.3);
-  background:rgba(59,130,246,.06);
+  border-color:#1e40af;
+  background:rgba(30,64,175,.08);
 }
 
 .status.running{
   color:#67e8f9;
-  border-color:rgba(34,211,238,.35);
-  background:rgba(34,211,238,.08);
-}
-
-.status.completed{
-  color:#86efac;
-  border-color:rgba(34,197,94,.3);
-  background:rgba(34,197,94,.06);
+  border-color:#0e7490;
+  background:rgba(14,116,144,.08);
 }
 
 .status.paused{
   color:#fde68a;
-  border-color:rgba(250,204,21,.3);
-  background:rgba(250,204,21,.06);
+  border-color:#854d0e;
+  background:rgba(133,77,14,.08);
+}
+
+.status.completed{
+  color:#86efac;
+  border-color:#166534;
+  background:rgba(22,101,52,.08);
 }
 
 .status.failed,
 .status.cancelled{
   color:#fca5a5;
-  border-color:rgba(239,68,68,.3);
-  background:rgba(239,68,68,.06);
+  border-color:#991b1b;
+  background:rgba(153,27,27,.08);
 }
 
-.meta{
+.task-meta{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:7px;
-  margin-top:12px;
+  gap:6px;
+  margin-top:10px;
 }
 
-.meta-box{
-  background:#050d18;
-  border:1px solid #112940;
-  border-radius:8px;
-  padding:8px;
-  min-width:0;
+.task-meta div{
+  border:1px solid #10283d;
+  padding:7px;
+  border-radius:6px;
+  background:#040a12;
 }
 
-.meta-label{
-  color:#527088;
-  font-size:8px;
-  font-weight:800;
-  letter-spacing:1px;
+.task-meta label{
+  display:block;
+  font-size:7px;
+  color:#5e7890;
+  margin-bottom:3px;
 }
 
-.meta-value{
-  margin-top:4px;
-  color:#c9efff;
-  font-size:11px;
-  font-weight:900;
-  word-break:break-word;
-}
-
-.progress-wrap{
-  margin-top:12px;
-}
-
-.progress-info{
-  display:flex;
-  justify-content:space-between;
-  color:#648198;
+.task-meta strong{
   font-size:9px;
-  margin-bottom:5px;
 }
 
-.progress{
-  height:6px;
-  background:#081522;
-  border-radius:99px;
+.task-progress{
+  margin-top:9px;
+}
+
+.task-progress-line{
+  height:5px;
+  background:#020711;
+  border:1px solid #112a40;
+  border-radius:10px;
   overflow:hidden;
 }
 
-.progress-bar{
+.task-progress-fill{
   height:100%;
-  width:0;
-  background:linear-gradient(90deg,#0891b2,#22d3ee,#38bdf8);
-  box-shadow:0 0 12px rgba(34,211,238,.35);
-  transition:width .2s linear;
+  background:linear-gradient(90deg,#22d3ee,#3b82f6);
+  transition:.2s;
 }
 
-.task-message{
-  color:#6f8ba0;
-  font-size:10px;
-  margin-top:9px;
-  line-height:1.5;
-}
-
-.task-actions{
+.task-buttons{
   display:flex;
   flex-wrap:wrap;
-  gap:6px;
-  margin-top:11px;
+  gap:5px;
+  margin-top:9px;
 }
 
-.task-actions button{
-  padding:7px 9px;
-  font-size:9px;
+.task-buttons button{
+  padding:6px 8px;
+  font-size:8px;
+  border-radius:5px;
 }
 
-/* CONSOLE */
+/* ================= CONSOLE ================= */
 
 .console{
-  background:#02060c;
-  min-height:340px;
-  padding:14px;
-  font-family:Consolas,Monaco,monospace;
+  background:#02060d;
+  border:1px solid #10283c;
+  border-radius:10px;
+  min-height:230px;
+  max-height:300px;
+  overflow:auto;
+  padding:12px;
+  font-family:Consolas,monospace;
   font-size:10px;
   line-height:1.7;
-  overflow:auto;
-  max-height:470px;
 }
 
 .log{
-  color:#7893a7;
+  color:#6f899f;
 }
 
 .log .time{
-  color:#36566e;
-}
-
-.log.ok{
-  color:#7dd3a5;
-}
-
-.log.warn{
-  color:#f6d365;
-}
-
-.log.error{
-  color:#fca5a5;
+  color:#365a72;
 }
 
 .log.info{
-  color:#67e8f9;
+  color:#8edcf0;
 }
 
-/* CHECKLIST */
+.log.success{
+  color:#7ee2a8;
+}
+
+.log.warn{
+  color:#f5d878;
+}
+
+.log.error{
+  color:#f38a8a;
+}
+
+/* ================= CHECKLIST ================= */
 
 .checklist{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.check{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  color:#8ca7bd;
-  font-size:11px;
-  padding:9px;
-  background:#050d18;
-  border:1px solid #112940;
-  border-radius:9px;
-}
-
-.check input{
-  width:auto;
-  accent-color:var(--cyan);
-}
-
-/* MODULES */
-
-.modules{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:8px;
 }
 
-.module{
-  padding:11px;
-  background:#050d18;
-  border:1px solid #112940;
-  border-radius:9px;
-  color:#88a4b9;
+.check{
+  border:1px solid #132e45;
+  background:#040a12;
+  border-radius:8px;
+  padding:9px;
+  font-size:10px;
+  color:#91a9bb;
+}
+
+.check input{
+  margin-right:6px;
+  accent-color:var(--cyan);
+}
+
+/* ================= EMPTY ================= */
+
+.empty{
+  padding:35px 15px;
+  text-align:center;
+  border:1px dashed #17334b;
+  border-radius:10px;
+  color:#597287;
   font-size:10px;
 }
 
-.module strong{
+.empty strong{
   display:block;
-  color:#c9efff;
-  margin-bottom:4px;
+  color:#91aec3;
+  margin-bottom:5px;
 }
 
-/* EMPTY */
+/* ================= TOAST ================= */
 
-.empty{
-  text-align:center;
-  padding:35px 10px;
-  color:#567087;
-  font-size:11px;
+.toast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:100;
+  min-width:240px;
+  max-width:360px;
+  padding:13px 15px;
+  border:1px solid #1b4d66;
+  border-radius:10px;
+  background:#06111e;
+  box-shadow:0 15px 50px rgba(0,0,0,.4);
+  color:#bdeeff;
+  font-size:10px;
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(15px);
+  transition:.25s;
 }
 
-/* RESPONSIVE */
+.toast.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ================= RESPONSIVE ================= */
 
 @media(max-width:1100px){
   .stats{
     grid-template-columns:repeat(3,1fr);
   }
 
-  .form-grid{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .content-grid{
+  .grid,
+  .project-layout{
     grid-template-columns:1fr;
   }
 }
 
-@media(max-width:760px){
+@media(max-width:800px){
   .sidebar{
-    width:76px;
-    padding:15px 9px;
+    width:70px;
+    padding:12px 8px;
   }
 
-  .logo{
-    padding:8px 5px 18px;
-  }
-
-  .logo-main{
+  .brand-title{
     font-size:0;
+    text-align:center;
   }
 
-  .logo-main:after{
-    content:"ALFA";
-    font-size:15px;
+  .brand-title:after{
+    content:"AOS";
+    font-size:17px;
+    color:var(--cyan);
   }
 
-  .logo-sub,
+  .brand-sub,
   .system-status span,
-  .nav button span{
+  .nav button .nav-text{
     display:none;
   }
 
   .system-status{
     justify-content:center;
-    margin:12px 0;
   }
 
   .nav button{
     text-align:center;
-    font-size:0;
+    padding:12px 4px;
   }
 
-  .nav button:before{
-    content:"◆";
-    font-size:13px;
+  .nav-icon{
+    width:auto;
   }
 
   .main{
-    padding:13px;
-  }
-
-  .topbar{
-    align-items:flex-start;
+    width:calc(100% - 70px);
+    margin-left:70px;
+    padding:14px;
   }
 
   .stats{
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:repeat(2,1fr);
   }
 
   .form-grid{
     grid-template-columns:1fr;
   }
 
-  .meta{
-    grid-template-columns:1fr 1fr;
+  .full{
+    grid-column:auto;
+  }
+
+  .task-meta,
+  .project-info-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .checklist{
+    grid-template-columns:1fr;
   }
 }
 
-@media(max-width:430px){
-  .stats{
-    grid-template-columns:1fr;
-  }
-
+@media(max-width:500px){
   .hero{
-    padding:19px;
+    padding:20px;
   }
 
   .hero h1{
-    font-size:25px;
+    font-size:23px;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .topbar{
+    align-items:flex-start;
+    flex-direction:column;
   }
 }
 </style>
@@ -722,11 +901,13 @@ select:focus{
 
 <div class="app">
 
+<!-- ================= SIDEBAR ================= -->
+
 <aside class="sidebar">
 
-  <div class="logo">
-    <div class="logo-main">ALFA OS SOFTWARE</div>
-    <div class="logo-sub">SECURITY • OSINT • AI PLATFORM</div>
+  <div class="brand">
+    <div class="brand-title">ALFA <span>OS</span> SOFTWARE</div>
+    <div class="brand-sub">SECURITY • OSINT • AI PLATFORM</div>
   </div>
 
   <div class="system-status">
@@ -735,235 +916,253 @@ select:focus{
   </div>
 
   <nav class="nav">
-    <button class="active" onclick="selectModule(this,'Dashboard')">◈ <span>Dashboard</span></button>
-    <button onclick="selectModule(this,'OSINT Engine')">◎ <span>OSINT Engine</span></button>
-    <button onclick="selectModule(this,'Security Engine')">◉ <span>Security Engine</span></button>
-    <button onclick="selectModule(this,'Bug Hunter')">◇ <span>Bug Hunter</span></button>
-    <button onclick="selectModule(this,'Task Manager')">▣ <span>Task Manager</span></button>
-    <button onclick="selectModule(this,'Reports')">▤ <span>Reports</span></button>
-    <button onclick="selectModule(this,'AI Security')">✦ <span>AI Security</span></button>
-    <button onclick="selectModule(this,'Settings')">⚙ <span>Settings</span></button>
+
+    <button class="active" onclick="showSection('dashboard',this)">
+      <span class="nav-icon">◈</span>
+      <span class="nav-text">Dashboard</span>
+    </button>
+
+    <button onclick="showSection('projects',this)">
+      <span class="nav-icon">▣</span>
+      <span class="nav-text">Project Manager</span>
+    </button>
+
+    <button onclick="showSection('tasks',this)">
+      <span class="nav-icon">◫</span>
+      <span class="nav-text">Task Engine</span>
+    </button>
+
+    <button onclick="showSection('osint',this)">
+      <span class="nav-icon">⌕</span>
+      <span class="nav-text">OSINT Engine</span>
+    </button>
+
+    <button onclick="showSection('security',this)">
+      <span class="nav-icon">◉</span>
+      <span class="nav-text">Security Engine</span>
+    </button>
+
+    <button onclick="showSection('bughunter',this)">
+      <span class="nav-icon">⚡</span>
+      <span class="nav-text">Bug Hunter</span>
+    </button>
+
+    <button onclick="showSection('reports',this)">
+      <span class="nav-icon">▤</span>
+      <span class="nav-text">Reports</span>
+    </button>
+
+    <button onclick="showSection('ai',this)">
+      <span class="nav-icon">✦</span>
+      <span class="nav-text">AI Security</span>
+    </button>
+
+    <button onclick="showSection('settings',this)">
+      <span class="nav-icon">⚙</span>
+      <span class="nav-text">Settings</span>
+    </button>
+
   </nav>
 
 </aside>
 
+<!-- ================= MAIN ================= -->
+
 <main class="main">
 
-<header class="topbar">
-  <div>
-    <div class="page-title">ALFA SECURITY COMMAND CENTER</div>
-    <div class="page-subtitle">REAL TASK ENGINE • LOCAL DATABASE • MULTITASK CONTROL</div>
+  <div class="topbar">
+    <div class="top-title">
+      <span>ALFA OS SOFTWARE</span> / PROJECT MANAGER V1.7
+    </div>
+
+    <div class="clock" id="clock">--:--:--</div>
   </div>
 
-  <div class="live-badge">● V1.6.4 ONLINE</div>
-</header>
+<!-- ================= DASHBOARD ================= -->
 
-<section class="hero">
-  <h1><span>ALFA OS SOFTWARE</span></h1>
-  <p>
-    Security multitask command platform dengan task queue,
-    local history, execution timer, retry engine dan monitoring.
-    V1.6.4 fokus pada perbaikan tampilan ATTEMPT tanpa mengubah
-    mesin timer V1.6.3.
-  </p>
-</section>
+<section id="dashboard" class="section">
 
-<section class="stats">
+  <div class="hero">
 
-  <div class="stat">
-    <div class="stat-label">TOTAL TASKS</div>
-    <div class="stat-value" id="statTotal">0</div>
-  </div>
+    <h1>
+      <span>ALFA SECURITY</span><br>
+      COMMAND PLATFORM
+    </h1>
 
-  <div class="stat">
-    <div class="stat-label">RUNNING</div>
-    <div class="stat-value" id="statRunning">0</div>
-  </div>
+    <p>
+      Multitask security workstation dengan Project Manager,
+      Task Engine, persistent local database, monitoring,
+      OSINT workspace dan security workflow.
+    </p>
 
-  <div class="stat">
-    <div class="stat-label">QUEUED</div>
-    <div class="stat-value" id="statQueued">0</div>
-  </div>
-
-  <div class="stat">
-    <div class="stat-label">COMPLETED</div>
-    <div class="stat-value" id="statCompleted">0</div>
-  </div>
-
-  <div class="stat">
-    <div class="stat-label">FAILED</div>
-    <div class="stat-value" id="statFailed">0</div>
-  </div>
-
-</section>
-
-<section class="control">
-
-  <div class="section-title">TASK CONTROL CENTER</div>
-
-  <div class="form-grid">
-
-    <input
-      id="taskName"
-      placeholder="Nama task..."
-      value=""
-    >
-
-    <select id="taskType">
-      <option value="OSINT">OSINT</option>
-      <option value="SECURITY">SECURITY</option>
-      <option value="BUG">BUG</option>
-      <option value="REPORT">REPORT</option>
-      <option value="AI">AI</option>
-    </select>
-
-    <select id="taskPriority">
-      <option value="LOW">LOW</option>
-      <option value="NORMAL" selected>NORMAL</option>
-      <option value="HIGH">HIGH</option>
-      <option value="CRITICAL">CRITICAL</option>
-    </select>
-
-    <button class="btn primary" onclick="createTask()">
-      + CREATE TASK
-    </button>
+    <div class="badges">
+      <div class="badge">PROJECT MANAGER</div>
+      <div class="badge">TASK ENGINE</div>
+      <div class="badge">INDEXEDDB</div>
+      <div class="badge">MULTITASK</div>
+      <div class="badge">PASSIVE / AUTHORIZED</div>
+    </div>
 
   </div>
 
-  <div class="quick-actions">
-    <button class="btn" onclick="startNext()">▶ START NEXT</button>
-    <button class="btn" onclick="pauseAll()">Ⅱ PAUSE ALL</button>
-    <button class="btn" onclick="resumeAll()">▶ RESUME ALL</button>
-    <button class="btn" onclick="createDemo()">⚡ DEMO ×5</button>
-    <button class="btn danger" onclick="clearTasks()">✕ CLEAR ALL</button>
+  <div class="stats">
+
+    <div class="stat">
+      <div class="stat-label">TOTAL PROJECTS</div>
+      <div class="stat-value" id="statProjects">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">TOTAL TASKS</div>
+      <div class="stat-value" id="statTasks">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">RUNNING</div>
+      <div class="stat-value" id="statRunning">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">COMPLETED</div>
+      <div class="stat-value" id="statCompleted">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">FAILED</div>
+      <div class="stat-value" id="statFailed">0</div>
+    </div>
+
   </div>
 
-</section>
+  <div class="grid">
 
-<div class="content-grid">
+    <div class="panel">
 
-<section class="panel">
+      <div class="panel-title">
+        <h2>PROJECT OVERVIEW</h2>
+        <small>LOCAL DATABASE</small>
+      </div>
 
-  <div class="panel-head">
-    <h2>TASK QUEUE / LIVE HISTORY</h2>
-    <span id="taskCount">0 TASKS</span>
-  </div>
+      <div id="dashboardProjects"></div>
 
-  <div class="panel-body">
-    <div id="taskList" class="task-list"></div>
+    </div>
+
+    <div class="panel">
+
+      <div class="panel-title">
+        <h2>LIVE SECURITY CONSOLE</h2>
+        <small>ALFA CORE</small>
+      </div>
+
+      <div class="console" id="console"></div>
+
+    </div>
+
   </div>
 
 </section>
 
-<section>
+<!-- ================= PROJECT MANAGER ================= -->
+
+<section id="projects" class="section" style="display:none">
 
   <div class="panel">
 
-    <div class="panel-head">
-      <h2>LIVE TASK CONSOLE</h2>
-      <span>MONOTONIC TIMER</span>
+    <div class="panel-title">
+      <h2>PROJECT MANAGER</h2>
+      <small>ALFA OS SOFTWARE V1.7</small>
     </div>
 
-    <div id="console" class="console"></div>
+    <div class="form-grid">
 
-  </div>
+      <div class="field">
+        <label>PROJECT NAME</label>
+        <input id="projectName" placeholder="Contoh: WEBSITE CLIENT ALFA">
+      </div>
 
-  <div class="panel" style="margin-top:18px;">
+      <div class="field">
+        <label>STATUS</label>
+        <select id="projectStatus">
+          <option value="planning">PLANNING</option>
+          <option value="active">ACTIVE</option>
+          <option value="paused">PAUSED</option>
+          <option value="completed">COMPLETED</option>
+          <option value="archived">ARCHIVED</option>
+        </select>
+      </div>
 
-    <div class="panel-head">
-      <h2>SECURITY CHECKLIST</h2>
-      <span id="checkCount">0/8</span>
-    </div>
+      <div class="field">
+        <label>PRIORITY</label>
+        <select id="projectPriority">
+          <option value="LOW">LOW</option>
+          <option value="NORMAL" selected>NORMAL</option>
+          <option value="HIGH">HIGH</option>
+          <option value="CRITICAL">CRITICAL</option>
+        </select>
+      </div>
 
-    <div class="panel-body">
+      <div class="field">
+        <label>DEADLINE</label>
+        <input id="projectDeadline" type="date">
+      </div>
 
-      <div class="checklist">
+      <div class="field full">
+        <label>DESCRIPTION</label>
+        <textarea id="projectDescription"
+          placeholder="Deskripsi project..."></textarea>
+      </div>
 
-        <label class="check">
-          <input type="checkbox" onchange="updateChecklist()">
-          Target authorization confirmed
-        </label>
-
-        <label class="check">
-          <input type="checkbox" onchange="updateChecklist()">
-          Passive analysis preferred
-        </label>
-
-        <label class="check">
-          <input type="checkbox" onchange="updateChecklist()">
-          No credential harvesting
-        </label>
-
-        <label class="check">
-          <input type="checkbox" onchange="updateChecklist()">
-          No destructive action
-        </label>
-
-        <label class="check">
-          <input type="checkbox" onchange="updateChecklist()">
-          Scope documented
-        </label>
-
-        <label class="check">
-          <input type="checkbox" onchange="updateChecklist()">
-          Findings recorded
-        </label>
-
-        <label class="check">
-          <input type="checkbox" onchange="updateChecklist()">
-          Evidence handled safely
-        </label>
-
-        <label class="check">
-          <input type="checkbox" onchange="updateChecklist()">
-          Report prepared
-        </label>
-
+      <div class="field full">
+        <label>PROJECT NOTES</label>
+        <textarea id="projectNotes"
+          placeholder="Catatan internal project..."></textarea>
       </div>
 
     </div>
 
-  </div>
+    <div class="actions">
+      <button class="btn primary" onclick="createProject()">
+        + CREATE PROJECT
+      </button>
 
-  <div class="panel" style="margin-top:18px;">
-
-    <div class="panel-head">
-      <h2>CORE MODULES</h2>
-      <span>V1.6.4</span>
+      <button class="btn" onclick="resetProjectForm()">
+        RESET FORM
+      </button>
     </div>
 
-    <div class="panel-body">
+  </div>
 
-      <div class="modules">
+  <br>
 
-        <div class="module">
-          <strong>OSINT ENGINE</strong>
-          Passive intelligence workspace.
-        </div>
+  <div class="panel">
 
-        <div class="module">
-          <strong>SECURITY ENGINE</strong>
-          Defensive security analysis.
-        </div>
+    <div class="panel-title">
 
-        <div class="module">
-          <strong>BUG HUNTER</strong>
-          Authorized testing workspace.
-        </div>
+      <h2>PROJECT WORKSPACE</h2>
 
-        <div class="module">
-          <strong>REPORT ENGINE</strong>
-          Findings and assessment reports.
-        </div>
+      <input
+        class="search"
+        id="projectSearch"
+        placeholder="Search project..."
+        oninput="renderProjects()"
+        style="max-width:240px"
+      >
 
-        <div class="module">
-          <strong>AI SECURITY</strong>
-          Future AI security assistant.
-        </div>
+    </div>
 
-        <div class="module">
-          <strong>TASK ENGINE</strong>
-          Queue, timer and history.
+    <div class="project-layout">
+
+      <div>
+
+        <div id="projectList" class="project-list"></div>
+
+      </div>
+
+      <div id="projectDetail" class="project-detail">
+
+        <div class="empty">
+          <strong>NO PROJECT SELECTED</strong>
+          Pilih project untuk melihat detail.
         </div>
 
       </div>
@@ -974,129 +1173,502 @@ select:focus{
 
 </section>
 
-</div>
+<!-- ================= TASK ENGINE ================= -->
+
+<section id="tasks" class="section" style="display:none">
+
+  <div class="grid">
+
+    <div class="panel">
+
+      <div class="panel-title">
+        <h2>TASK CONTROL CENTER</h2>
+        <small>REAL EXECUTION ENGINE</small>
+      </div>
+
+      <div class="form-grid">
+
+        <div class="field full">
+          <label>TASK NAME</label>
+          <input id="taskName" placeholder="Contoh: Security Header Review">
+        </div>
+
+        <div class="field">
+          <label>TYPE</label>
+          <select id="taskType">
+            <option value="OSINT">OSINT</option>
+            <option value="SECURITY">SECURITY</option>
+            <option value="BUG">BUG HUNTER</option>
+            <option value="REPORT">REPORT</option>
+            <option value="AI">AI SECURITY</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>PRIORITY</label>
+          <select id="taskPriority">
+            <option value="LOW">LOW</option>
+            <option value="NORMAL" selected>NORMAL</option>
+            <option value="HIGH">HIGH</option>
+            <option value="CRITICAL">CRITICAL</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <label>PROJECT</label>
+          <select id="taskProject">
+            <option value="">UNASSIGNED</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="actions">
+
+        <button class="btn primary" onclick="createTask()">
+          + CREATE TASK
+        </button>
+
+        <button class="btn green" onclick="startNextTask()">
+          ▶ START NEXT
+        </button>
+
+        <button class="btn yellow" onclick="pauseAll()">
+          ❚❚ PAUSE ALL
+        </button>
+
+        <button class="btn" onclick="resumeAll()">
+          ▶ RESUME ALL
+        </button>
+
+        <button class="btn purple" onclick="createDemoTasks()">
+          DEMO ×5
+        </button>
+
+        <button class="btn red" onclick="clearCompleted()">
+          CLEAR COMPLETED
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="panel">
+
+      <div class="panel-title">
+        <h2>TASK ENGINE STATUS</h2>
+        <small>LIVE</small>
+      </div>
+
+      <div class="console" id="taskConsole"></div>
+
+    </div>
+
+  </div>
+
+  <div class="panel">
+
+    <div class="panel-title">
+
+      <h2>TASK QUEUE / LIVE HISTORY</h2>
+
+      <input
+        class="search"
+        id="taskSearch"
+        placeholder="Search task..."
+        oninput="renderTasks()"
+        style="max-width:240px"
+      >
+
+    </div>
+
+    <div id="taskList" class="task-list"></div>
+
+  </div>
+
+</section>
+
+<!-- ================= OSINT ================= -->
+
+<section id="osint" class="section" style="display:none">
+
+  <div class="panel">
+
+    <div class="panel-title">
+      <h2>OSINT ENGINE</h2>
+      <small>PASSIVE / AUTHORIZED WORKSPACE</small>
+    </div>
+
+    <div class="field">
+      <label>AUTHORIZED TARGET / ASSET</label>
+      <input id="osintTarget"
+        placeholder="Masukkan domain atau asset milik sendiri">
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" onclick="runSafeModule('OSINT')">
+        INITIALIZE OSINT WORKSPACE
+      </button>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= SECURITY ================= -->
+
+<section id="security" class="section" style="display:none">
+
+  <div class="panel">
+
+    <div class="panel-title">
+      <h2>SECURITY ENGINE</h2>
+      <small>AUTHORIZED TESTING ONLY</small>
+    </div>
+
+    <div class="field">
+      <label>AUTHORIZED TARGET</label>
+      <input id="securityTarget"
+        placeholder="Target milik sendiri / authorized">
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" onclick="runSafeModule('SECURITY')">
+        INITIALIZE SECURITY CHECK
+      </button>
+    </div>
+
+    <br>
+
+    <div class="checklist">
+
+      <label class="check">
+        <input type="checkbox">
+        HTTPS / TLS Review
+      </label>
+
+      <label class="check">
+        <input type="checkbox">
+        Security Headers
+      </label>
+
+      <label class="check">
+        <input type="checkbox">
+        Cookie Configuration
+      </label>
+
+      <label class="check">
+        <input type="checkbox">
+        Authentication Review
+      </label>
+
+      <label class="check">
+        <input type="checkbox">
+        Input Validation
+      </label>
+
+      <label class="check">
+        <input type="checkbox">
+        Access Control
+      </label>
+
+      <label class="check">
+        <input type="checkbox">
+        Error Handling
+      </label>
+
+      <label class="check">
+        <input type="checkbox">
+        Security Documentation
+      </label>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= BUG HUNTER ================= -->
+
+<section id="bughunter" class="section" style="display:none">
+
+  <div class="panel">
+
+    <div class="panel-title">
+      <h2>AUTHORIZED BUG HUNTER</h2>
+      <small>LAB / OWNED TARGETS</small>
+    </div>
+
+    <div class="empty">
+      <strong>BUG HUNTER WORKSPACE</strong>
+      Gunakan hanya pada sistem yang Anda miliki atau memiliki izin
+      untuk menguji.
+      <br><br>
+      V1.7 menyiapkan project/task workflow untuk modul bug hunting
+      pada tahap berikutnya.
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= REPORTS ================= -->
+
+<section id="reports" class="section" style="display:none">
+
+  <div class="panel">
+
+    <div class="panel-title">
+      <h2>REPORT CENTER</h2>
+      <small>PROJECT → TASK → FINDINGS → REPORT</small>
+    </div>
+
+    <div class="empty">
+      <strong>REPORT ENGINE STANDBY</strong>
+      Struktur project dan task V1.7 sudah disiapkan untuk
+      Report Engine berikutnya.
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= AI ================= -->
+
+<section id="ai" class="section" style="display:none">
+
+  <div class="panel">
+
+    <div class="panel-title">
+      <h2>AI SECURITY ASSISTANT</h2>
+      <small>WORKSPACE</small>
+    </div>
+
+    <div class="empty">
+      <strong>AI SECURITY MODULE</strong>
+      Workspace siap dihubungkan ke AI engine pada fase berikutnya.
+      Tidak ada perubahan pada Worker ALFA AI.
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= SETTINGS ================= -->
+
+<section id="settings" class="section" style="display:none">
+
+  <div class="panel">
+
+    <div class="panel-title">
+      <h2>SYSTEM SETTINGS</h2>
+      <small>ALFA OS SOFTWARE</small>
+    </div>
+
+    <div class="empty">
+      <strong>DATABASE</strong>
+      IndexedDB persistent local storage aktif.
+      <br>
+      Database: ALFA_OS_SOFTWARE_DB
+      <br>
+      Schema: V7
+    </div>
+
+  </div>
+
+</section>
 
 </main>
 </div>
 
-<script>
+<div class="toast" id="toast"></div>
 
+<script>
 /* =========================================================
-   ALFA OS SOFTWARE V1.6.4
-   TASK DISPLAY + ATTEMPT FIX
+   ALFA OS SOFTWARE V1.7
+   PROJECT MANAGER + REAL TASK ENGINE
    ========================================================= */
 
 const DB_NAME = "ALFA_OS_SOFTWARE_DB";
-const DB_VERSION = 6;
-const STORE = "tasks";
+const DB_VERSION = 7;
+
+const TASK_STORE = "tasks";
+const PROJECT_STORE = "projects";
 
 let db = null;
-let tasks = [];
-let runtimeClock = new Map();
-let timers = new Map();
 
-const PRIORITY_DURATION = {
+let tasks = [];
+let projects = [];
+
+let selectedProjectId = null;
+
+const runtimeClock = new Map();
+const runtimeTimers = new Map();
+
+const DURATIONS = {
   CRITICAL: 8000,
   HIGH: 6500,
   NORMAL: 5000,
   LOW: 3500
 };
 
-/* ---------------------------------------------------------
-   UTILS
---------------------------------------------------------- */
+const PRIORITY_ORDER = {
+  CRITICAL: 0,
+  HIGH: 1,
+  NORMAL: 2,
+  LOW: 3
+};
 
-function uid(){
-  return "ALFA-" +
-    Date.now().toString(36).toUpperCase() +
-    "-" +
-    Math.random().toString(36).substring(2,6).toUpperCase();
+/* ================= BASIC HELPERS ================= */
+
+function uid(prefix="ID"){
+  return prefix + "_" +
+    Date.now().toString(36) +
+    "_" +
+    Math.random().toString(36).slice(2,8);
 }
 
 function now(){
   return Date.now();
 }
 
-/*
-  IMPORTANT:
-  ATTEMPT HARUS SELALU BERASAL DARI task.attempts.
-  TIDAK BOLEH mengambil nilai duration/elapsedMs.
-*/
+function esc(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
 function formatAttempt(value){
-
-  let n = Number(value);
-
-  if(!Number.isFinite(n) || n < 0){
-    n = 0;
-  }
-
-  n = Math.floor(n);
+  const n = Number.isFinite(Number(value))
+    ? Math.max(0,Math.floor(Number(value)))
+    : 0;
 
   return String(n).padStart(3,"0");
 }
 
 function formatDuration(ms){
+  ms = Math.max(0,Number(ms)||0);
 
-  let value = Number(ms);
+  const totalSeconds = Math.floor(ms/1000);
 
-  if(!Number.isFinite(value) || value < 0){
-    value = 0;
+  const h = Math.floor(totalSeconds/3600);
+  const m = Math.floor((totalSeconds%3600)/60);
+  const s = totalSeconds%60;
+
+  if(h > 0){
+    return `${String(h).padStart(2,"0")}h ${String(m).padStart(2,"0")}m`;
   }
 
-  value = Math.floor(value);
-
-  const seconds = Math.floor(value / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const sec = seconds % 60;
-
-  if(minutes > 0){
-    return `${minutes}m ${String(sec).padStart(2,"0")}s`;
+  if(m > 0){
+    return `${String(m).padStart(2,"0")}m ${String(s).padStart(2,"0")}s`;
   }
 
-  return `${String(sec).padStart(2,"0")}s`;
+  return `${String(s).padStart(2,"0")}s`;
 }
 
-function escapeHTML(value){
-
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+function projectStatusLabel(status){
+  return String(status || "planning").toUpperCase();
 }
 
-/* ---------------------------------------------------------
-   LOG
---------------------------------------------------------- */
+function showToast(message){
+  const el = document.getElementById("toast");
 
-function log(message,type="info"){
+  el.textContent = message;
+  el.classList.add("show");
 
-  const consoleBox = document.getElementById("console");
+  clearTimeout(showToast.timer);
 
-  const time = new Date().toLocaleTimeString();
+  showToast.timer = setTimeout(()=>{
+    el.classList.remove("show");
+  },2200);
+}
+
+/* ================= CLOCK ================= */
+
+function updateClock(){
+  const d = new Date();
+
+  document.getElementById("clock").textContent =
+    d.toLocaleTimeString("id-ID");
+}
+
+setInterval(updateClock,1000);
+updateClock();
+
+/* ================= CONSOLE ================= */
+
+function addLog(message,type=""){
+  const consoleEl = document.getElementById("console");
+
+  if(!consoleEl) return;
+
+  const time = new Date().toLocaleTimeString("id-ID");
 
   const row = document.createElement("div");
 
   row.className = "log " + type;
 
   row.innerHTML =
-    `<span class="time">[${time}]</span> ${escapeHTML(message)}`;
+    `<span class="time">[${esc(time)}]</span> ${esc(message)}`;
 
-  consoleBox.appendChild(row);
+  consoleEl.appendChild(row);
 
-  while(consoleBox.children.length > 150){
-    consoleBox.removeChild(consoleBox.firstChild);
-  }
-
-  consoleBox.scrollTop = consoleBox.scrollHeight;
+  consoleEl.scrollTop = consoleEl.scrollHeight;
 }
 
-/* ---------------------------------------------------------
-   INDEXED DB
---------------------------------------------------------- */
+function addTaskLog(message,type=""){
+  const consoleEl = document.getElementById("taskConsole");
 
-function openDB(){
+  if(!consoleEl) return;
+
+  const time = new Date().toLocaleTimeString("id-ID");
+
+  const row = document.createElement("div");
+
+  row.className = "log " + type;
+
+  row.innerHTML =
+    `<span class="time">[${esc(time)}]</span> ${esc(message)}`;
+
+  consoleEl.appendChild(row);
+
+  consoleEl.scrollTop = consoleEl.scrollHeight;
+}
+
+/* ================= NAV ================= */
+
+function showSection(id,button){
+
+  document.querySelectorAll(".section").forEach(section=>{
+    section.style.display =
+      section.id === id ? "block" : "none";
+  });
+
+  document.querySelectorAll(".nav button").forEach(btn=>{
+    btn.classList.remove("active");
+  });
+
+  if(button){
+    button.classList.add("active");
+  }
+
+  if(id === "projects"){
+    renderProjects();
+    updateProjectSelect();
+  }
+
+  if(id === "tasks"){
+    renderTasks();
+    updateProjectSelect();
+  }
+}
+
+/* ================= INDEXED DB ================= */
+
+function openDatabase(){
 
   return new Promise((resolve,reject)=>{
 
@@ -1107,221 +1679,303 @@ function openDB(){
 
       const database = event.target.result;
 
-      let store;
+      /* V1.6.x task store */
 
-      if(!database.objectStoreNames.contains(STORE)){
+      if(!database.objectStoreNames.contains(TASK_STORE)){
 
-        store = database.createObjectStore(
-          STORE,
-          {keyPath:"id"}
+        const taskStore =
+          database.createObjectStore(
+            TASK_STORE,
+            {keyPath:"id"}
+          );
+
+        taskStore.createIndex(
+          "status",
+          "status",
+          {unique:false}
+        );
+
+        taskStore.createIndex(
+          "priority",
+          "priority",
+          {unique:false}
+        );
+
+        taskStore.createIndex(
+          "createdAt",
+          "createdAt",
+          {unique:false}
         );
 
       }else{
 
-        store = event.target.transaction.objectStore(STORE);
+        const tx = event.target.transaction;
+
+        const taskStore =
+          tx.objectStore(TASK_STORE);
+
+        if(!taskStore.indexNames.contains("status")){
+          taskStore.createIndex(
+            "status",
+            "status",
+            {unique:false}
+          );
+        }
+
+        if(!taskStore.indexNames.contains("priority")){
+          taskStore.createIndex(
+            "priority",
+            "priority",
+            {unique:false}
+          );
+        }
+
+        if(!taskStore.indexNames.contains("createdAt")){
+          taskStore.createIndex(
+            "createdAt",
+            "createdAt",
+            {unique:false}
+          );
+        }
+
+        if(!taskStore.indexNames.contains("projectId")){
+          taskStore.createIndex(
+            "projectId",
+            "projectId",
+            {unique:false}
+          );
+        }
 
       }
 
-      if(!store.indexNames.contains("status")){
-        store.createIndex("status","status",{unique:false});
+      /* V1.7 PROJECT STORE */
+
+      if(!database.objectStoreNames.contains(PROJECT_STORE)){
+
+        const projectStore =
+          database.createObjectStore(
+            PROJECT_STORE,
+            {keyPath:"id"}
+          );
+
+        projectStore.createIndex(
+          "status",
+          "status",
+          {unique:false}
+        );
+
+        projectStore.createIndex(
+          "priority",
+          "priority",
+          {unique:false}
+        );
+
+        projectStore.createIndex(
+          "createdAt",
+          "createdAt",
+          {unique:false}
+        );
+
       }
 
-      if(!store.indexNames.contains("priority")){
-        store.createIndex("priority","priority",{unique:false});
-      }
-
-      if(!store.indexNames.contains("createdAt")){
-        store.createIndex("createdAt","createdAt",{unique:false});
-      }
-
-      if(!store.indexNames.contains("attempts")){
-        store.createIndex("attempts","attempts",{unique:false});
-      }
     };
 
     request.onsuccess = event => {
 
       db = event.target.result;
 
-      db.onversionchange = () => {
+      db.onversionchange = ()=>{
         db.close();
       };
 
       resolve(db);
     };
 
-    request.onerror = () => {
+    request.onerror = ()=>{
       reject(request.error);
     };
 
+    request.onblocked = ()=>{
+      addLog(
+        "Database upgrade blocked. Tutup tab ALFA OS lain lalu reload.",
+        "warn"
+      );
+    };
+
   });
+
 }
 
-function dbGetAll(){
+/* ================= DB READ ================= */
+
+function readStore(storeName){
 
   return new Promise((resolve,reject)=>{
 
-    const tx = db.transaction(STORE,"readonly");
-    const store = tx.objectStore(STORE);
-    const request = store.getAll();
+    const tx =
+      db.transaction(
+        storeName,
+        "readonly"
+      );
 
-    request.onsuccess = () => {
+    const store =
+      tx.objectStore(storeName);
+
+    const request =
+      store.getAll();
+
+    request.onsuccess = ()=>{
       resolve(request.result || []);
     };
 
-    request.onerror = () => {
+    request.onerror = ()=>{
       reject(request.error);
     };
 
   });
 }
 
-function dbPut(task){
+/* ================= DB WRITE ================= */
+
+function putRecord(storeName,record){
 
   return new Promise((resolve,reject)=>{
 
-    const tx = db.transaction(STORE,"readwrite");
+    const tx =
+      db.transaction(
+        storeName,
+        "readwrite"
+      );
 
-    tx.objectStore(STORE).put(task);
+    const store =
+      tx.objectStore(storeName);
 
-    tx.oncomplete = () => resolve();
+    const request =
+      store.put(record);
 
-    tx.onerror = () => reject(tx.error);
+    request.onsuccess = ()=>{
+      resolve();
+    };
+
+    request.onerror = ()=>{
+      reject(request.error);
+    };
 
   });
 }
 
-function dbPutMany(items){
+function deleteRecord(storeName,id){
 
   return new Promise((resolve,reject)=>{
 
-    const tx = db.transaction(STORE,"readwrite");
-    const store = tx.objectStore(STORE);
+    const tx =
+      db.transaction(
+        storeName,
+        "readwrite"
+      );
 
-    items.forEach(item=>{
-      store.put(item);
-    });
+    const store =
+      tx.objectStore(storeName);
 
-    tx.oncomplete = () => resolve();
+    const request =
+      store.delete(id);
 
-    tx.onerror = () => reject(tx.error);
+    request.onsuccess = ()=>{
+      resolve();
+    };
+
+    request.onerror = ()=>{
+      reject(request.error);
+    };
 
   });
 }
 
-function dbClear(){
+/* ================= TASK NORMALIZATION ================= */
 
-  return new Promise((resolve,reject)=>{
+function normalizeTask(oldTask){
 
-    const tx = db.transaction(STORE,"readwrite");
-
-    tx.objectStore(STORE).clear();
-
-    tx.oncomplete = () => resolve();
-
-    tx.onerror = () => reject(tx.error);
-
-  });
-}
-
-/* ---------------------------------------------------------
-   NORMALIZATION
---------------------------------------------------------- */
-
-function normalizeTask(old){
-
-  const task = old || {};
-
-  let attempts = Number(task.attempts);
-
-  if(!Number.isFinite(attempts) || attempts < 0){
-    attempts = 0;
-  }
-
-  /*
-    FIX V1.6.4:
-    attempts hanya integer murni.
-    Jika history lama pernah menyimpan nilai kacau,
-    kita jangan biarkan nilai duration masuk ke attempts.
-  */
-  attempts = Math.floor(attempts);
-
-  if(attempts > 999999){
-    attempts = 0;
-  }
-
-  let elapsedMs = Number(task.elapsedMs);
-
-  if(!Number.isFinite(elapsedMs) || elapsedMs < 0){
-    elapsedMs = 0;
-  }
-
-  let progress = Number(task.progress);
-
-  if(!Number.isFinite(progress)){
-    progress = 0;
-  }
-
-  progress = Math.max(0,Math.min(100,Math.floor(progress)));
-
-  const priority =
-    ["LOW","NORMAL","HIGH","CRITICAL"].includes(task.priority)
-      ? task.priority
-      : "NORMAL";
-
-  const status =
-    ["queued","running","paused","completed","failed","cancelled"]
-      .includes(task.status)
-      ? task.status
-      : "queued";
+  const task = oldTask || {};
 
   return {
 
-    id: task.id || uid(),
+    id:
+      task.id ||
+      uid("TASK"),
 
     name:
-      typeof task.name === "string" && task.name.trim()
-        ? task.name
-        : "Unnamed Task",
+      task.name ||
+      "Unnamed Task",
 
     type:
-      typeof task.type === "string"
-        ? task.type
-        : "SECURITY",
+      task.type ||
+      "SECURITY",
 
-    priority,
+    priority:
+      ["LOW","NORMAL","HIGH","CRITICAL"]
+        .includes(task.priority)
+        ? task.priority
+        : "NORMAL",
 
-    status,
+    projectId:
+      task.projectId ||
+      null,
 
-    progress,
+    status:
+      [
+        "queued",
+        "running",
+        "paused",
+        "completed",
+        "failed",
+        "cancelled"
+      ].includes(task.status)
+        ? task.status
+        : "queued",
 
-    attempts,
+    progress:
+      Number.isFinite(Number(task.progress))
+        ? Math.min(100,Math.max(0,Number(task.progress)))
+        : 0,
+
+    attempts:
+      Number.isFinite(Number(task.attempts))
+        ? Math.max(0,Math.floor(Number(task.attempts)))
+        : 0,
 
     createdAt:
       Number(task.createdAt) || now(),
 
     startedAt:
-      Number(task.startedAt) || null,
+      task.startedAt
+        ? Number(task.startedAt)
+        : null,
 
     completedAt:
-      Number(task.completedAt) || null,
+      task.completedAt
+        ? Number(task.completedAt)
+        : null,
 
-    elapsedMs,
+    elapsedMs:
+      Number(task.elapsedMs) >= 0
+        ? Number(task.elapsedMs)
+        : 0,
 
     duration:
       Number(task.duration) > 0
         ? Number(task.duration)
-        : PRIORITY_DURATION[priority],
+        : DURATIONS[
+            ["LOW","NORMAL","HIGH","CRITICAL"]
+              .includes(task.priority)
+              ? task.priority
+              : "NORMAL"
+          ],
 
     result:
-      typeof task.result === "string"
-        ? task.result
-        : "",
+      task.result || "",
 
     error:
-      typeof task.error === "string"
-        ? task.error
-        : "",
+      task.error || "",
 
     logs:
       Array.isArray(task.logs)
@@ -1331,71 +1985,794 @@ function normalizeTask(old){
   };
 }
 
-/* ---------------------------------------------------------
-   HISTORY MIGRATION
---------------------------------------------------------- */
+/* ================= PROJECT NORMALIZATION ================= */
 
-async function migrateHistory(){
+function normalizeProject(oldProject){
 
-  const normalized = tasks.map(normalizeTask);
+  const project = oldProject || {};
 
-  /*
-    Legacy records that have a suspicious attempts value
-    are normalized without touching valid timer values.
-  */
+  return {
 
-  normalized.forEach(task=>{
+    id:
+      project.id ||
+      uid("PROJECT"),
 
-    if(
-      task.status === "queued" &&
-      task.progress !== 0
-    ){
-      task.progress = 0;
-    }
+    name:
+      project.name ||
+      "Unnamed Project",
 
-    if(task.status === "queued"){
+    description:
+      project.description ||
+      "",
 
-      task.startedAt = null;
-      task.completedAt = null;
-      task.elapsedMs = 0;
+    status:
+      [
+        "planning",
+        "active",
+        "paused",
+        "completed",
+        "archived"
+      ].includes(project.status)
+        ? project.status
+        : "planning",
 
-    }
+    priority:
+      [
+        "LOW",
+        "NORMAL",
+        "HIGH",
+        "CRITICAL"
+      ].includes(project.priority)
+        ? project.priority
+        : "NORMAL",
 
-  });
+    deadline:
+      project.deadline ||
+      "",
 
-  tasks = normalized;
+    notes:
+      project.notes ||
+      "",
 
-  await dbPutMany(tasks);
+    createdAt:
+      Number(project.createdAt) || now(),
 
-  log(
-    "HISTORY MIGRATION V1.6.4 DISPLAY FIX COMPLETE.",
-    "ok"
-  );
+    updatedAt:
+      Number(project.updatedAt) || now()
+
+  };
 }
 
-/* ---------------------------------------------------------
-   CREATE TASK
---------------------------------------------------------- */
+/* ================= BOOT / MIGRATION ================= */
 
-async function createTask(){
+async function boot(){
 
-  const input = document.getElementById("taskName");
-  const type = document.getElementById("taskType").value;
-  const priority = document.getElementById("taskPriority").value;
+  try{
+
+    await openDatabase();
+
+    tasks =
+      (await readStore(TASK_STORE))
+        .map(normalizeTask);
+
+    projects =
+      (await readStore(PROJECT_STORE))
+        .map(normalizeProject);
+
+    /* Preserve existing tasks */
+
+    for(const task of tasks){
+      await putRecord(TASK_STORE,task);
+    }
+
+    for(const project of projects){
+      await putRecord(PROJECT_STORE,project);
+    }
+
+    renderAll();
+
+    addLog(
+      "ALFA OS SOFTWARE V1.7 ONLINE.",
+      "success"
+    );
+
+    addLog(
+      "PROJECT MANAGER initialized.",
+      "info"
+    );
+
+    addLog(
+      "Existing V1.6.x task history preserved.",
+      "success"
+    );
+
+    addLog(
+      "IndexedDB schema V7 active.",
+      "info"
+    );
+
+    addTaskLog(
+      "REAL TASK ENGINE ONLINE.",
+      "success"
+    );
+
+    addTaskLog(
+      "PROJECT ↔ TASK relationship ready.",
+      "info"
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    addLog(
+      "Database initialization error: " +
+      error.message,
+      "error"
+    );
+
+  }
+
+}
+
+/* ================= PROJECT CREATE ================= */
+
+async function createProject(){
 
   const name =
-    input.value.trim() ||
-    "ALFA TASK " + new Date().toLocaleTimeString();
+    document.getElementById("projectName")
+      .value.trim();
 
-  const task = {
+  if(!name){
 
-    id: uid(),
+    showToast("Isi PROJECT NAME terlebih dahulu.");
+
+    return;
+  }
+
+  const project = {
+
+    id:uid("PROJECT"),
 
     name,
 
-    type,
+    description:
+      document.getElementById("projectDescription")
+        .value.trim(),
+
+    status:
+      document.getElementById("projectStatus")
+        .value,
+
+    priority:
+      document.getElementById("projectPriority")
+        .value,
+
+    deadline:
+      document.getElementById("projectDeadline")
+        .value,
+
+    notes:
+      document.getElementById("projectNotes")
+        .value.trim(),
+
+    createdAt:now(),
+
+    updatedAt:now()
+
+  };
+
+  await putRecord(
+    PROJECT_STORE,
+    project
+  );
+
+  projects.unshift(project);
+
+  selectedProjectId = project.id;
+
+  resetProjectForm();
+
+  renderAll();
+
+  addLog(
+    `Project created: ${project.name}`,
+    "success"
+  );
+
+  showToast("PROJECT CREATED");
+
+}
+
+/* ================= PROJECT FORM ================= */
+
+function resetProjectForm(){
+
+  document.getElementById("projectName").value = "";
+
+  document.getElementById("projectDescription").value = "";
+
+  document.getElementById("projectNotes").value = "";
+
+  document.getElementById("projectStatus").value = "planning";
+
+  document.getElementById("projectPriority").value = "NORMAL";
+
+  document.getElementById("projectDeadline").value = "";
+
+}
+
+/* ================= PROJECT SELECT ================= */
+
+function selectProject(id){
+
+  selectedProjectId = id;
+
+  renderProjects();
+
+  updateProjectSelect();
+
+}
+
+function updateProjectSelect(){
+
+  const select =
+    document.getElementById("taskProject");
+
+  if(!select) return;
+
+  const current =
+    select.value;
+
+  select.innerHTML =
+    `<option value="">UNASSIGNED</option>` +
+    projects
+      .filter(p=>p.status !== "archived")
+      .map(p=>
+        `<option value="${esc(p.id)}">
+          ${esc(p.name)}
+        </option>`
+      )
+      .join("");
+
+  if(
+    current &&
+    projects.some(p=>p.id===current)
+  ){
+    select.value = current;
+  }
+
+  if(
+    selectedProjectId &&
+    projects.some(p=>p.id===selectedProjectId)
+  ){
+    select.value = selectedProjectId;
+  }
+
+}
+
+/* ================= PROJECT TASKS ================= */
+
+function getProjectTasks(projectId){
+
+  return tasks.filter(
+    task => task.projectId === projectId
+  );
+
+}
+
+function getProjectProgress(projectId){
+
+  const list =
+    getProjectTasks(projectId);
+
+  if(!list.length) return 0;
+
+  const total =
+    list.reduce(
+      (sum,task)=>sum + Number(task.progress || 0),
+      0
+    );
+
+  return Math.round(total/list.length);
+
+}
+
+/* ================= PROJECT RENDER ================= */
+
+function renderProjects(){
+
+  const listEl =
+    document.getElementById("projectList");
+
+  if(!listEl) return;
+
+  const search =
+    (
+      document.getElementById("projectSearch")
+        ?.value || ""
+    ).toLowerCase().trim();
+
+  const visible =
+    projects.filter(project => {
+
+      if(!search) return true;
+
+      return (
+        project.name.toLowerCase().includes(search) ||
+        project.description.toLowerCase().includes(search) ||
+        project.status.toLowerCase().includes(search)
+      );
+
+    });
+
+  if(!visible.length){
+
+    listEl.innerHTML = `
+      <div class="empty">
+        <strong>NO PROJECT</strong>
+        Belum ada project yang sesuai.
+      </div>
+    `;
+
+  }else{
+
+    listEl.innerHTML =
+      visible.map(project=>{
+
+        const projectTasks =
+          getProjectTasks(project.id);
+
+        const progress =
+          getProjectProgress(project.id);
+
+        return `
+          <div
+            class="project-card ${
+              selectedProjectId === project.id
+                ? "selected"
+                : ""
+            }"
+            onclick="selectProject('${esc(project.id)}')"
+          >
+
+            <div class="project-name">
+              ${esc(project.name)}
+            </div>
+
+            <div class="project-desc">
+              ${
+                esc(
+                  project.description ||
+                  "No description"
+                )
+              }
+            </div>
+
+            <div class="progress-wrap">
+
+              <div class="progress-label">
+                <span>PROGRESS</span>
+                <strong>${progress}%</strong>
+              </div>
+
+              <div class="progress-bar">
+                <div
+                  class="progress-fill"
+                  style="width:${progress}%"
+                ></div>
+              </div>
+
+            </div>
+
+            <div class="project-meta">
+
+              <span class="mini">
+                ${projectStatusLabel(project.status)}
+              </span>
+
+              <span class="mini">
+                ${esc(project.priority)}
+              </span>
+
+              <span class="mini">
+                TASKS ${projectTasks.length}
+              </span>
+
+            </div>
+
+          </div>
+        `;
+
+      }).join("");
+
+  }
+
+  renderProjectDetail();
+
+}
+
+/* ================= PROJECT DETAIL ================= */
+
+function renderProjectDetail(){
+
+  const detail =
+    document.getElementById("projectDetail");
+
+  if(!detail) return;
+
+  const project =
+    projects.find(
+      p=>p.id === selectedProjectId
+    );
+
+  if(!project){
+
+    detail.innerHTML = `
+      <div class="empty">
+        <strong>NO PROJECT SELECTED</strong>
+        Pilih project di sebelah kiri.
+      </div>
+    `;
+
+    return;
+  }
+
+  const projectTasks =
+    getProjectTasks(project.id);
+
+  const progress =
+    getProjectProgress(project.id);
+
+  const completed =
+    projectTasks.filter(
+      t=>t.status==="completed"
+    ).length;
+
+  const running =
+    projectTasks.filter(
+      t=>t.status==="running"
+    ).length;
+
+  const queued =
+    projectTasks.filter(
+      t=>t.status==="queued"
+    ).length;
+
+  detail.innerHTML = `
+
+    <div class="detail-head">
+
+      <div>
+
+        <div class="detail-name">
+          ${esc(project.name)}
+        </div>
+
+        <div class="detail-description">
+          ${esc(
+            project.description ||
+            "No project description."
+          )}
+        </div>
+
+      </div>
+
+      <div class="status ${
+        project.status === "active"
+          ? "running"
+          : project.status === "completed"
+            ? "completed"
+            : project.status === "paused"
+              ? "paused"
+              : "queued"
+      }">
+        ${projectStatusLabel(project.status)}
+      </div>
+
+    </div>
+
+    <div class="progress-wrap">
+
+      <div class="progress-label">
+        <span>PROJECT PROGRESS</span>
+        <strong>${progress}%</strong>
+      </div>
+
+      <div class="progress-bar">
+        <div
+          class="progress-fill"
+          style="width:${progress}%"
+        ></div>
+      </div>
+
+    </div>
+
+    <div class="project-info-grid">
+
+      <div class="info">
+        <label>PRIORITY</label>
+        <strong>${esc(project.priority)}</strong>
+      </div>
+
+      <div class="info">
+        <label>TOTAL TASK</label>
+        <strong>${projectTasks.length}</strong>
+      </div>
+
+      <div class="info">
+        <label>COMPLETED</label>
+        <strong>${completed}</strong>
+      </div>
+
+      <div class="info">
+        <label>RUNNING</label>
+        <strong>${running}</strong>
+      </div>
+
+    </div>
+
+    <br>
+
+    <div class="project-info-grid">
+
+      <div class="info">
+        <label>QUEUED</label>
+        <strong>${queued}</strong>
+      </div>
+
+      <div class="info">
+        <label>DEADLINE</label>
+        <strong>${esc(project.deadline || "NONE")}</strong>
+      </div>
+
+      <div class="info">
+        <label>CREATED</label>
+        <strong>
+          ${new Date(project.createdAt).toLocaleDateString("id-ID")}
+        </strong>
+      </div>
+
+      <div class="info">
+        <label>UPDATED</label>
+        <strong>
+          ${new Date(project.updatedAt).toLocaleDateString("id-ID")}
+        </strong>
+      </div>
+
+    </div>
+
+    <br>
+
+    <div class="panel-title">
+      <h2>PROJECT NOTES</h2>
+      <small>LOCAL</small>
+    </div>
+
+    <div class="project-description">
+      ${
+        esc(project.notes || "No notes.")
+      }
+    </div>
+
+    <br>
+
+    <div class="actions">
+
+      <button
+        class="btn primary"
+        onclick="useProjectForNewTask('${esc(project.id)}')"
+      >
+        + ADD TASK
+      </button>
+
+      <button
+        class="btn"
+        onclick="setProjectStatus('${esc(project.id)}','active')"
+      >
+        SET ACTIVE
+      </button>
+
+      <button
+        class="btn yellow"
+        onclick="setProjectStatus('${esc(project.id)}','paused')"
+      >
+        PAUSE PROJECT
+      </button>
+
+      <button
+        class="btn green"
+        onclick="setProjectStatus('${esc(project.id)}','completed')"
+      >
+        COMPLETE PROJECT
+      </button>
+
+      <button
+        class="btn red"
+        onclick="deleteProject('${esc(project.id)}')"
+      >
+        DELETE PROJECT
+      </button>
+
+    </div>
+
+    <br>
+
+    <div class="panel-title">
+      <h2>PROJECT TASKS</h2>
+      <small>${projectTasks.length} TASK(S)</small>
+    </div>
+
+    ${
+      projectTasks.length
+      ? `
+        <div class="task-list">
+          ${projectTasks.map(task=>renderTaskHTML(task)).join("")}
+        </div>
+      `
+      : `
+        <div class="empty">
+          <strong>NO TASK</strong>
+          Project ini belum memiliki task.
+        </div>
+      `
+    }
+
+  `;
+
+}
+
+/* ================= PROJECT STATUS ================= */
+
+async function setProjectStatus(id,status){
+
+  const project =
+    projects.find(p=>p.id===id);
+
+  if(!project) return;
+
+  project.status = status;
+
+  project.updatedAt = now();
+
+  await putRecord(
+    PROJECT_STORE,
+    project
+  );
+
+  renderAll();
+
+  addLog(
+    `Project ${project.name} → ${status.toUpperCase()}`,
+    "info"
+  );
+
+}
+
+/* ================= DELETE PROJECT ================= */
+
+async function deleteProject(id){
+
+  const project =
+    projects.find(p=>p.id===id);
+
+  if(!project) return;
+
+  const linked =
+    tasks.filter(
+      task=>task.projectId===id
+    );
+
+  if(linked.length){
+
+    const ok =
+      confirm(
+        `Project memiliki ${linked.length} task.\n\n` +
+        `Task akan tetap dipertahankan sebagai UNASSIGNED.\n\n` +
+        `Hapus project?`
+      );
+
+    if(!ok) return;
+
+  }else{
+
+    const ok =
+      confirm(
+        `Hapus project "${project.name}"?`
+      );
+
+    if(!ok) return;
+
+  }
+
+  for(const task of linked){
+
+    task.projectId = null;
+
+    await putRecord(
+      TASK_STORE,
+      task
+    );
+
+  }
+
+  await deleteRecord(
+    PROJECT_STORE,
+    id
+  );
+
+  projects =
+    projects.filter(
+      p=>p.id!==id
+    );
+
+  selectedProjectId = null;
+
+  renderAll();
+
+  addLog(
+    `Project deleted: ${project.name}`,
+    "warn"
+  );
+
+}
+
+/* ================= USE PROJECT ================= */
+
+function useProjectForNewTask(projectId){
+
+  selectedProjectId = projectId;
+
+  document.getElementById("taskProject").value =
+    projectId;
+
+  showSection(
+    "tasks",
+    document.querySelectorAll(".nav button")[2]
+  );
+
+  document.getElementById("taskName").focus();
+
+  showToast("PROJECT SELECTED FOR NEW TASK");
+
+}
+
+/* ================= CREATE TASK ================= */
+
+async function createTask(){
+
+  const name =
+    document.getElementById("taskName")
+      .value.trim();
+
+  if(!name){
+
+    showToast("Isi TASK NAME terlebih dahulu.");
+
+    return;
+  }
+
+  const priority =
+    document.getElementById("taskPriority")
+      .value;
+
+  const projectId =
+    document.getElementById("taskProject")
+      .value || null;
+
+  const task = {
+
+    id:uid("TASK"),
+
+    name,
+
+    type:
+      document.getElementById("taskType")
+        .value,
 
     priority,
+
+    projectId,
 
     status:"queued",
 
@@ -1411,657 +2788,459 @@ async function createTask(){
 
     elapsedMs:0,
 
-    duration:PRIORITY_DURATION[priority],
+    duration:
+      DURATIONS[priority],
 
-    result:"Task masuk ke queue.",
+    result:"",
 
     error:"",
 
     logs:[
-
-      {
-        time:now(),
-        message:"Task masuk ke queue."
-      }
-
+      "Task masuk ke queue."
     ]
 
   };
 
+  await putRecord(
+    TASK_STORE,
+    task
+  );
+
   tasks.unshift(task);
 
-  await dbPut(task);
+  if(projectId){
 
-  input.value = "";
+    const project =
+      projects.find(
+        p=>p.id===projectId
+      );
 
-  render();
+    if(project){
 
-  log(
-    `Task created: ${task.name} | ATTEMPT ${formatAttempt(task.attempts)}`,
-    "info"
+      project.updatedAt = now();
+
+      await putRecord(
+        PROJECT_STORE,
+        project
+      );
+
+    }
+
+  }
+
+  document.getElementById("taskName").value = "";
+
+  renderAll();
+
+  addTaskLog(
+    `Task created: ${task.name}`,
+    "success"
   );
+
+  showToast("TASK CREATED");
+
 }
 
-/* ---------------------------------------------------------
-   START NEXT
---------------------------------------------------------- */
+/* ================= START NEXT ================= */
 
-async function startNext(){
+function startNextTask(){
 
-  const task =
-    tasks.find(t => t.status === "queued");
+  const next =
+    tasks
+      .filter(
+        t=>t.status==="queued"
+      )
+      .sort(
+        (a,b)=>
+          PRIORITY_ORDER[a.priority] -
+          PRIORITY_ORDER[b.priority] ||
+          a.createdAt-b.createdAt
+      )[0];
 
-  if(!task){
+  if(!next){
 
-    log(
-      "Tidak ada task QUEUED yang tersedia.",
-      "warn"
-    );
+    showToast("Tidak ada task QUEUED.");
 
     return;
   }
 
-  await startTask(task);
+  startTask(next.id);
+
 }
 
-/* ---------------------------------------------------------
-   START TASK
---------------------------------------------------------- */
+/* ================= START TASK ================= */
 
-async function startTask(task){
+async function startTask(id){
+
+  const task =
+    tasks.find(
+      t=>t.id===id
+    );
+
+  if(!task) return;
 
   if(
-    task.status !== "queued" &&
-    task.status !== "paused"
+    !["queued","paused"].includes(task.status)
   ){
     return;
   }
 
   const previousElapsed =
     task.status === "paused"
-      ? Number(task.elapsedMs) || 0
+      ? Number(task.elapsedMs)||0
       : 0;
 
-  const wallStart = now();
-
   task.status = "running";
+
   task.progress = 0;
-  task.error = "";
+
   task.startedAt =
-    wallStart - previousElapsed;
+    now() - previousElapsed;
+
+  task.completedAt = null;
 
   task.elapsedMs = previousElapsed;
 
-  /*
-    FIX:
-    ATTEMPTS hanya dinaikkan di sini.
-    Tidak ada hubungannya dengan elapsedMs.
-  */
   task.attempts =
-    Math.max(
-      0,
-      Math.floor(Number(task.attempts) || 0)
-    ) + 1;
+    Math.max(0,Number(task.attempts)||0) + 1;
+
+  task.logs.push(
+    `Execution started. Attempt ${formatAttempt(task.attempts)}.`
+  );
+
+  await putRecord(
+    TASK_STORE,
+    task
+  );
 
   runtimeClock.set(
     task.id,
     performance.now()
   );
 
-  await dbPut(task);
-
-  render();
-
-  log(
-    `START ${task.name} | ATTEMPT ${formatAttempt(task.attempts)} | DURATION ${formatDuration(task.elapsedMs)}`,
+  addTaskLog(
+    `START ${task.name} | ATTEMPT ${formatAttempt(task.attempts)}`,
     "info"
   );
 
-  execute(task);
+  executeTask(task.id);
+
+  renderAll();
+
 }
 
-/* ---------------------------------------------------------
-   EXECUTE
---------------------------------------------------------- */
+/* ================= EXECUTE TASK ================= */
 
-function execute(task){
+function executeTask(id){
 
-  if(timers.has(task.id)){
-    clearInterval(timers.get(task.id));
+  clearRuntime(id);
+
+  const timer =
+    setInterval(async()=>{
+
+      const task =
+        tasks.find(
+          t=>t.id===id
+        );
+
+      if(!task){
+
+        clearRuntime(id);
+
+        return;
+      }
+
+      if(task.status !== "running"){
+
+        clearRuntime(id);
+
+        return;
+      }
+
+      const start =
+        runtimeClock.get(id);
+
+      if(typeof start !== "number"){
+
+        runtimeClock.set(
+          id,
+          performance.now()
+        );
+
+        return;
+      }
+
+      const elapsed =
+        Number(task.elapsedMs||0) +
+        (
+          performance.now() - start
+        );
+
+      const duration =
+        Number(task.duration) ||
+        DURATIONS.NORMAL;
+
+      task.progress =
+        Math.min(
+          100,
+          Math.round(
+            elapsed/duration*100
+          )
+        );
+
+      renderTasks();
+      updateStats();
+      renderProjectDetail();
+
+      if(elapsed >= duration){
+
+        task.progress = 100;
+
+        task.elapsedMs = duration;
+
+        task.completedAt = now();
+
+        task.status = "completed";
+
+        task.result =
+          "Task completed successfully.";
+
+        task.logs.push(
+          `Task completed in ${formatDuration(duration)}.`
+        );
+
+        clearRuntime(id);
+
+        await putRecord(
+          TASK_STORE,
+          task
+        );
+
+        addTaskLog(
+          `COMPLETED ${task.name} | ${formatDuration(duration)}`,
+          "success"
+        );
+
+        updateProjectAfterTask(task);
+
+        renderAll();
+
+      }else{
+
+        task.elapsedMs = elapsed;
+
+      }
+
+    },200);
+
+  runtimeTimers.set(id,timer);
+
+}
+
+/* ================= UPDATE PROJECT ================= */
+
+async function updateProjectAfterTask(task){
+
+  if(!task.projectId) return;
+
+  const project =
+    projects.find(
+      p=>p.id===task.projectId
+    );
+
+  if(!project) return;
+
+  project.updatedAt = now();
+
+  const progress =
+    getProjectProgress(project.id);
+
+  if(
+    progress >= 100 &&
+    project.status !== "archived"
+  ){
+
+    project.status = "completed";
+
+  }else if(
+    project.status === "planning"
+  ){
+
+    project.status = "active";
+
   }
 
-  const clock =
-    runtimeClock.get(task.id);
-
-  if(clock == null){
-    return;
-  }
-
-  const tick = async ()=>{
-
-    if(task.status !== "running"){
-
-      clearInterval(timers.get(task.id));
-      timers.delete(task.id);
-
-      return;
-    }
-
-    const elapsedSinceStart =
-      performance.now() - clock;
-
-    const totalElapsed =
-      (Number(task.elapsedMs) || 0) +
-      elapsedSinceStart;
-
-    const duration =
-      Number(task.duration) ||
-      PRIORITY_DURATION[task.priority] ||
-      5000;
-
-    task.progress =
-      Math.min(
-        100,
-        Math.floor(
-          (totalElapsed / duration) * 100
-        )
-      );
-
-    render();
-
-    if(totalElapsed >= duration){
-
-      clearInterval(timers.get(task.id));
-      timers.delete(task.id);
-
-      task.status = "completed";
-      task.progress = 100;
-      task.completedAt = now();
-      task.elapsedMs = Math.round(totalElapsed);
-
-      task.result =
-        `Task ${task.name} selesai diproses oleh REAL TASK ENGINE.`;
-
-      task.logs =
-        Array.isArray(task.logs)
-          ? task.logs
-          : [];
-
-      task.logs.push({
-        time:now(),
-        message:task.result
-      });
-
-      runtimeClock.delete(task.id);
-
-      await dbPut(task);
-
-      render();
-
-      log(
-        `COMPLETED ${task.name} | ATTEMPT ${formatAttempt(task.attempts)} | DURATION ${formatDuration(task.elapsedMs)}`,
-        "ok"
-      );
-    }
-
-  };
-
-  timers.set(
-    task.id,
-    setInterval(tick,200)
+  await putRecord(
+    PROJECT_STORE,
+    project
   );
 
-  tick();
 }
 
-/* ---------------------------------------------------------
-   PAUSE
---------------------------------------------------------- */
+/* ================= PAUSE ================= */
 
-async function pauseTask(task){
+async function pauseTask(id){
 
-  if(task.status !== "running"){
+  const task =
+    tasks.find(t=>t.id===id);
+
+  if(!task || task.status!=="running"){
     return;
   }
 
-  const clock =
-    runtimeClock.get(task.id);
+  const start =
+    runtimeClock.get(id);
 
-  if(clock != null){
+  if(typeof start==="number"){
 
     task.elapsedMs +=
-      performance.now() - clock;
+      performance.now() - start;
 
-  }
-
-  runtimeClock.delete(task.id);
-
-  if(timers.has(task.id)){
-    clearInterval(timers.get(task.id));
-    timers.delete(task.id);
   }
 
   task.status = "paused";
 
-  await dbPut(task);
+  task.logs.push(
+    "Task paused."
+  );
 
-  render();
+  clearRuntime(id);
 
-  log(
-    `PAUSED ${task.name} | ATTEMPT ${formatAttempt(task.attempts)} | DURATION ${formatDuration(task.elapsedMs)}`,
+  await putRecord(
+    TASK_STORE,
+    task
+  );
+
+  addTaskLog(
+    `PAUSED ${task.name}`,
     "warn"
   );
+
+  renderAll();
+
 }
 
-/* ---------------------------------------------------------
-   RESUME
---------------------------------------------------------- */
+/* ================= RESUME ================= */
 
-async function resumeTask(task){
+async function resumeTask(id){
 
-  if(task.status !== "paused"){
+  const task =
+    tasks.find(t=>t.id===id);
+
+  if(!task || task.status!=="paused"){
     return;
   }
 
-  task.status = "running";
+  await startTask(id);
 
-  runtimeClock.set(
-    task.id,
-    performance.now()
-  );
-
-  await dbPut(task);
-
-  render();
-
-  log(
-    `RESUMED ${task.name} | ATTEMPT ${formatAttempt(task.attempts)}`,
-    "info"
-  );
-
-  execute(task);
 }
 
-/* ---------------------------------------------------------
-   STOP
---------------------------------------------------------- */
+/* ================= STOP ================= */
 
-async function stopTask(task){
+async function stopTask(id){
 
-  if(task.status === "running"){
+  const task =
+    tasks.find(t=>t.id===id);
 
-    const clock =
-      runtimeClock.get(task.id);
+  if(!task) return;
 
-    if(clock != null){
+  if(task.status==="running"){
+
+    const start =
+      runtimeClock.get(id);
+
+    if(typeof start==="number"){
 
       task.elapsedMs +=
-        performance.now() - clock;
+        performance.now()-start;
 
     }
+
   }
 
-  runtimeClock.delete(task.id);
-
-  if(timers.has(task.id)){
-    clearInterval(timers.get(task.id));
-    timers.delete(task.id);
-  }
+  clearRuntime(id);
 
   task.status = "cancelled";
 
-  await dbPut(task);
+  task.logs.push(
+    "Task cancelled."
+  );
 
-  render();
+  await putRecord(
+    TASK_STORE,
+    task
+  );
 
-  log(
-    `STOPPED ${task.name} | ATTEMPT ${formatAttempt(task.attempts)} | DURATION ${formatDuration(task.elapsedMs)}`,
+  addTaskLog(
+    `STOPPED ${task.name}`,
     "warn"
   );
+
+  renderAll();
+
 }
 
-/* ---------------------------------------------------------
-   RETRY
---------------------------------------------------------- */
+/* ================= RETRY ================= */
 
-async function retryTask(task){
+async function retryTask(id){
 
-  if(timers.has(task.id)){
-    clearInterval(timers.get(task.id));
-    timers.delete(task.id);
-  }
+  const task =
+    tasks.find(t=>t.id===id);
 
-  runtimeClock.delete(task.id);
+  if(!task) return;
+
+  clearRuntime(id);
 
   task.status = "queued";
+
   task.progress = 0;
+
   task.startedAt = null;
+
   task.completedAt = null;
+
   task.elapsedMs = 0;
+
+  task.result = "";
+
   task.error = "";
-  task.result = "Task masuk ke queue.";
 
-  /*
-    ATTEMPT TIDAK DI-RESET.
-    Retry berikutnya akan menjadi ATTEMPT 002,
-    ATTEMPT 003, dst.
-  */
-
-  await dbPut(task);
-
-  render();
-
-  log(
-    `RETRY QUEUED ${task.name} | CURRENT ATTEMPT ${formatAttempt(task.attempts)}`,
-    "warn"
+  task.logs.push(
+    "Task returned to queue for retry."
   );
+
+  await putRecord(
+    TASK_STORE,
+    task
+  );
+
+  addTaskLog(
+    `RETRY QUEUED ${task.name}`,
+    "info"
+  );
+
+  renderAll();
+
 }
 
-/* ---------------------------------------------------------
-   DISPLAY DURATION
---------------------------------------------------------- */
+/* ================= CLEAR RUNTIME ================= */
 
-function displayDuration(task){
+function clearRuntime(id){
 
-  if(task.status === "queued"){
-    return "00s";
+  const timer =
+    runtimeTimers.get(id);
+
+  if(timer){
+    clearInterval(timer);
   }
 
-  let elapsed =
-    Number(task.elapsedMs) || 0;
+  runtimeTimers.delete(id);
 
-  if(task.status === "running"){
-
-    const clock =
-      runtimeClock.get(task.id);
-
-    if(clock != null){
-
-      elapsed +=
-        performance.now() - clock;
-
-    }
-
-  }
-
-  return formatDuration(elapsed);
-}
-
-/* ---------------------------------------------------------
-   RENDER
---------------------------------------------------------- */
-
-function render(){
-
-  const list =
-    document.getElementById("taskList");
-
-  document.getElementById("taskCount").textContent =
-    `${tasks.length} TASKS`;
-
-  const total =
-    tasks.length;
-
-  const running =
-    tasks.filter(t=>t.status==="running").length;
-
-  const queued =
-    tasks.filter(t=>t.status==="queued").length;
-
-  const completed =
-    tasks.filter(t=>t.status==="completed").length;
-
-  const failed =
-    tasks.filter(
-      t=>t.status==="failed" ||
-         t.status==="cancelled"
-    ).length;
-
-  document.getElementById("statTotal").textContent =
-    total;
-
-  document.getElementById("statRunning").textContent =
-    running;
-
-  document.getElementById("statQueued").textContent =
-    queued;
-
-  document.getElementById("statCompleted").textContent =
-    completed;
-
-  document.getElementById("statFailed").textContent =
-    failed;
-
-  if(!tasks.length){
-
-    list.innerHTML =
-      `<div class="empty">
-        Belum ada task. Buat task pertama ALFA OS SOFTWARE.
-      </div>`;
-
-    return;
-  }
-
-  list.innerHTML =
-    tasks.map(task=>{
-
-      const attempt =
-        formatAttempt(task.attempts);
-
-      const duration =
-        displayDuration(task);
-
-      const status =
-        escapeHTML(task.status);
-
-      const type =
-        escapeHTML(task.type);
-
-      const priority =
-        escapeHTML(task.priority);
-
-      const name =
-        escapeHTML(task.name);
-
-      const id =
-        escapeHTML(task.id);
-
-      const result =
-        escapeHTML(
-          task.result ||
-          "Task siap dijalankan."
-        );
-
-      let actions = "";
-
-      if(task.status === "queued"){
-
-        actions +=
-          `<button class="btn primary"
-             onclick="startById('${task.id}')">
-             ▶ START
-           </button>`;
-
-      }
-
-      if(task.status === "running"){
-
-        actions +=
-          `<button class="btn"
-             onclick="pauseById('${task.id}')">
-             Ⅱ PAUSE
-           </button>`;
-
-        actions +=
-          `<button class="btn danger"
-             onclick="stopById('${task.id}')">
-             ■ STOP
-           </button>`;
-
-      }
-
-      if(task.status === "paused"){
-
-        actions +=
-          `<button class="btn primary"
-             onclick="resumeById('${task.id}')">
-             ▶ RESUME
-           </button>`;
-
-        actions +=
-          `<button class="btn danger"
-             onclick="stopById('${task.id}')">
-             ■ STOP
-           </button>`;
-
-      }
-
-      if(
-        task.status === "completed" ||
-        task.status === "failed" ||
-        task.status === "cancelled"
-      ){
-
-        actions +=
-          `<button class="btn"
-             onclick="retryById('${task.id}')">
-             ↻ RETRY
-           </button>`;
-
-      }
-
-      return `
-        <article class="task">
-
-          <div class="task-top">
-
-            <div>
-              <div class="task-name">${name}</div>
-              <div class="task-id">${id}</div>
-            </div>
-
-            <div class="status ${status}">
-              ${status.toUpperCase()}
-            </div>
-
-          </div>
-
-          <div class="meta">
-
-            <div class="meta-box">
-              <div class="meta-label">TYPE</div>
-              <div class="meta-value">${type}</div>
-            </div>
-
-            <div class="meta-box">
-              <div class="meta-label">PRIORITY</div>
-              <div class="meta-value">${priority}</div>
-            </div>
-
-            <div class="meta-box">
-              <div class="meta-label">ATTEMPT</div>
-              <div class="meta-value">${attempt}</div>
-            </div>
-
-            <div class="meta-box">
-              <div class="meta-label">DURATION</div>
-              <div class="meta-value">${duration}</div>
-            </div>
-
-          </div>
-
-          <div class="progress-wrap">
-
-            <div class="progress-info">
-              <span>PROGRESS</span>
-              <span>${task.progress}%</span>
-            </div>
-
-            <div class="progress">
-              <div
-                class="progress-bar"
-                style="width:${task.progress}%">
-              </div>
-            </div>
-
-          </div>
-
-          <div class="task-message">
-            ${result}
-          </div>
-
-          <div class="task-actions">
-            ${actions}
-          </div>
-
-        </article>
-      `;
-
-    }).join("");
+  runtimeClock.delete(id);
 
 }
 
-/* ---------------------------------------------------------
-   ACTION BY ID
---------------------------------------------------------- */
-
-function getTask(id){
-  return tasks.find(t=>t.id===id);
-}
-
-async function startById(id){
-
-  const task = getTask(id);
-
-  if(task){
-    await startTask(task);
-  }
-
-}
-
-async function pauseById(id){
-
-  const task = getTask(id);
-
-  if(task){
-    await pauseTask(task);
-  }
-
-}
-
-async function resumeById(id){
-
-  const task = getTask(id);
-
-  if(task){
-    await resumeTask(task);
-  }
-
-}
-
-async function stopById(id){
-
-  const task = getTask(id);
-
-  if(task){
-    await stopTask(task);
-  }
-
-}
-
-async function retryById(id){
-
-  const task = getTask(id);
-
-  if(task){
-    await retryTask(task);
-  }
-
-}
-
-/* ---------------------------------------------------------
-   PAUSE ALL
---------------------------------------------------------- */
+/* ================= PAUSE ALL ================= */
 
 async function pauseAll(){
 
@@ -2071,14 +3250,20 @@ async function pauseAll(){
     );
 
   for(const task of running){
-    await pauseTask(task);
+
+    await pauseTask(task.id);
+
   }
+
+  showToast(
+    running.length
+      ? `${running.length} TASK PAUSED`
+      : "Tidak ada task running."
+  );
 
 }
 
-/* ---------------------------------------------------------
-   RESUME ALL
---------------------------------------------------------- */
+/* ================= RESUME ALL ================= */
 
 async function resumeAll(){
 
@@ -2088,42 +3273,93 @@ async function resumeAll(){
     );
 
   for(const task of paused){
-    await resumeTask(task);
+
+    await resumeTask(task.id);
+
   }
+
+  showToast(
+    paused.length
+      ? `${paused.length} TASK RESUMED`
+      : "Tidak ada task paused."
+  );
 
 }
 
-/* ---------------------------------------------------------
-   DEMO
---------------------------------------------------------- */
+/* ================= CLEAR COMPLETED ================= */
 
-async function createDemo(){
+async function clearCompleted(){
+
+  const completed =
+    tasks.filter(
+      t=>t.status==="completed"
+    );
+
+  for(const task of completed){
+
+    await deleteRecord(
+      TASK_STORE,
+      task.id
+    );
+
+  }
+
+  tasks =
+    tasks.filter(
+      t=>t.status!=="completed"
+    );
+
+  renderAll();
+
+  showToast(
+    `${completed.length} COMPLETED TASK REMOVED`
+  );
+
+}
+
+/* ================= DEMO ================= */
+
+async function createDemoTasks(){
 
   const demo = [
 
-    ["OSINT Asset Discovery","OSINT","NORMAL"],
+    ["OSINT Asset Discovery","OSINT","HIGH"],
 
-    ["Security Header Review","SECURITY","NORMAL"],
+    ["Security Header Review","SECURITY","HIGH"],
 
-    ["Authorized Bug Hunter Check","BUG","NORMAL"],
+    ["Bug Hunter Check","BUG","NORMAL"],
 
-    ["Security Assessment Report","REPORT","NORMAL"],
+    ["Generate Security Report","REPORT","NORMAL"],
 
-    ["AI Security Assistant","AI","NORMAL"]
+    ["AI Security Analysis","AI","LOW"]
 
   ];
 
+  let projectId =
+    selectedProjectId;
+
+  if(!projectId && projects.length){
+
+    projectId =
+      projects[0].id;
+
+  }
+
   for(const item of demo){
+
+    const [name,type,priority] = item;
 
     const task = {
 
-      id:uid(),
+      id:uid("TASK"),
 
-      name:item[0],
+      name,
 
-      type:item[1],
+      type,
 
-      priority:item[2],
+      priority,
+
+      projectId,
 
       status:"queued",
 
@@ -2139,184 +3375,473 @@ async function createDemo(){
 
       elapsedMs:0,
 
-      duration:
-        PRIORITY_DURATION[item[2]],
+      duration:DURATIONS[priority],
 
-      result:"Task masuk ke queue.",
+      result:"",
 
       error:"",
 
       logs:[
-
-        {
-          time:now(),
-          message:"Task masuk ke queue."
-        }
-
+        "Demo task masuk ke queue."
       ]
 
     };
 
-    tasks.unshift(task);
+    await putRecord(
+      TASK_STORE,
+      task
+    );
 
-    await dbPut(task);
+    tasks.unshift(task);
 
   }
 
-  render();
+  renderAll();
 
-  log(
-    "DEMO ×5 CREATED.",
-    "ok"
+  addTaskLog(
+    "5 demo tasks created.",
+    "success"
   );
+
+  showToast("DEMO ×5 CREATED");
 
 }
 
-/* ---------------------------------------------------------
-   CLEAR
---------------------------------------------------------- */
+/* ================= TASK DURATION ================= */
 
-async function clearTasks(){
+function displayDuration(task){
 
-  const yes =
-    confirm(
-      "Hapus seluruh TASK HISTORY dari database lokal?"
+  if(task.status==="queued"){
+    return "00s";
+  }
+
+  let ms =
+    Number(task.elapsedMs)||0;
+
+  if(task.status==="running"){
+
+    const start =
+      runtimeClock.get(task.id);
+
+    if(typeof start==="number"){
+
+      ms +=
+        performance.now()-start;
+
+    }
+
+  }
+
+  return formatDuration(ms);
+
+}
+
+/* ================= TASK HTML ================= */
+
+function renderTaskHTML(task){
+
+  const project =
+    projects.find(
+      p=>p.id===task.projectId
     );
 
-  if(!yes){
+  const projectName =
+    project
+      ? project.name
+      : "UNASSIGNED";
+
+  return `
+
+    <div class="task">
+
+      <div class="task-head">
+
+        <div>
+
+          <div class="task-name">
+            ${esc(task.name)}
+          </div>
+
+          <div class="task-id">
+            ${esc(task.id)}
+          </div>
+
+        </div>
+
+        <div class="status ${esc(task.status)}">
+          ${esc(task.status.toUpperCase())}
+        </div>
+
+      </div>
+
+      <div class="task-meta">
+
+        <div>
+          <label>TYPE</label>
+          <strong>${esc(task.type)}</strong>
+        </div>
+
+        <div>
+          <label>PROJECT</label>
+          <strong>${esc(projectName)}</strong>
+        </div>
+
+        <div>
+          <label>PRIORITY</label>
+          <strong>${esc(task.priority)}</strong>
+        </div>
+
+        <div>
+          <label>ATTEMPT</label>
+          <strong>${formatAttempt(task.attempts)}</strong>
+        </div>
+
+      </div>
+
+      <div class="task-meta">
+
+        <div>
+          <label>DURATION</label>
+          <strong>${displayDuration(task)}</strong>
+        </div>
+
+        <div>
+          <label>PROGRESS</label>
+          <strong>${Math.round(task.progress)}%</strong>
+        </div>
+
+        <div>
+          <label>RESULT</label>
+          <strong>
+            ${
+              task.result
+                ? "READY"
+                : "—"
+            }
+          </strong>
+        </div>
+
+        <div>
+          <label>DATABASE</label>
+          <strong>LOCAL</strong>
+        </div>
+
+      </div>
+
+      <div class="task-progress">
+
+        <div class="task-progress-line">
+
+          <div
+            class="task-progress-fill"
+            style="width:${Math.round(task.progress)}%"
+          ></div>
+
+        </div>
+
+      </div>
+
+      <div class="task-buttons">
+
+        ${
+          task.status==="queued"
+          ? `
+            <button
+              class="btn green"
+              onclick="startTask('${esc(task.id)}')"
+            >
+              START
+            </button>
+          `
+          : ""
+        }
+
+        ${
+          task.status==="running"
+          ? `
+            <button
+              class="btn yellow"
+              onclick="pauseTask('${esc(task.id)}')"
+            >
+              PAUSE
+            </button>
+
+            <button
+              class="btn red"
+              onclick="stopTask('${esc(task.id)}')"
+            >
+              STOP
+            </button>
+          `
+          : ""
+        }
+
+        ${
+          task.status==="paused"
+          ? `
+            <button
+              class="btn green"
+              onclick="resumeTask('${esc(task.id)}')"
+            >
+              RESUME
+            </button>
+
+            <button
+              class="btn red"
+              onclick="stopTask('${esc(task.id)}')"
+            >
+              STOP
+            </button>
+          `
+          : ""
+        }
+
+        ${
+          [
+            "completed",
+            "failed",
+            "cancelled"
+          ].includes(task.status)
+          ? `
+            <button
+              class="btn purple"
+              onclick="retryTask('${esc(task.id)}')"
+            >
+              RETRY
+            </button>
+          `
+          : ""
+        }
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+/* ================= RENDER TASKS ================= */
+
+function renderTasks(){
+
+  const list =
+    document.getElementById("taskList");
+
+  if(!list) return;
+
+  const search =
+    (
+      document.getElementById("taskSearch")
+        ?.value || ""
+    ).toLowerCase().trim();
+
+  const visible =
+    tasks
+      .filter(task=>{
+
+        if(!search) return true;
+
+        const project =
+          projects.find(
+            p=>p.id===task.projectId
+          );
+
+        return (
+          task.name.toLowerCase().includes(search) ||
+          task.type.toLowerCase().includes(search) ||
+          task.status.toLowerCase().includes(search) ||
+          (
+            project &&
+            project.name.toLowerCase().includes(search)
+          )
+        );
+
+      })
+      .sort((a,b)=>{
+
+        const statusOrder = {
+          running:0,
+          queued:1,
+          paused:2,
+          completed:3,
+          failed:4,
+          cancelled:5
+        };
+
+        return (
+          (statusOrder[a.status] -
+           statusOrder[b.status]) ||
+          (
+            PRIORITY_ORDER[a.priority] -
+            PRIORITY_ORDER[b.priority]
+          ) ||
+          b.createdAt-a.createdAt
+        );
+
+      });
+
+  if(!visible.length){
+
+    list.innerHTML = `
+      <div class="empty">
+        <strong>NO TASK</strong>
+        Belum ada task.
+      </div>
+    `;
+
     return;
   }
 
-  timers.forEach(timer=>{
-    clearInterval(timer);
-  });
+  list.innerHTML =
+    visible
+      .map(renderTaskHTML)
+      .join("");
 
-  timers.clear();
-  runtimeClock.clear();
-
-  await dbClear();
-
-  tasks = [];
-
-  render();
-
-  log(
-    "ALL TASK HISTORY CLEARED.",
-    "warn"
-  );
 }
 
-/* ---------------------------------------------------------
-   MODULE
---------------------------------------------------------- */
+/* ================= STATS ================= */
 
-function selectModule(button,name){
+function updateStats(){
 
-  document
-    .querySelectorAll(".nav button")
-    .forEach(btn=>{
-      btn.classList.remove("active");
-    });
+  document.getElementById("statProjects")
+    .textContent = projects.length;
 
-  button.classList.add("active");
+  document.getElementById("statTasks")
+    .textContent = tasks.length;
 
-  log(
-    `MODULE SELECTED: ${name}`,
-    "info"
-  );
-}
-
-/* ---------------------------------------------------------
-   CHECKLIST
---------------------------------------------------------- */
-
-function updateChecklist(){
-
-  const boxes =
-    document.querySelectorAll(
-      ".check input"
-    );
-
-  let count = 0;
-
-  boxes.forEach(box=>{
-    if(box.checked){
-      count++;
-    }
-  });
-
-  document.getElementById("checkCount")
+  document.getElementById("statRunning")
     .textContent =
-      `${count}/${boxes.length}`;
+      tasks.filter(
+        t=>t.status==="running"
+      ).length;
+
+  document.getElementById("statCompleted")
+    .textContent =
+      tasks.filter(
+        t=>t.status==="completed"
+      ).length;
+
+  document.getElementById("statFailed")
+    .textContent =
+      tasks.filter(
+        t=>t.status==="failed"
+      ).length;
 
 }
 
-/* ---------------------------------------------------------
-   BOOT
---------------------------------------------------------- */
+/* ================= DASHBOARD PROJECTS ================= */
 
-async function boot(){
+function renderDashboardProjects(){
 
-  try{
-
-    log(
-      "ALFA OS SOFTWARE V1.6.4 BOOTING...",
-      "info"
+  const el =
+    document.getElementById(
+      "dashboardProjects"
     );
 
-    await openDB();
+  if(!el) return;
 
-    tasks =
-      await dbGetAll();
+  if(!projects.length){
 
-    await migrateHistory();
+    el.innerHTML = `
+      <div class="empty">
+        <strong>NO PROJECTS</strong>
+        Buat project pertama melalui Project Manager.
+      </div>
+    `;
 
-    render();
-
-    updateChecklist();
-
-    log(
-      "LOCAL DATABASE ONLINE.",
-      "ok"
-    );
-
-    log(
-      "REAL TASK ENGINE ONLINE.",
-      "ok"
-    );
-
-    log(
-      "ATTEMPT DISPLAY FIX ACTIVE.",
-      "ok"
-    );
-
-    log(
-      "MONOTONIC TIMER ENGINE ACTIVE.",
-      "ok"
-    );
-
-    log(
-      "PASSIVE / AUTHORIZED SECURITY MODE.",
-      "info"
-    );
-
-  }catch(error){
-
-    console.error(error);
-
-    log(
-      "DATABASE ERROR: " +
-      (error?.message || error),
-      "error"
-    );
-
+    return;
   }
 
+  el.innerHTML =
+    projects
+      .slice(0,5)
+      .map(project=>{
+
+        const progress =
+          getProjectProgress(project.id);
+
+        return `
+
+          <div
+            class="project-card"
+            onclick="
+              selectedProjectId='${esc(project.id)}';
+              showSection(
+                'projects',
+                document.querySelectorAll('.nav button')[1]
+              );
+            "
+          >
+
+            <div class="project-name">
+              ${esc(project.name)}
+            </div>
+
+            <div class="progress-wrap">
+
+              <div class="progress-label">
+                <span>
+                  ${projectStatusLabel(project.status)}
+                </span>
+
+                <strong>${progress}%</strong>
+              </div>
+
+              <div class="progress-bar">
+
+                <div
+                  class="progress-fill"
+                  style="width:${progress}%"
+                ></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        `;
+
+      })
+      .join("");
+
 }
 
-/* ---------------------------------------------------------
-   REFRESH DISPLAY
---------------------------------------------------------- */
+/* ================= MODULE PLACEHOLDER ================= */
+
+function runSafeModule(type){
+
+  addLog(
+    `${type} workspace initialized. Passive / authorized mode.`,
+    "info"
+  );
+
+  showToast(
+    `${type} WORKSPACE READY`
+  );
+
+}
+
+/* ================= RENDER ALL ================= */
+
+function renderAll(){
+
+  updateStats();
+
+  renderTasks();
+
+  renderProjects();
+
+  renderDashboardProjects();
+
+  updateProjectSelect();
+
+  renderProjectDetail();
+
+}
+
+/* ================= LIVE UI LOOP ================= */
 
 setInterval(()=>{
 
@@ -2325,14 +3850,29 @@ setInterval(()=>{
       task=>task.status==="running"
     )
   ){
-    render();
+
+    renderTasks();
+
+    updateStats();
+
+    renderProjectDetail();
+
   }
 
 },250);
 
-/* ---------------------------------------------------------
-   START
---------------------------------------------------------- */
+/* ================= CLEANUP ================= */
+
+window.addEventListener(
+  "beforeunload",
+  ()=>{
+    runtimeTimers.forEach(
+      timer=>clearInterval(timer)
+    );
+  }
+);
+
+/* ================= START ================= */
 
 boot();
 
